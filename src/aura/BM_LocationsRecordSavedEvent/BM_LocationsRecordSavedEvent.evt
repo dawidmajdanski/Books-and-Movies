@@ -1,0 +1,7 @@
+<!--
+ - Created by Majdan on 27.12.2018.
+ -->
+
+<aura:event type="APPLICATION" description="BM_LocationsRecordSavedEvent">
+    <aura:attribute name = "changedShop" type="Account"/>
+</aura:event>

@@ -1,0 +1,58 @@
+<!--
+ - Created by Dawid Majdański on 21.12.2018.
+ -->
+
+<aura:component description="BM_LocationsResultTable" implements="flexipage:availableForAllPageTypes">
+    <aura:attribute name="shopsResult" type="Account[]"/>
+    <aura:attribute name="shopIndexToHighlight" type="Integer"/>
+    <aura:attribute name="isVisible" type="boolean" default="false"/>
+    <aura:handler event="c:BM_LocationsSearchEvent" action="{!c.handleReceiveShopsList}"/>
+    <aura:handler event="c:BM_LocationsRecordSavedEvent" action="{!c.handleRecordSaved}"/>
+    <aura:handler event="c:BM_LocationsClearDetailsEvent" action="{!c.handleRecordDeleted}"/>
+    <aura:registerEvent name = "passRecordLocation" type = "c:BM_LocationsRecordClickedEvent" />
+
+    <aura:if isTrue="{!v.isVisible}">
+        <lightning:card title="{!$Label.c.Results_title}">
+            <div class="bm-padding">
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered" id="dataTable" >
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="{!$Label.c.Name}">{!$Label.c.Name}</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="{!$Label.c.Country}">{!$Label.c.Country}</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="{!$Label.c.City}">{!$Label.c.City}</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate" title="{!$Label.c.Street}">{!$Label.c.Street}</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <aura:iteration items="{!v.shopsResult}" var="shop" indexVar="ind">
+                            <tr class="slds-hint-parent" id="{!ind}" onclick="{!c.onZoomMarkerOnMapAndHighlightRecord}" data-record="{!shop}" data-index="{!ind}">
+                                <td data-label="{!shop.Name}" scope="row">
+                                    <div class="slds-truncate" title="{!shop.Name}" >
+                                        {!shop.Name}
+                                    </div>
+                                </td>
+                                <td data-label="{!shop.Country__c}">
+                                    <div class="slds-truncate" title="{!shop.Country__c}">{!shop.BillingCountry}</div>
+                                </td>
+                                <td data-label="{!shop.City__c}">
+                                    <div class="slds-truncate" title="{!shop.City__c}">{!shop.BillingCity}</div>
+                                </td>
+                                <td data-label="{!shop.Street__c}">
+                                    <div class="slds-truncate" title="{!shop.Street__c}">{!shop.BillingStreet}</div>
+                                </td>
+                            </tr>
+                        </aura:iteration>
+                    </tbody>
+                </table>
+            </div>
+        </lightning:card>
+    </aura:if>
+</aura:component>

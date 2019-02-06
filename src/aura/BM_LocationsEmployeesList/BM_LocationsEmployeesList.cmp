@@ -1,0 +1,52 @@
+<!--
+ - Created by Dawid Majdański on 04.01.2019.
+ -->
+
+<aura:component controller="BM_LocationsRecordCrud" description="BM_LocationsEmployeesList" implements="flexipage:availableForAllPageTypes">
+    <aura:attribute name="employees" type="Shop_employee__c[]"/>
+    <aura:attribute name="shop" type="Account"/>
+    <aura:method name="getRelatedEmployees" action="{!c.handleGetEmployees}" access="PUBLIC" />
+
+    <aura:if isTrue="{!v.employees.length!=0}">
+        <lightning:card title="{!$Label.c.Employees_title}">
+            <div class="paddingAll">
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered" id="dataTable" >
+                    <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="slds-text-title_caps" scope="col">
+                            <div class="slds-truncate" title="{!$Label.c.Table_actions}">{!$Label.c.Table_actions}</div>
+                        </th>
+                        <th class="slds-text-title_caps" scope="col">
+                            <div class="slds-truncate" title="{!$Label.c.First_name}">{!$Label.c.First_name}</div>
+                        </th>
+                        <th class="slds-text-title_caps" scope="col">
+                            <div class="slds-truncate" title="{!$Label.c.Last_name}">{!$Label.c.Last_name}</div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <aura:iteration items="{!v.employees}" var="employee" indexVar="ind">
+                        <tr class="slds-hint-parent" id="{!ind}" >
+                            <td data-label="{!employee.Employee__r.FirstName}">
+                                <div class="slds-truncate" title="{!$Label.c.Remove}">
+                                    <a onclick="{!c.handleRemoveEmployee}" data-record="{!employee.Id}" data-index="{!ind}">{!$Label.c.Remove}</a>
+                                </div>
+                            </td>
+                            <td data-label="{!employee.Employee__r.FirstName}">
+                                <div class="slds-truncate" title="{!employee.Employee__r.FirstName}">{!employee.Employee__r.FirstName}</div>
+                            </td>
+                            <td data-label="{!employee.Employee__r.LastName}">
+                                <div class="slds-truncate" title="{!employee.Employee__r.LastName}">{!employee.Employee__r.LastName}</div>
+                            </td>
+                        </tr>
+                    </aura:iteration>
+                    </tbody>
+                </table>
+            </div>
+        </lightning:card>
+    </aura:if>
+    <aura:if isTrue="{!v.employees.length==0}">
+        <lightning:card title="{!$Label.c.No_employees}"/>
+    </aura:if>
+
+</aura:component>
