@@ -1,0 +1,38 @@
+<!--
+ - Created by Majdan on 02.01.2019.
+ -->
+
+<aura:component controller="BM_EmployeesManagement" description="BM_EmployeesAssignment" implements="flexipage:availableForAllPageTypes">
+    <aura:attribute name="shops" type="Account[]"/>
+    <aura:attribute name="allEmployees" type="User[]"/>
+    <aura:attribute name="availableEmployees" type="User[]"/>
+    <aura:attribute name="assignedEmployees" type="Shop_employee__c[]"/>
+    <aura:attribute name="shopSelected" type="Boolean" default="false"/>
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+
+    <lightning:card title="{!$Label.c.Assign_employee}">
+        <div class="bm-padding">
+        <lightning:select aura:id="shopsList" label="{!$Label.c.Shops}" name="selectType" onchange="{!c.handleShopChange}">
+            <option value="">{!$Label.c.Select_shop_default_option}</option>
+            <aura:iteration items="{!v.shops}" var="shop">
+                <option text="{!shop.Name + ', ' + shop.BillingStreet + ' ' + shop.BillingCity + '; ' + shop.BillingCountry}" value="{!shop.Id}"/>
+            </aura:iteration>
+        </lightning:select>
+        </div>
+        <aura:if isTrue="{!v.shopSelected}">
+            <div class="bm-padding">
+                <lightning:select aura:id="employeesList" label="{!$Label.c.Employees}" name="selectType" >
+                    <aura:iteration items="{!v.availableEmployees}" var="employee">
+                        <option text="{!employee.FirstName + ' ' + employee.LastName}" value="{!employee.Id}"/>
+                    </aura:iteration>
+                </lightning:select>
+            </div>
+
+            <div class="slds-text-align--right">
+                <lightning:buttonGroup class="bm-padding">
+                    <lightning:button label="{!$Label.c.Button_assign}" variant="brand" onclick="{!c.onAssign}"/>
+                </lightning:buttonGroup>
+            </div>
+        </aura:if>
+    </lightning:card>
+</aura:component>
