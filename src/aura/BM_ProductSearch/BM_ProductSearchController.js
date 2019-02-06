@@ -7,7 +7,9 @@
         $A.enqueueAction(component.get('c.getBookGenresPicklistValues'));
     },
     handleClick : function(component, event, helper) {
-      if(!helper.checkIfMaxPriceLesserThanMin(component, event, helper) || !helper.checkIfMaxYearLesserThanMin(component, event, helper)){
+      var isPricingCorrect = helper.checkIfMaxPriceLesserThanMin(component, event, helper);
+      var isYearsCorrect = helper.checkIfMaxYearLesserThanMin(component, event, helper);
+      if(!isPricingCorrect || !isYearsCorrect){
           return false;
       }
 

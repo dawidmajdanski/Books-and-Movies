@@ -4,10 +4,13 @@
 
 <aura:component description="BM_CustomSearchResultsList" implements="forceCommunity:availableForAllPageTypes" access="global">
     <aura:attribute type="Object[]" name="products" />
+    <aura:attribute type="Boolean" name="noResults" default="true" />
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
-    <h1>Search Results</h1>
-    <br/>
-    <div class="mi-padding" style="display: inline-block; width: 100%;">
+
+    <div class="mi-padding" style="display: inline-block; width: 85%; float: right">
+        <aura:if isTrue="{!v.noResults}">
+            <p>No results</p>
+        </aura:if>
         <aura:iteration items="{!v.products}" var="item">
             <c:BM_ProductSearchResultItem product="{!item}"/>
         </aura:iteration>

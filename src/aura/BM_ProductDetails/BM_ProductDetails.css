@@ -35,6 +35,22 @@
 .THIS .carouselContainer{
     max-width: 300px;
     max-height: 300px;
-    padding-left: 1rem;
+
     padding-bottom: 1rem;
+}
+
+.THIS .container {
+    width: 200px;
+    background-color: #ddd;
+}
+
+.THIS .avgRating {
+    text-align: right;
+    padding: 5px;
+    color: white;
+}
+
+.THIS .avgRatingInner {
+    width: 0px;
+    background-color: #2196F3;
 }

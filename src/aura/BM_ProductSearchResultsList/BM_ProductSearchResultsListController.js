@@ -8,9 +8,10 @@
         var items = JSON.parse(jsonItems);
         component.set('v.products', items);
         //sessionStorage.removeItem('customSearch--records');
-        for(var i=0; i<items.length; i++){
-            console.log(items[i].productMainPic);
-        }
+        component.set("v.noResults", false);
+    }
+    if(jsonItems=='[]'){
+        component.set('v.noResults', true);
     }
   },
 

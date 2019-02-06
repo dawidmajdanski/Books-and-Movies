@@ -1,6 +1,10 @@
 /**
  * Created by Dawid Majdański on 05.02.2019.
  */
+.THIS .slds-input{
+    padding-right: 2px !important;
+}
+
 .THIS .maxYearPosition{
     top: 77.5%;
     left: 143px;

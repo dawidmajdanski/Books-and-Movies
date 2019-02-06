@@ -8,6 +8,8 @@
         component.set("v.product", item);
 
         $A.enqueueAction(component.get('c.getPicturesForProduct'));
+       // $A.enqueueAction(component.get('c.getRatingForProduct'));
+        helper.getRatingForProduct(component, event);
     },
     getPicturesForProduct: function(component, event){
         var product = component.get("v.product");
@@ -17,12 +19,13 @@
           var state = response.getState();
           if (state === 'SUCCESS') {
             component.set("v.pictures", response.getReturnValue());
-            this.sortPicsOrder(component);
+            $A.enqueueAction(component.get('c.sortPicsOrder'));
           }
         });
         $A.enqueueAction(action);
     },
     sortPicsOrder: function(component){
+        console.log('dupa');
         var pics = component.get("v.pictures");
         var temp;
         for(var i=0; i<pics.length; i++){

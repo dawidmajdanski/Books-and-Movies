@@ -7,12 +7,13 @@
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
     <aura:attribute type="Object" name="product"/>
     <aura:attribute type="Object" name="pictures"/>
+    <aura:attribute type="Integer" name="voteValue"/>
 
     <lightning:layout>
         <div class="slds-grid slds-gutters">
             <div class="slds-col slds-size_2-of-3" style="width: 320px !important">
                 <div class="carouselContainer">
-                    <lightning:carousel disableAutoRefresh="false" disableAutoScroll="true">
+                    <lightning:carousel disableAutoRefresh="false" disableAutoScroll="false">
                         <aura:iteration items="{!v.pictures}" var="pic">
                             <lightning:carouselImage
                                     src="{!pic.pictureURL}">
@@ -21,13 +22,36 @@
                     </lightning:carousel>
                 </div>
             </div>
-            <div class="slds-col slds-size_1-of-3">
+            <div class="slds-col slds-size_1-of-3" style="width: 35%">
                 <p style="font-weight: bold; font-size: 150%">{!v.product.productName}</p>
-                <p style="padding-top: 10px; font-size: 125%">{!v.product.productPrice}$</p>
-                <button style="position: absolute; top: 558px" class="slds-button slds-button_success">Add to cart</button>
+                <p style="padding-bottom: 10px; padding-top: 10px; font-size: 125%">
+                    Price:&nbsp; {!v.product.productPrice}$</p>
+
+                <p style="font-weight:bold">Rating based on {!v.product.countRating} votes</p>
+                <div class="container" title="Average rating" style="transition: 3s !important">
+                    <aura:if isTrue="{!v.product.avgRating!=null}">
+                        <div class="avgRating avgRatingInner" style="{!'width: '+v.product.avgRating*10*2+'%;'}"></div>
+                    </aura:if>
+                    <aura:if isTrue="{!v.product.avgRating==null}">
+                        <div class="avgRating avgRatingInner" style="padding-right: 0px; padding-left: 0px"></div>
+                    </aura:if>
+                </div>
+                <button style="position: absolute; top: 558px" class="slds-button slds-button_success">Add to cart
+                </button>
             </div>
+
         </div>
     </lightning:layout>
-
+    <lightning:tabset variant="scoped">
+        <lightning:tab label="Description" >
+            <p style="text-align: justify; font-size: 120%">{!v.product.description}</p>
+        </lightning:tab>
+        <lightning:tab label="Comments">
+           comments
+        </lightning:tab>
+        <lightning:tab label="Questions and Answers">
+           FAQ
+        </lightning:tab>
+    </lightning:tabset>
 
 </aura:component>

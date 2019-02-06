@@ -15,9 +15,9 @@
 
     <div class="slds-form-element__control">
         <div id="price_param1" class="searchParamsGridStyle">
-            <lightning:input label="Minimum price" class="input_Param" type="text" value="{!v.minPrice}" />
+            <lightning:input label="Minimum price" class="input_Param customInputStyle" type="number" value="{!v.minPrice}" min="0"/>
             <span class="separatorStyle">-</span>
-            <lightning:input label="Maximum price" class="input_Param__rightSide" type="text" value="{!v.maxPrice}" />
+            <lightning:input label="Maximum price" class="input_Param__rightSide" type="number" value="{!v.maxPrice}" min="0"/>
         </div>
         <div id="avg_rating_param1" class="searchParamsGridStyle">
             <lightning:slider label="Minimum rating" value="0" min="0" max="5" />

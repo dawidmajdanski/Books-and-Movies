@@ -6,7 +6,7 @@
     <aura:attribute name="product" type="Object"/>
 
     <!-- Display a header with details about the record -->
-    <div style="overflow:hidden; display: inline-block; margin: 2px; height: 230px; width: 380px; position: relative; border: 1px solid rgb(193, 193, 193, 0.6); float:left; border-radius: 4px">
+    <div style="overflow:hidden; display: inline-block; margin: 2px; height: 230px; width: 80%; position: relative; border: 1px solid rgb(193, 193, 193, 0.6); float:left; border-radius: 4px">
         <div style="width: 174px; height: 210px; position: absolute; margin: 10px">
             <img onclick="{!c.handleProductClick}" style="cursor: pointer; border-radius: 5px; width:100%; height: 100%; position:absolute; object-fit: contain; border: 1px solid rgb(193, 193, 193, 0.30)" src="{!v.product.productMainPic}"/>
         </div>

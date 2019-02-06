@@ -7,7 +7,7 @@ public class BM_ProductSearchController {
     public static List<Object> searchForProducts(String searchObj) {
         system.debug(searchObj);
         List<String> queryParams = BM_SearchUtils.parseQuery(searchObj);
-        String searchquery = 'Select Pricebook2.Name, Product2.Name, UnitPrice, ProductCode From PricebookEntry WHERE ';
+        String searchquery = 'Select Product2.Description, Pricebook2.Name, Product2.Name, UnitPrice, ProductCode From PricebookEntry WHERE ';
 
         for(String param: queryParams){
             searchquery += param;
@@ -28,6 +28,7 @@ public class BM_ProductSearchController {
             jsonItem.put('productId',results.get(i).Product2.Id);
             jsonItem.put('productPrice',results.get(i).UnitPrice);
             jsonItem.put('productName',results.get(i).Product2.Name);
+            jsonItem.put('description', results.get(i).Product2.Description);
             jsonItem.put('productMainPic', ''+findAttachmentIdForResult(mainPics, results.get(i)));
             serializedProducts.add(jsonItem);
         }
@@ -52,16 +53,19 @@ public class BM_ProductSearchController {
     }
 
     public static List<Attachment> getMainPictures(List<String> productIds){
-        String query = 'Select ParentId, Id, Name FROM Attachment WHERE Name like \'%Main%\' AND (';
-        for(Integer i=0; i<productIds.size(); i++){
-            query +='ParentId=\''+productIds.get(i)+'\'';
-            if(i!=productIds.size()-1){
-                query +=' OR ';
+        if(productIds.size()!=0){
+            String query = 'Select ParentId, Id, Name FROM Attachment WHERE Name like \'%Main%\' AND (';
+            for(Integer i=0; i<productIds.size(); i++){
+                query +='ParentId=\''+productIds.get(i)+'\'';
+                if(i!=productIds.size()-1){
+                    query +=' OR ';
+                }
             }
+            query += ')';
+            system.debug(query);
+            return Database.query(query);
         }
-        query += ')';
-        system.debug(query);
-        return Database.query(query);
+        return null;
     }
 
     @AuraEnabled
@@ -77,6 +81,17 @@ public class BM_ProductSearchController {
             serializedPics.add(jsonItem);
         }
         return serializedPics;
+    }
+
+    @AuraEnabled
+    public static Map<String, Object> getRatingForSingleProduct(String productId){
+        Double averageRating = Double.valueOf([SELECT AVG(Rating__c) averageRating FROM Product_rating__c WHERE Product__c = :productId].get(0).get('averageRating'));
+        Integer countRating = Integer.valueOf([SELECT COUNT(Rating__c) countRating FROM Product_rating__c WHERE Product__c = :productId].get(0).get('countRating'));
+
+        Map<String, Object> jsonItem = new Map<String, Object>();
+        jsonItem.put('avgRating', averageRating);
+        jsonItem.put('countRating', countRating);
+        return jsonItem;
     }
 
     @AuraEnabled
