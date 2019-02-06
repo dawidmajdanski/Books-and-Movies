@@ -1,0 +1,49 @@
+<!--
+ - Created by Dawid Majdański on 05.02.2019.
+ -->
+
+<aura:component description="BM_ProductSearchSharedParams1">
+    <aura:attribute name="availableYears" type="Integer[]" />
+    <aura:attribute name="specificYear" type="Integer" />
+    <aura:attribute name="minYear" type="Integer" />
+    <aura:attribute name="maxYear" type="Integer" />
+    <aura:attribute name="minPrice" type="Decimal"  />
+    <aura:attribute name="maxPrice" type="Decimal"  />
+    <aura:attribute name="minRating" type="Integer"  />
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <aura:method name="resetYearsPicklist" action="{!c.clearAvailableYearsOption}" access="PUBLIC"/>
+
+    <div class="slds-form-element__control">
+        <div id="price_param1" class="searchParamsGridStyle">
+            <lightning:input label="Minimum price" class="input_Param" type="text" value="{!v.minPrice}" />
+            <span class="separatorStyle">-</span>
+            <lightning:input label="Maximum price" class="input_Param__rightSide" type="text" value="{!v.maxPrice}" />
+        </div>
+        <div id="avg_rating_param1" class="searchParamsGridStyle">
+            <lightning:slider label="Minimum rating" value="0" min="0" max="5" />
+        </div>
+        <div id="release_year_param1" class="searchParamsGridStyle">
+            <lightning:select aura:id="selectYearSpec1" name="selectYear1" label="Specific year" onchange="{!c.onSelectSpecificYear}" disabled="{!(v.maxYear!=null &amp;&amp; v.maxYear!='') || (v.minYear!=null &amp;&amp; v.minYear!='')}">
+                <option value="">--none--</option>
+                <aura:iteration items="{!v.availableYears}" var="aYear">
+                    <option>{!aYear}</option>
+                </aura:iteration>
+            </lightning:select>
+        </div>
+        <div id="years_between_param1" class="searchParamsGridStyle">
+            <lightning:select aura:id="selectYearMin1" name="selectYears1" label="From year" class="input_Param" onchange="{!c.onSelectMinYear}" disabled="{!(v.specificYear!=null &amp;&amp; v.specificYear!='')}">
+                <option value="">--none--</option>
+                <aura:iteration items="{!v.availableYears}" var="aYear">
+                    <option>{!aYear}</option>
+                </aura:iteration>
+            </lightning:select>
+
+            <lightning:select aura:id="selectYearMax1" name="selectYears2" label="To year" class="maxYearPosition" onchange="{!c.onSelectMaxYear}" disabled="{!(v.specificYear!=null &amp;&amp; v.specificYear!='')}">
+                <option value="">--none--</option>
+                <aura:iteration items="{!v.availableYears}" var="aYear">
+                    <option>{!aYear}</option>
+                </aura:iteration>
+            </lightning:select>
+        </div>
+    </div>
+</aura:component>

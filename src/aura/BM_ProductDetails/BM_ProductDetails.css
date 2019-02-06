@@ -1,0 +1,40 @@
+/**
+ * Created by Majdan on 03.02.2019.
+ */
+.THIS .slds-carousel__content{
+    display: none;
+}
+
+.THIS .slds-button_icon-x-small {
+    display: none;
+}
+
+.THIS .slds-carousel__image{
+    cursor: default;
+    object-fit: contain;
+    max-height: 400px;
+    max-width: 400px;
+}
+
+.THIS.productDetailsMainCard{
+    height: 500px;
+}
+
+.THIS .slds-carousel__image>img{
+    width: 100%;
+    height: 350px;
+    object-fit: contain;
+    padding-bottom: 3px;
+    padding-top: 3px;    
+}
+
+.THIS.cBM_ProductDetails{
+    height: 400px;
+}
+
+.THIS .carouselContainer{
+    max-width: 300px;
+    max-height: 300px;
+    padding-left: 1rem;
+    padding-bottom: 1rem;
+}

@@ -1,0 +1,33 @@
+<!--
+ - Created by Majdan on 03.02.2019.
+ -->
+
+<aura:component controller="BM_ProductSearchController" description="BM_ProductDetails"
+                implements="forceCommunity:availableForAllPageTypes" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <aura:attribute type="Object" name="product"/>
+    <aura:attribute type="Object" name="pictures"/>
+
+    <lightning:layout>
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_2-of-3" style="width: 320px !important">
+                <div class="carouselContainer">
+                    <lightning:carousel disableAutoRefresh="false" disableAutoScroll="true">
+                        <aura:iteration items="{!v.pictures}" var="pic">
+                            <lightning:carouselImage
+                                    src="{!pic.pictureURL}">
+                            </lightning:carouselImage>
+                        </aura:iteration>
+                    </lightning:carousel>
+                </div>
+            </div>
+            <div class="slds-col slds-size_1-of-3">
+                <p style="font-weight: bold; font-size: 150%">{!v.product.productName}</p>
+                <p style="padding-top: 10px; font-size: 125%">{!v.product.productPrice}$</p>
+                <button style="position: absolute; top: 558px" class="slds-button slds-button_success">Add to cart</button>
+            </div>
+        </div>
+    </lightning:layout>
+
+
+</aura:component>

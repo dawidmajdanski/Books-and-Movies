@@ -1,0 +1,101 @@
+/**
+ * Created by Dawid Majdański on 04.02.2019.
+ */
+
+.THIS .tabsetPadding{
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.THIS .searchParamsGridStyle{
+    padding-top: 0.6rem;
+    width: 100%;
+}
+
+.THIS .iconPosition{
+    padding-top: 1px;
+    padding-left: 1px;
+}
+
+.THIS .siteforceServiceBody{
+    display: none;
+}
+
+.THIS .advancedSearchDiv{
+    position: absolute;
+    top:0;
+    left: -345px;
+    width: 304px;
+    background-color: white;
+    border-radius: 5px;
+    z-index: 97;
+    -webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    overflow:hidden;
+    transition: 0.55s;
+}
+
+.THIS .slds-select{
+    font-style: italic;
+}
+
+.THIS .arrowContainer{
+    height:35px;
+    width:35px;
+    background-color:#eaeaea;
+    position:absolute;
+    top: 0;
+    left:-38px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.THIS .custom-slds-icon-clear{
+    position: absolute;
+    top: 459px;
+    right: 159px;
+    cursor:pointer;
+}
+
+.THIS .custom-slds-icon-search{
+    position: absolute;
+    top: 459px;
+    right: 131px;
+    cursor:pointer;
+}
+
+.THIS .advSearchButtonsContainer{
+    position: absolute;
+    top: 7px;
+    right: 8px;
+    border-left: 1px solid #d0d0d0;
+    height: 32px;
+}
+
+.THIS .arrowContainer:hover{
+   transform: rotate(-90deg);
+}
+
+.THIS .rotate90ArrowContainer{
+    transform: rotate(-90deg);
+}
+
+.THIS .rotate0ArrowContainer{
+    transform: rotate(0deg);
+}
+
+.THIS .displayModal{
+    height: 486px;
+}
+
+.THIS .hideModal{
+    height: 0%;
+}
+
+.THIS .advSearchModalTabset{
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-bottom: 0.5rem;
+}

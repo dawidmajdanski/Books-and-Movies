@@ -1,0 +1,15 @@
+<!--
+ - Created by Dawid Majdański on 31.01.2019.
+ -->
+
+<aura:component description="BM_CustomSearchResultsList" implements="forceCommunity:availableForAllPageTypes" access="global">
+    <aura:attribute type="Object[]" name="products" />
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <h1>Search Results</h1>
+    <br/>
+    <div class="mi-padding" style="display: inline-block; width: 100%;">
+        <aura:iteration items="{!v.products}" var="item">
+            <c:BM_ProductSearchResultItem product="{!item}"/>
+        </aura:iteration>
+    </div>
+</aura:component>
