@@ -1,0 +1,69 @@
+<!--
+ - Created by Majdan on 06.02.2019.
+ -->
+
+<aura:component description="BM_ProductReviews" controller="BM_ProductSearchController">
+    <aura:attribute type="String" name="productId" />
+    <aura:attribute type="Product_rating__c[]" name="reviews" />
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <aura:handler event="c:BM_ProductRatingEvent" action="{!c.handleReceiveProductReviews}"/>
+    <ltng:require styles="{!$Resource.staticStarsRating}"/>
+
+    <div style="overflow-y: scroll; max-height:42vh; height: auto">
+        <div class="slds-feed">
+            <ul class="slds-feed__list">
+                <aura:if isTrue="{!v.reviews.length==0}" >
+                    <div style="text-align: center; font-style:italic; font-size: 130%">
+                        No reviews yet
+                    </div>
+                </aura:if>
+                <aura:iteration items="{!v.reviews}" var="review">
+                    <div style="padding-right: 1rem;">
+                        <li class="slds-feed__item" >
+                            <article class="slds-post">
+                                <header class="slds-post__header slds-media">
+                                    <div class="slds-media__figure">
+                                        <a href="javascript:void(0);" class="slds-avatar slds-avatar_circle slds-avatar_large" style="width: 95%; height: 95%">
+                                            <img alt="{!review.User__r.Name}" src="{!review.User__r.SmallPhotoUrl}" title="{!review.User__r.Name}" />
+                                        </a>
+                                    </div>
+                                    <div class="slds-media__body">
+                                        <div class="slds-grid slds-grid_align-spread slds-has-flexi-truncate">
+                                            <div class="starsContainer">
+                                                <div class="star-ratings-css">
+                                                    <div class="star-ratings-css top" style="{!'width: '+review.Rating__c*10*2+'%;'}"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                                                    <div class="star-ratings-css bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                                                </div>
+                                            </div>
+                                            <p><a href="javascript:void(0);" title="{!review.User__r.Name}">{!review.User__r.Name}</a></p>
+                                        </div>
+                                        <p class="slds-text-body_small">
+                                            <a href="javascript:void(0);" title="Created date" class="slds-text-link_reset">
+                                                <lightning:formattedDateTime value="{!review.CreatedDate}" year="numeric" month="numeric" day="numeric" hour="2-digit"
+                                                                             minute="2-digit" timeZoneName="short" hour12="true"/>
+                                            </a>
+                                        </p>
+                                    </div>
+                                </header>
+                                <div class="slds-post__content slds-text-longform">
+                                    <ui:outputRichText class="slds-text-longform" value="{!review.Review__c}"/>
+                                </div>
+                                <footer class="slds-post__footer">
+                                    <ul class="slds-post__footer-actions-list slds-list_horizontal">
+                                        <li class="slds-col slds-item slds-m-right_medium">
+                                        </li>
+                                        <li class="slds-col slds-item slds-m-right_medium">
+                                        </li>
+                                        <li class="slds-col slds-item slds-m-right_medium">
+                                        </li>
+                                    </ul>
+                                </footer>
+                            </article>
+                        </li>
+                    </div>
+                </aura:iteration>
+            </ul>
+        </div>
+    </div>
+
+</aura:component>
