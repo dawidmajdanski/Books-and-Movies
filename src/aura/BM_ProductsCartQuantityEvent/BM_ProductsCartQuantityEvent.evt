@@ -1,0 +1,6 @@
+<!--
+ - Created by Majdan on 09.02.2019.
+ -->
+
+<aura:event type="APPLICATION" description="BM_ProductsCartQuantityEvent">
+</aura:event>
