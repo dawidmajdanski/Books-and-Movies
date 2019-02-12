@@ -4,20 +4,52 @@
 
 <aura:component description="customSearchResultItem" implements="force:hasRecordId" access="global">
     <aura:attribute name="product" type="Object"/>
-
-    <!-- Display a header with details about the record -->
-    <div style="overflow:hidden; display: inline-block; margin: 2px; height: 230px; width: 80%; position: relative; border: 1px solid rgb(193, 193, 193, 0.6); float:left; border-radius: 4px">
-        <div style="width: 174px; height: 210px; position: absolute; margin: 10px">
-            <img onclick="{!c.handleProductClick}" style="cursor: pointer; border-radius: 5px; width:100%; height: 100%; position:absolute; object-fit: contain; border: 1px solid rgb(193, 193, 193, 0.30)" src="{!v.product.productMainPic}"/>
+    <ltng:require styles="{!$Resource.staticStarsRating}"/>
+    <ltng:require styles="{!$Resource.ribbonBadge}"/>
+    <div class="tileContainer">
+        <div class="imageContainer">
+            <aura:if isTrue="{!v.product.discountPrice!=null}">
+                <div class="discountTriangle">
+                    <h1 class="saleTitle">
+                        Sale
+                    </h1>
+                </div>
+            </aura:if>
+            <img onclick="{!c.handleProductClick}"
+                 class="image"
+                 src="{!v.product.productMainPic}"/>
         </div>
-        <div style="left: 204px; top: 10px; position: absolute; font-weight: bold; right: 10px;">
-            <h2 style="font-size: 135%">
+        <div class="tileContent">
+            <h2 class="productTitle">
                 {!v.product.productName}
             </h2>
-            <p style="font-size: 120%; padding-top: 10px">
-                {!v.product.productPrice}$
-            </p>
-
+            <div class="starsContainer">
+                <div class="star-ratings-css">
+                    <div class="star-ratings-css top" style="{!'width: '+v.product.averageRating*10*2+'%;'}"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                    <div class="star-ratings-css bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                </div>
+            </div>
+            <aura:if isTrue="{!v.product.discountPrice!=null}">
+                <div class="discountRibbonContainer">
+                    <div class="discount-label green">
+                        <span>{!v.product.discountPercentage}%</span>
+                    </div>
+                </div>
+            </aura:if>
+            <div class="priceContainer">
+                <aura:if isTrue="{!v.product.discountPrice==null}">
+                    <p style="padding-top: 10px;">
+                        {!v.product.productPrice}$
+                    </p>
+                </aura:if>
+                <aura:if isTrue="{!v.product.discountPrice!=null}">
+                    <p style="padding-top: 10px;">
+                        <span class="strikethrough" style="color: red;">{!v.product.productPrice}$</span>
+                        &nbsp;
+                        <span style="color: green;">{!v.product.discountPrice}$</span>
+                    </p>
+                </aura:if>
+            </div>
         </div>
     </div>
 

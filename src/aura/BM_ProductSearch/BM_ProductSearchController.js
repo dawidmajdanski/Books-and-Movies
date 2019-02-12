@@ -5,6 +5,7 @@
     init: function(component, event, helper){
         $A.enqueueAction(component.get('c.getMovieGenresPicklistValues'));
         $A.enqueueAction(component.get('c.getBookGenresPicklistValues'));
+        helper.getCartItemsQuantity(component, event);
     },
     handleClick : function(component, event, helper) {
       var isPricingCorrect = helper.checkIfMaxPriceLesserThanMin(component, event, helper);
@@ -20,6 +21,11 @@
           var state = response.getState();
           if (state === 'SUCCESS') {
               products = response.getReturnValue();
+              for(var i=0; i<products.length; i++){
+                  if(products[i].discountPrice){
+                    products[i].discountPercentage = -Math.round(100 - ((products[i].discountPrice*100)/products[i].productPrice));
+                  }
+              }
           }else{
               products = [];
           }
@@ -88,6 +94,14 @@
     },
     handleBookGenreChange: function(component, event, helper){
         component.set("v.bookGenre", component.find('selectBookGenre').get('v.value'));
+    },
+    handleProductsInCart: function(component, event, helper){
+        var navEvt = $A.get('e.force:navigateToURL');
+        navEvt.setParams({url: '/cart'});
+        navEvt.fire();
+    },
+    handleUpdateCartProductsQuantity: function(component, event, helper){
+        helper.getCartItemsQuantity(component, event);
     },
 
 })

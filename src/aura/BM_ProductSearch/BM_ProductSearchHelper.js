@@ -70,5 +70,12 @@
             return true;
         }
     },
-
+    getCartItemsQuantity: function(component, event, helper){
+        if(localStorage.getItem('cartItems')){
+            var cartItems = JSON.parse(localStorage.getItem('cartItems'));
+            component.set("v.cartItemsQuantity", cartItems.length);
+        }else{
+            component.set("v.cartItemsQuantity", 0);
+        }
+    },
 })

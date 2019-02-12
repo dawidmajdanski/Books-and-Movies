@@ -20,7 +20,9 @@
     <aura:attribute name="author" type="String"/>
     <aura:attribute name="director" type="String"/>
     <aura:attribute name="productType" type="String" default="AllTab"/>
+    <aura:attribute name="cartItemsQuantity" type="Integer" default="0"/>
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <aura:handler event="c:BM_ProductsCartQuantityEvent" action="{!c.handleUpdateCartProductsQuantity}"/>
 
     <div class="slds-form-element slds-lookup" data-select="single">
         <div class="slds-form-element__control">
@@ -35,6 +37,12 @@
                 <lightning:icon iconName="utility:chevronleft" class="iconPosition"/>
             </div>
 
+            <div class="cartContainer" onclick="{!c.handleProductsInCart}">
+                <img class="cartIco" src="{!$Resource.CartIcon}" />
+                <aura:if isTrue="{!v.cartItemsQuantity>0}">
+                    <span class="cartItemsQuantity">{!v.cartItemsQuantity}</span>
+                </aura:if>
+            </div>
             <div id="advSearchModal" class="advancedSearchDiv hideModal">
                 <lightning:tabset class="advSearchModalTabset" selectedTabId="{!v.productType}" onselect="{!c.handleChangeTabset}">
                     <lightning:tab label="All" id="AllTab">

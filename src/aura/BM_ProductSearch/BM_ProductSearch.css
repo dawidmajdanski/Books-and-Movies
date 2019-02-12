@@ -99,3 +99,40 @@
     padding-right: 0.5rem;
     padding-bottom: 0.5rem;
 }
+
+.THIS .cartContainer{
+    position: absolute;
+    top: 220%;
+    left: -.6%;
+    cursor: pointer;
+    z-index: 97;
+    width: 10%;
+    height: 91%;
+}
+
+.THIS .cartContainer:hover{
+    background-color: #535556;
+}
+
+.THIS .cartIco{
+    width: 43%;
+    height: 77%;
+    position: absolute;
+    padding-top: 5px;
+    padding-left: 10px;
+}
+
+.THIS .cartItemsQuantity{
+    background: #ff8300;
+    border-radius: .8em;
+    color: #ffffff;
+    display: inline-block;
+    font-weight: bold;
+    line-height: 1.6em;
+    margin-right: 5px;
+    text-align: center;
+    width: 1.6em;
+    position: absolute;
+    left: 38px;
+    top: 6px;
+}
