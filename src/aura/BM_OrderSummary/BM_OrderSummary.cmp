@@ -1,0 +1,74 @@
+<!--
+ - Created by Majdan on 10.02.2019.
+ -->
+
+<aura:component description="BM_OrderSummary" controller="BM_OrderController"
+                implements="forceCommunity:availableForAllPageTypes" access="global">
+    <aura:attribute type="Object" name="shippingAddress"/>
+    <aura:attribute type="Object[]" name="productsToOrder"/>
+    <aura:attribute type="Decimal" name="totalOrderPrice" />
+    <aura:attribute type="Boolean" name="showPage" default="false"/>
+    <aura:attribute type="Object" name="user"/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+
+    <aura:if isTrue="{!v.showPage}">
+        <div class="orderSummaryContainer">
+            <div class="summaryTitle">
+                <p>Order summary</p>
+            </div>
+            <div class="slds-grid slds-gutters" style="padding:1rem">
+                <div class="slds-form" role="list" style="width: 100%">
+                    <div class="slds-form__row">
+                        <div class="slds-form__item" role="listitem">
+                            <div style="border: none" class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal slds-hint-parent">
+                                <span class="slds-form-element__label">Shipping Address</span>
+                                <div class="slds-form-element__control">
+                                    <div class="slds-form-element__static" style="font-family: 'Lucida Sans Unicode'; font-size: 110%;">
+                                        {!v.shippingAddress.shippingStreet} <br/>
+                                        {!v.shippingAddress.shippingPostal}, {!v.shippingAddress.shippingCity}<br/>
+                                        {!v.shippingAddress.shippingState} <br/>
+                                        {!v.shippingAddress.shippingCountry} <br/>
+                                    </div>
+                                    <button class="slds-button slds-button_icon" title="Edit: Shipping Address">
+                                        <span class="slds-assistive-text">Edit: Shipping Address</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slds-col slds-size_1-of-2">
+                    <aura:iteration items="{!v.productsToOrder}" var="product" >
+                        <table style="font-size: 110%; font-family: 'Lucida Sans Unicode'; margin-top: 0.25rem;">
+                            <tr>
+                                <td>
+                                    {!product.productName}&nbsp;
+                                </td>
+                                <td style="text-align: right">
+                                    <aura:if isTrue="{!product.discountPrice!=null}">{!product.quantity}x&nbsp;{!product.discountPrice}$<br/></aura:if>
+                                    <aura:if isTrue="{!product.discountPrice==null}">{!product.quantity}x&nbsp;{!product.productPrice}$<br/></aura:if>
+                                </td>
+                            </tr>
+                        </table>
+                    </aura:iteration>
+                    <div style="border-top: 1px solid #d2d2d2; padding-bottom: 0.25rem; margin-top: 0.25rem;">
+                        <table style="font-weight:bold; font-family: 'Lucida Sans Unicode'; margin-top: 0.25rem;">
+                            <tr>
+                                <td style="text-align: right">
+                                    Total order price:
+                                </td>
+                                <td style="text-align: right">
+                                    {!v.totalOrderPrice}$
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="finalizeBtnContainer">
+                <button id="finalizeOrder" onclick="{!c.handleFinalizeOrder}" class="slds-button slds-button_brand finalizeBtn">Finalize order</button>
+            </div>
+        </div>
+    </aura:if>
+</aura:component>

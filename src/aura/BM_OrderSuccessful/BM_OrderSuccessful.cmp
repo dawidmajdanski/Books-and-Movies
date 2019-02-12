@@ -1,0 +1,16 @@
+<!--
+ - Created by Majdan on 10.02.2019.
+ -->
+
+<aura:component description="BM_OrderSuccessful" implements="forceCommunity:availableForAllPageTypes" access="global">
+    <aura:attribute type="Boolean" name="showPage" default="false"/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+
+    <aura:if isTrue="{!v.showPage}">
+        <div class="container">
+            <h1 class="orderTitle">
+                Order has been successfully completed
+            </h1>
+        </div>
+    </aura:if>
+</aura:component>

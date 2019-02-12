@@ -1,0 +1,23 @@
+/**
+ * Created by Majdan on 10.02.2019.
+ */
+.THIS.container{
+    height: 180px;
+    padding: 1rem;
+    position: relative;
+    display: inline-block;
+    border-radius: 4px;
+    -webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    background-color: #f9f9f9;
+    width: 74%;
+    margin-left: 13%;
+}
+
+.THIS .orderTitle{
+    color: #29ab29;
+    font-size: 200%;
+    border-bottom: 1px solid #dbe8d9;
+    margin: 3rem;
+}
