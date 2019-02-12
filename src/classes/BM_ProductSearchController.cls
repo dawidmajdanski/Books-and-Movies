@@ -5,34 +5,42 @@
 public class BM_ProductSearchController {
     @AuraEnabled
     public static List<Object> searchForProducts(String searchObj) {
-        system.debug(searchObj);
         List<String> queryParams = BM_SearchUtils.parseQuery(searchObj);
-        String searchquery = 'Select Product2.Description, Pricebook2.Name, Product2.Name, UnitPrice, ProductCode From PricebookEntry WHERE ';
+        String searchquery = 'Select Product2.Release_date__c, Product2.Director__c, Product2.Book_author__c, Product2.Description, Pricebook2.Name, Pricebook2.Id, Product2.Name, UnitPrice, ProductCode From PricebookEntry WHERE ';
 
         for(String param: queryParams){
             searchquery += param;
         }
-        system.debug(searchquery);
 
         List<PricebookEntry> results = new List<PricebookEntry>();
         if(!queryParams.isEmpty()){
             results = Database.query(searchquery);
         }
 
-        List<String> productIds = getIds(results);
-        List<Attachment> mainPics = getMainPictures(productIds);
+        return parseObj(results);
+    }
 
-        List<Object> serializedProducts = new List<Object>();
-        for(Integer i=0; i<results.size(); i++){
-            Map<String, Object> jsonItem = new Map<String, Object>();
-            jsonItem.put('productId',results.get(i).Product2.Id);
-            jsonItem.put('productPrice',results.get(i).UnitPrice);
-            jsonItem.put('productName',results.get(i).Product2.Name);
-            jsonItem.put('description', results.get(i).Product2.Description);
-            jsonItem.put('productMainPic', ''+findAttachmentIdForResult(mainPics, results.get(i)));
-            serializedProducts.add(jsonItem);
+    @AuraEnabled
+    public static List<Object> getPopularProducts(){
+        List<AggregateResult> avgPopular = [SELECT AVG(Rating__c) averageRating, Product__c pId from Product_rating__c group by Product__c HAVING Avg(Rating__c)>4.5];
+        List<String> ids = new List<String>();
+        for(AggregateResult ar: avgPopular){
+            ids.add(String.valueOf(ar.get('pId')));
         }
-        return serializedProducts;
+        List<PricebookEntry> popularProducts = [Select Product2.Release_date__c, Product2.Director__c, Product2.Book_author__c, Product2.Description, Pricebook2.Name, Pricebook2.Id, Product2.Name, UnitPrice, ProductCode From PricebookEntry WHERE Product2.Id in :(ids)];
+        return parseObj(popularProducts);
+    }
+
+    public static Map<String, Object> getProductRatingIdForProduct(List<AggregateResult> ratings, String productId){
+        Map<String, Object> result = new Map<String, Object>();
+        for(AggregateResult ar: ratings){
+            if(ar.get('productID')==productId){
+                result.put('averageRating', ar.get('averageRating'));
+                result.put('countRating', ar.get('countRating'));
+                return result;
+            }
+        }
+        return null;
     }
 
     public static String findAttachmentIdForResult(List<Attachment> attList, PricebookEntry resultItem){
@@ -84,14 +92,28 @@ public class BM_ProductSearchController {
     }
 
     @AuraEnabled
+    public static List<Product_rating__c> getReviewsForSingleProduct(String productId){
+        String query = 'Select Rating__c, Review__c, User__c, User__r.SmallPhotoUrl, CreatedDate, User__r.Name, Product__c, Id, Name FROM Product_rating__c WHERE Product__c = \''+productId+'\'';
+        return Database.query(query);
+    }
+
+    @AuraEnabled
     public static Map<String, Object> getRatingForSingleProduct(String productId){
-        Double averageRating = Double.valueOf([SELECT AVG(Rating__c) averageRating FROM Product_rating__c WHERE Product__c = :productId].get(0).get('averageRating'));
-        Integer countRating = Integer.valueOf([SELECT COUNT(Rating__c) countRating FROM Product_rating__c WHERE Product__c = :productId].get(0).get('countRating'));
+        List<AggregateResult> productRating = [SELECT COUNT(Rating__c) countRating, AVG(Rating__c) averageRating, Product__c pId FROM Product_rating__c WHERE Product__c = :productId group by Product__c];
 
         Map<String, Object> jsonItem = new Map<String, Object>();
-        jsonItem.put('avgRating', averageRating);
-        jsonItem.put('countRating', countRating);
+        jsonItem.put('averageRating', productRating.size()!=0?productRating.get(0).get('averageRating'):0);
+        jsonItem.put('countRating', productRating.size()!=0?productRating.get(0).get('countRating'):0);
         return jsonItem;
+    }
+
+    @AuraEnabled
+    public static List<AggregateResult> getRatingForProducts(List<String> productIds){
+        if(productIds.size()!=0){
+            List<AggregateResult> productRating = [SELECT COUNT(Rating__c) countRating, AVG(Rating__c) averageRating, Product__c productID FROM Product_rating__c group by Product__c HAVING Product__c in :(productIds) ];
+            return productRating;
+        }
+        return null;
     }
 
     @AuraEnabled
@@ -117,4 +139,95 @@ public class BM_ProductSearchController {
         return results;
     }
 
+    @AuraEnabled
+    public static Product_rating__c getUserRatingForProduct(String productId){
+        String user = UserInfo.getUserId();
+        List<Product_rating__c> productRating = [SELECT Id, Review__c, Rating__c, Product__c, User__c, CreatedDate FROM Product_rating__c WHERE Product__c =: productId AND User__c =: user];
+        if(productRating.size()!=0){
+            return productRating.get(0);
+        }
+        return null;
+    }
+
+    @AuraEnabled
+    public static User getLoggedUser(){
+        return [SELECT id, name, country, city, postalcode, street, state, email FROM USER WHERE Id =: UserInfo.getUserId()];
+    }
+
+    @AuraEnabled
+    public static Product_rating__c saveReviewForProduct(String newComment,Integer newVote, String productId, String userId){
+        Product_rating__c productRating = new Product_rating__c();
+        productRating.Product__c = productId;
+        productRating.User__c = userId;
+        productRating.Review__c = newComment;
+        productRating.Rating__c = newVote;
+        try{
+            insert productRating;
+            return [SELECT Rating__c, Review__c, User__c, User__r.SmallPhotoUrl, CreatedDate, User__r.Name, Product__c, Id, Name FROM Product_rating__c where Product__c =: productId AND User__c =: userId];
+        }catch(DmlException e){
+            system.debug(e);
+        }
+        return null;
+    }
+
+    @AuraEnabled
+    public static void deleteProductReview(String productId, String userId){
+        List<Product_rating__c> productReview = [SELECT Id FROM Product_rating__c WHERE Product__c =: productId AND User__c =: userId];
+        try{
+            delete productReview;
+        }catch(DmlException e){
+            system.debug(e);
+        }
+    }
+
+    @AuraEnabled
+    public static Product_rating__c updateReviewForProduct(String reviewId, String newComment, Integer newVote){
+        system.debug(reviewId);
+        system.debug(newComment);
+        system.debug(newVote);
+
+        List<Product_rating__c> productrating = [SELECT Rating__c, Review__c, User__c, User__r.SmallPhotoUrl, CreatedDate, User__r.Name, Product__c, Id, Name FROM Product_rating__c where Id =: reviewId];
+        productrating.get(0).Review__c = newComment;
+        productrating.get(0).Rating__c = newVote;
+
+        try{
+            update productrating;
+            return productrating.get(0);
+        }catch(DmlException e){
+            system.debug(e);
+        }
+        return null;
+    }
+
+    public static List<Object> parseObj(List<PricebookEntry> pricebookEntryList){
+        List<String> productIds = getIds(pricebookEntryList);
+        List<Attachment> mainPics = getMainPictures(productIds);
+        List<AggregateResult> productsRating = getRatingForProducts(productIds);
+
+        List<Object> serializedProducts = new List<Object>();
+        for(Integer i=0; i<pricebookEntryList.size(); i++){
+            Map<String, Object> jsonItem = new Map<String, Object>();
+            if(pricebookEntryList.get(i).Pricebook2.Name == 'Standard Price Book'){
+                Map<String, Object> productsRatingMap = getProductRatingIdForProduct(productsRating, pricebookEntryList.get(i).Product2.Id);
+                jsonItem.put('productId',pricebookEntryList.get(i).Product2.Id);
+                jsonItem.put('pricebookId', pricebookEntryList.get(i).Id);
+                jsonItem.put('productPrice',pricebookEntryList.get(i).UnitPrice);
+                jsonItem.put('productName',pricebookEntryList.get(i).Product2.Name);
+                jsonItem.put('author',pricebookEntryList.get(i).Product2.Book_author__c);
+                jsonItem.put('director',pricebookEntryList.get(i).Product2.Director__c);
+                jsonItem.put('description', pricebookEntryList.get(i).Product2.Description);
+                jsonItem.put('releaseDate', pricebookEntryList.get(i).Product2.Release_date__c);
+                jsonItem.put('averageRating', productsRatingMap!=null?productsRatingMap.get('averageRating'):0);
+                jsonItem.put('countRating', productsRatingMap!=null?productsRatingMap.get('countRating'):0);
+                jsonItem.put('productMainPic', ''+findAttachmentIdForResult(mainPics, pricebookEntryList.get(i)));
+                for(Integer j=0; j<pricebookEntryList.size(); j++){
+                    if(pricebookEntryList.get(i).Product2.Id == pricebookEntryList.get(j).Product2.Id && pricebookEntryList.get(j).Pricebook2.Name == 'Regular Discount'){
+                        jsonItem.put('discountPrice',pricebookEntryList.get(j).UnitPrice);
+                    }
+                }
+                serializedProducts.add(jsonItem);
+            }
+        }
+        return serializedProducts;
+    }
 }

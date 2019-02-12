@@ -1,0 +1,70 @@
+<!--
+ - Created by Dawid Majdański on 11.02.2019.
+ -->
+
+<aura:component description="BM_HomePage" implements="forceCommunity:availableForAllPageTypes"
+                controller="BM_ProductSearchController">
+    <aura:attribute type="Object[]" name="products"/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <ltng:require styles="{!$Resource.staticStarsRating}"/>
+    <ltng:require styles="{!$Resource.ribbonBadge}"/>
+    <!--most popular -->
+    <h1 class="pageTitle">
+        Recent popular
+    </h1>
+    <div class="content">
+        <div style="display: inline-block; width: 100%; float: right; padding-left: 1rem;">
+            <aura:iteration items="{!v.products}" var="product">
+                <div class="tileContainer">
+                    <div class="imageContainer">
+                        <aura:if isTrue="{!product.discountPrice!=null}">
+                            <div class="discountTriangle">
+                                <h1 class="saleTitle">
+                                    Sale
+                                </h1>
+                            </div>
+                        </aura:if>
+                        <img onclick="{!c.handleProductClick}" data-record="{!product.productId}"
+                             class="image"
+                             src="{!product.productMainPic}"/>
+                    </div>
+                    <div class="tileContent">
+                        <h2 class="productTitle">
+                                {!product.productName}
+                        </h2>
+                        <div class="starsContainer">
+                            <div class="star-ratings-css">
+                                <div class="star-ratings-css top" style="{!'width: '+product.averageRating*10*2+'%;'}">
+                                    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                                <div class="star-ratings-css bottom">
+                                    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                            </div>
+                        </div>
+                        <aura:if isTrue="{!product.discountPrice!=null}">
+                            <div class="discountRibbonContainer">
+                                <div class="discount-label green">
+                                    <span>{!product.discountPercentage}%</span>
+                                </div>
+                            </div>
+                        </aura:if>
+                        <div class="priceContainer">
+                            <aura:if isTrue="{!product.discountPrice==null}">
+                                <p style="padding-top: 10px;">
+                                {!product.productPrice}$
+                                </p>
+                            </aura:if>
+                            <aura:if isTrue="{!product.discountPrice!=null}">
+                                <p style="padding-top: 10px;">
+                                    <span class="strikethrough" style="color: red;">{!product.productPrice}$</span>
+                                    &nbsp;
+                                    <span style="color: green;">{!product.discountPrice}$</span>
+                                </p>
+                            </aura:if>
+                        </div>
+                    </div>
+                </div>
+            </aura:iteration>
+        </div>
+    </div>
+
+</aura:component>
