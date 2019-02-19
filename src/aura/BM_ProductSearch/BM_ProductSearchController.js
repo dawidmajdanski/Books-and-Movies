@@ -21,11 +21,6 @@
           var state = response.getState();
           if (state === 'SUCCESS') {
               products = response.getReturnValue();
-              for(var i=0; i<products.length; i++){
-                  if(products[i].discountPrice){
-                    products[i].discountPercentage = -Math.round(100 - ((products[i].discountPrice*100)/products[i].productPrice));
-                  }
-              }
           }else{
               products = [];
           }
@@ -51,6 +46,7 @@
         component.set("v.author", undefined);
         component.set("v.bookGenre", undefined);
         component.set("v.movieGenre", undefined);
+        component.set("v.searchText", '');
         $A.enqueueAction(component.get('c.resetToDefaultAvailableYears'));
         $A.enqueueAction(component.get('c.resetToDefaultGenres'));
     },
@@ -63,8 +59,8 @@
         clearAvailYears2.resetYearsPicklist();
     },
     resetToDefaultGenres: function(component, event, helper){
-        component.find("selectBookGenre").set("v.value", 'All genres');
-        component.find("selectMovieGenre").set("v.value", 'All genres');
+        component.find("selectBookGenre").set("v.value", $A.get('$Label.c.All_genres'));
+        component.find("selectMovieGenre").set("v.value", $A.get('$Label.c.All_genres'));
     },
     onAdvancedSearchModalAppearance: function(component, event, helper){
         helper.advancedSearchModalAppearance(component, event);
@@ -96,12 +92,38 @@
         component.set("v.bookGenre", component.find('selectBookGenre').get('v.value'));
     },
     handleProductsInCart: function(component, event, helper){
+        $A.enqueueAction(component.get('c.handleCartRollUp'));
         var navEvt = $A.get('e.force:navigateToURL');
         navEvt.setParams({url: '/cart'});
         navEvt.fire();
     },
     handleUpdateCartProductsQuantity: function(component, event, helper){
         helper.getCartItemsQuantity(component, event);
+    },
+    handleMyOrders: function(component, event, helper){
+        var navEvt = $A.get('e.force:navigateToURL');
+        navEvt.setParams({url: '/my-orders'});
+        navEvt.fire();
+    },
+    handleCartRollDown: function(component, event, helper){
+        helper.getCartItems(component, event);
+        document.getElementById('cart').style = 'width: 35%; background-color: rgb(90, 91, 93)';
+        setTimeout(function(){
+            document.getElementById('cartItemsTotalPrice').style = 'width: auto';
+        }, 100);
+        setTimeout(function(){
+            document.getElementById('cartPreview').style = 'height: 409px;';
+        }, 350);
+    },
+    handleCartRollUp: function(component, event, helper){
+        document.getElementById('cartPreview').style = 'height: 0';
+        setTimeout(function(){
+             document.getElementById('cartItemsTotalPrice').style = 'width: 0';
+             document.getElementById('cart').style = 'width: 9%; background-color: none';
+        }, 350);
+    },
+    handleRemoveProductFromCart: function(component, event, helper){
+        helper.removeProductFromCart(component, event);
     },
 
 })
