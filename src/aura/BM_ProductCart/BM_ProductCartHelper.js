@@ -30,7 +30,7 @@
         if(!value || value<=0){
             input.classList.add("slds-input-customError");
             document.getElementById("proceedToDelivery").disabled = true;
-            this.handleToast($A.get('$Label.c.Error_toast_title'), "You must enter valid quantity", "error");
+            this.handleToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Wrong_quantity'), "error");
             return false;
         }else{
             input.classList.remove("slds-input-customError");

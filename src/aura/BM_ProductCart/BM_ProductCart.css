@@ -37,6 +37,7 @@
 }
 
 .THIS .cartProductTileImg{
+    cursor: pointer;
     position: absolute;
     object-fit: contain;
     height: 100%;

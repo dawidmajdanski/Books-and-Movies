@@ -64,14 +64,27 @@
         }
     },
     handleGoToDeliveryPage: function(component, event, helper){
-        if(component.get("v.user").Id=='0051t000002PhRiAAK'){
-            helper.handleToast("", "You must login in order to proceed further", "info");
+        if(component.get("v.user").Id==$A.get('$Label.c.Guest_user')){
+            helper.handleToast("", $A.get('$Label.c.User_not_logged_msg'), "info");
         }else{
             sessionStorage.setItem('user--info', JSON.stringify(component.get("v.user")));
             sessionStorage.setItem('itemsInCartAccepted', true);
             var navEvt = $A.get('e.force:navigateToURL');
             navEvt.setParams({url: '/delivery'});
             navEvt.fire();
+        }
+    },
+    handleCartProductClick: function(component, event, helper){
+        var selectedSection = event.currentTarget;
+        var index = selectedSection.dataset.index;
+        for(var i=0; i<component.get("v.cartProducts").length; i++){
+            if(index == i){
+                 sessionStorage.setItem('customSearch--record', JSON.stringify(component.get("v.cartProducts")[i]));
+                 var navEvt = $A.get('e.force:navigateToURL');
+                 navEvt.setParams({url: '/details'});
+                 navEvt.fire();
+                 break;
+            }
         }
     },
 

@@ -4,29 +4,30 @@
 
 <aura:component description="BM_ProductCart" implements="forceCommunity:availableForAllPageTypes"
                 controller="BM_ProductSearchController">
-    <aura:attribute type="Object[]" name="cartProducts"/>
-    <aura:attribute type="User" name="user" />
-    <aura:attribute type="Decimal" name="totalCartPrice" />
+    <aura:attribute name="cartProducts" type="Object[]" />
+    <aura:attribute name="user" type="User" />
+    <aura:attribute name="totalCartPrice" type="Decimal" />
+
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
 
     <div class="cartContainer">
         <aura:if isTrue="{!v.cartProducts.length==0}">
             <p style="font-style: italic; font-size: 140%; text-align: center; padding-top: 2.5rem; padding-bottom: 2.5rem">
-                Currently you have no products in your cart
+                {!$Label.c.No_products_in_cart}
             </p>
         </aura:if>
         <aura:if isTrue="{!v.cartProducts.length>0}">
             <div class="titleCart">
-                Your cart
+                {!$Label.c.Your_cart}
             </div>
             <aura:iteration items="{!v.cartProducts}" var="cartProduct" indexVar="ind">
                 <div class="cartProductTile">
                     <div class="cartProductTileImgContainer">
-                        <img class="cartProductTileImg" src="{!cartProduct.productMainPic}" />
+                        <img data-index="{!ind}" onclick="{!c.handleCartProductClick}" class="cartProductTileImg" src="{!cartProduct.productMainPic}" />
                     </div>
                     <div class="cartProductInfo">
                             <span style="font-size: 170%;">{!cartProduct.productName}</span>
-                            <p style="font-weight: bold; font-size:110%; padding-top:5px">{!cartProduct.quantity}x &nbsp;
+                            <p style="font-weight: bold; font-size:110%; padding-top:5px">{!cartProduct.quantity}{!$Label.c.Multiply_sign} &nbsp;
                                 <aura:if isTrue="{!cartProduct.discountPrice!=null}" >
                                     <span style="color: green">{!cartProduct.discountPrice}$</span>
                                 </aura:if>
@@ -35,24 +36,24 @@
                                 </aura:if>
                             </p>
                             <div class="slds-form-element" style="padding-top:5px">
-                                <label class="slds-form-element__label" for="text-input-id-1">Quantity</label>
+                                <label class="slds-form-element__label" for="text-input-id-1">{!$Label.c.Quantity}</label>
                                 <div class="slds-form-element__control">
-                                    <input id="{!ind}" class="slds-input quantityInput" type="number" data-index="{!ind}" data-record="{!cartProduct.productId}" onblur="{!c.handleQuantityChange}" title="Quantity" value="{!cartProduct.quantity}" />
+                                    <input id="{!ind}" class="slds-input quantityInput" type="number" data-index="{!ind}" data-record="{!cartProduct.productId}" onblur="{!c.handleQuantityChange}" title="{!$Label.c.Quantity}" value="{!cartProduct.quantity}" />
                                 </div>
                             </div>
                     </div>
                     <div class="removeProduct" onclick="{!c.handleRemoveFromCart}" data-index="{!ind}" data-record="{!cartProduct.productId}">
-                        <lightning:icon title="Remove from cart" iconName="utility:delete" size="large"  />
+                        <lightning:icon title="{!$Label.c.Remove_from_cart}" iconName="utility:delete" size="large"  />
                     </div>
                 </div>
             </aura:iteration>
             <div style="background-color: aquamarine;" class="bottomCartInfo">
             </div>
                 <div class="totalPriceInfo">
-                    Total price: {!v.totalCartPrice}$
+                    {!$Label.c.Total_price} &nbsp; {!v.totalCartPrice}$
                 </div>
             <div class="bottomCartInfo">
-                <button id="proceedToDelivery" style="margin-top: 6px;" onclick="{!c.handleGoToDeliveryPage}" class="slds-button slds-button_success proceedBtn">Proceed to delivery options</button>
+                <button id="proceedToDelivery" style="margin-top: 6px;" onclick="{!c.handleGoToDeliveryPage}" class="slds-button slds-button_success proceedBtn">{!$Label.c.Proceed_to_delivery}</button>
             </div>
         </aura:if>
     </div>
