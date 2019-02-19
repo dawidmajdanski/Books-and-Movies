@@ -24,7 +24,7 @@
             navEvt.fire();
         }else{
             this.addErrorClasses(shippingAddress);
-            this.handleToast($A.get('$Label.c.Error_toast_title'), "Fill all required fields", "error");
+            this.handleToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Fill_fields'), "error");
         }
     },
     handleToast: function(titleMessage, errorName, toastType){

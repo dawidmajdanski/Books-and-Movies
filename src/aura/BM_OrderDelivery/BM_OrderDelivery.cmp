@@ -4,26 +4,27 @@
 
 <aura:component description="BM_OrderDelivery" controller="BM_OrderController"
                 implements="forceCommunity:availableForAllPageTypes" access="global">
-    <aura:attribute type="User" name="user" />
-    <aura:attribute type="Boolean" name="showPage" default="false"/>
-    <aura:attribute type="Boolean" name="isBillingSameAsShipping" default="false"/>
-    <aura:attribute type="String" name="shippingStreet" />
-    <aura:attribute type="String" name="shippingCity" />
-    <aura:attribute type="String" name="shippingPostal" />
-    <aura:attribute type="String" name="shippingState" />
-    <aura:attribute type="String" name="shippingCountry" />
+    <aura:attribute name="user" type="User" />
+    <aura:attribute name="showPage" type="Boolean" default="false" />
+    <aura:attribute name="isBillingSameAsShipping" type="Boolean" default="false"/>
+    <aura:attribute name="shippingStreet" type="String" />
+    <aura:attribute name="shippingCity" type="String" />
+    <aura:attribute name="shippingPostal" type="String" />
+    <aura:attribute name="shippingState" type="String" />
+    <aura:attribute name="shippingCountry" type="String" />
+
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
 
     <aura:if isTrue="{!v.showPage}">
         <div class="deliveryInfoContainer">
             <div class="billingAddressContainer">
                 <fieldset class="slds-form-element slds-form-element_compound slds-form-element_address">
-                    <legend class="slds-form-element__legend slds-form-element__label">Your billing address</legend>
+                    <legend class="slds-form-element__legend slds-form-element__label">{!$Label.c.Billing_address}</legend>
                     <div class="slds-form-element__control">
                         <div class="slds-form-element__row">
                             <div class="slds-size_1-of-1">
                                 <div class="slds-form-element">
-                                    <label class="slds-form-element__label" for="form-element-id-04">Billing Street</label>
+                                    <label class="slds-form-element__label" for="form-element-id-04">{!$Label.c.Billing_street}</label>
                                     <div class="slds-form-element__control">
                                         <textarea id="form-element-id-04" required="" class="slds-textarea">{!v.user.Street}</textarea>
                                     </div>
@@ -33,7 +34,7 @@
                         <div class="slds-form-element__row">
                             <div class="slds-size_4-of-6">
                                 <div class="slds-form-element">
-                                    <label class="slds-form-element__label" for="form-element-id-05">Billing City</label>
+                                    <label class="slds-form-element__label" for="form-element-id-05">{!$Label.c.Billing_city}</label>
                                     <div class="slds-form-element__control">
                                         <input type="text" id="form-element-id-05" required="" class="slds-input" value="{!v.user.City}" />
                                     </div>
@@ -41,7 +42,7 @@
                             </div>
                             <div class="slds-size_2-of-6">
                                 <div class="slds-form-element">
-                                    <label class="slds-form-element__label" for="form-element-id-06">Billing State/Province</label>
+                                    <label class="slds-form-element__label" for="form-element-id-06">{!$Label.c.Billing_state}</label>
                                     <div class="slds-form-element__control">
                                         <input type="text" id="form-element-id-06" required="" class="slds-input" value="{!v.user.State}" />
                                     </div>
@@ -51,7 +52,7 @@
                         <div class="slds-form-element__row">
                             <div class="slds-size_4-of-6">
                                 <div class="slds-form-element">
-                                    <label class="slds-form-element__label" for="form-element-id-07">Billing Zip/Postal Code</label>
+                                    <label class="slds-form-element__label" for="form-element-id-07">{!$Label.c.Billing_postal}</label>
                                     <div class="slds-form-element__control">
                                         <input type="text" id="form-element-id-07" required="" class="slds-input" value="{!v.user.PostalCode}" />
                                     </div>
@@ -59,7 +60,7 @@
                             </div>
                             <div class="slds-size_2-of-6">
                                 <div class="slds-form-element">
-                                    <label class="slds-form-element__label" for="form-element-id-08">Billing Country</label>
+                                    <label class="slds-form-element__label" for="form-element-id-08">{!$Label.c.Billing_country}</label>
                                     <div class="slds-form-element__control">
                                         <input type="text" id="form-element-id-08" required="" class="slds-input" value="{!v.user.Country}" />
                                     </div>
@@ -71,12 +72,12 @@
             </div>
             <div class="shippingAddressContainer">
                 <fieldset class="slds-form-element slds-form-element_compound slds-form-element_address">
-                    <legend class="slds-form-element__legend slds-form-element__label">Shipping address</legend>
+                    <legend class="slds-form-element__legend slds-form-element__label">{!$Label.c.Shipping_address}</legend>
                     <div class="slds-form-element__control">
                         <div class="slds-form-element__row">
                             <div class="slds-size_1-of-1">
                                 <div class="slds-form-element">
-                                    <label class="slds-form-element__label" for="form-element-id-04">Shipping Street</label>
+                                    <label class="slds-form-element__label" for="form-element-id-04">{!$Label.c.Shipping_street}</label>
                                     <div class="slds-form-element__control">
                                         <textarea id="shipping-street" class="slds-textarea" onblur="{!c.setShippingStreet}"></textarea>
                                     </div>
@@ -86,7 +87,7 @@
                         <div class="slds-form-element__row">
                             <div class="slds-size_4-of-6">
                                 <div class="slds-form-element">
-                                    <label class="slds-form-element__label" for="form-element-id-05">Shipping City</label>
+                                    <label class="slds-form-element__label" for="form-element-id-05">{!$Label.c.Shipping_city}</label>
                                     <div class="slds-form-element__control">
                                         <input type="text" id="shipping-city" class="slds-input" value="{!v.shippingCity}" onblur="{!c.setShippingCity}"/>
                                     </div>
@@ -94,7 +95,7 @@
                             </div>
                             <div class="slds-size_2-of-6">
                                 <div class="slds-form-element">
-                                    <label class="slds-form-element__label" for="form-element-id-06">Shipping State/Province</label>
+                                    <label class="slds-form-element__label" for="form-element-id-06">{!$Label.c.Shipping_state}</label>
                                     <div class="slds-form-element__control">
                                         <input type="text" id="shipping-state" class="slds-input" value="{!v.shippingState}" onblur="{!c.setShippingState}"/>
                                     </div>
@@ -104,7 +105,7 @@
                         <div class="slds-form-element__row">
                             <div class="slds-size_4-of-6">
                                 <div class="slds-form-element">
-                                    <label class="slds-form-element__label" for="form-element-id-07">Shipping Zip/Postal Code</label>
+                                    <label class="slds-form-element__label" for="form-element-id-07">{!$Label.c.Shipping_postal}</label>
                                     <div class="slds-form-element__control">
                                         <input type="text" id="shipping-postal" class="slds-input" value="{!v.shippingPostal}" onblur="{!c.setShippingPostal}"/>
                                     </div>
@@ -112,7 +113,7 @@
                             </div>
                             <div class="slds-size_2-of-6">
                                 <div class="slds-form-element">
-                                    <label class="slds-form-element__label" for="form-element-id-08">Shipping Country</label>
+                                    <label class="slds-form-element__label" for="form-element-id-08">{!$Label.c.Shipping_country}</label>
                                     <div class="slds-form-element__control">
                                         <input type="text" id="shipping-country" class="slds-input" value="{!v.shippingCountry}" onblur="{!c.setShippingCountry}"/>
                                     </div>
@@ -124,11 +125,11 @@
             </div>
             <div class="shippingCheckboxTop"></div>
                 <div class="shippingCheckboxInner" >
-                    <lightning:input onchange="{!c.handleSetShippingAddress}" type="checkbox" label="Set billing address as shipping" value="{!c.isBillingSameAsShipping}"/>
+                    <lightning:input onchange="{!c.handleSetShippingAddress}" type="checkbox" label="{!$Label.c.Set_shipping}" value="{!c.isBillingSameAsShipping}"/>
                 </div>
             <div class="shippingCheckboxBottom" ></div>
             <div class="summaryButtonContainer">
-                <button id="proceedToSummary" style="transition: 0.7s" onclick="{!c.handleGoToOrderSummary}" class="slds-button slds-button_success proceedBtn">Proceed to order summary</button>
+                <button id="proceedToSummary" style="transition: 0.7s" onclick="{!c.handleGoToOrderSummary}" class="slds-button slds-button_success proceedBtn">{!$Label.c.Proceed_to_summary}</button>
             </div>
         </div>
     </aura:if>
