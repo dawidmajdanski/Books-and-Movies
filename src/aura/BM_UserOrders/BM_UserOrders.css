@@ -1,0 +1,93 @@
+/**
+ * Created by Dawid Majdański on 12.02.2019.
+ */
+.THIS.myOrdersContainer{
+    width: 100%;
+    position: relative;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.THIS .titleMyOrders{
+    font-weight: bold;
+    font-size: 200%;
+    padding-left: 5px;
+    border-bottom: 1px solid #dbdbdb;
+    margin-bottom: 15px;
+    width: 98.2%;
+}
+
+.THIS .singleOrderContainer{
+    overflow: hidden;
+    display: inline-block;
+    padding-top: 1rem;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    height: auto;
+    min-height: 117px;
+    width: 70%;
+    margin-left: 15%;
+    position: relative;
+    float: left;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    margin-bottom: 21px !important;
+    background-color: white;
+    transition: 0.8s;
+}
+
+.THIS .singleOrderContainer:hover{
+    background-color: #e8ffdc;
+}
+
+.THIS .spanInfoContainer{
+    font-size: 120%;
+    font-family: 'Lucida Sans Unicode'
+}
+
+.THIS .itemInfoContainer{
+    overflow: hidden;
+    transition: max-height 0.85s;
+    max-height: 0;
+    font-size: 120%;
+}
+
+.THIS .reel{
+    text-align: center;
+}
+
+.THIS .downIcoContainer{
+    cursor: pointer;
+    width: 30px;
+    margin: auto;
+    transition: 0.45s;
+}
+
+.THIS .orderInfo{
+    border-bottom: 1px solid #d2d2d2;
+    padding-bottom: 2px;
+}
+
+.THIS .pagination {
+  display: inline-block;
+}
+.THIS .pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+.THIS .revertPagination{
+    cursor:default;
+}
+.THIS .revertPagination:hover{
+    background-color: white !important;
+}
+.THIS .pagination a.active {
+  background-color: #3762a8;
+  color: white;
+}
+.THIS .pagination a:hover:not(.active) {background-color: #ddd;}

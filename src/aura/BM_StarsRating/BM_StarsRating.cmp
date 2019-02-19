@@ -5,12 +5,13 @@
 <aura:component description="BM_StarsRating"
                 implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
                 access="global">
-    <aura:attribute name="value" type="Integer" default='0'/>
-    <aura:attribute name="readonly" type="boolean" default='false'/>
     <ltng:require styles="{!$Resource.fivestar + '/rating.css'}" scripts="{!$Resource.fivestar + '/rating.js'}"
                   afterScriptsLoaded="{!c.afterScriptsLoaded}"/>
+
+    <aura:attribute name="value" type="Integer" default='0'/>
+    <aura:attribute name="readonly" type="boolean" default='false'/>
+
     <aura:handler name="change" value="{!v.value}" action="{!c.onValueChange}"/>
-    <!--<aura:registerEvent name = "avgRatingChanged" type = "c:MI_RatingChangedEvent" />-->
 
     <div id="changeStarMouseOver"  onmouseover="{!c.handleVoteBarToggleOver}" onmouseleave="{!c.handleVoteBarToggleLeave}" style="cursor: default; z-index: 99; display:none; position: absolute; background-color: #ededed; border-radius: 25px; width: 50px">
         <p style="margin: 3px; font-size: 10px">

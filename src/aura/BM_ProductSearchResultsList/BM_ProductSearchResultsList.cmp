@@ -2,17 +2,143 @@
  - Created by Dawid Majdański on 31.01.2019.
  -->
 
-<aura:component description="BM_CustomSearchResultsList" implements="forceCommunity:availableForAllPageTypes" access="global">
-    <aura:attribute type="Object[]" name="products" />
-    <aura:attribute type="Boolean" name="noResults" default="true" />
+<aura:component controller="BM_ProductSearchController" description="BM_CustomSearchResultsList"
+                implements="forceCommunity:availableForAllPageTypes"
+                access="global">
+    <aura:attribute name="products" type="Object[]" />
+    <aura:attribute name="noResults" type="Boolean" default="true"/>
+    <aura:attribute name="searchText" type="String" default=""/>
+    <aura:attribute name="minPrice" type="Decimal"/>
+    <aura:attribute name="maxPrice" type="Decimal"/>
+    <aura:attribute name="minRating" type="Integer"/>
+    <aura:attribute name="specificYear" type="Integer"/>
+    <aura:attribute name="minYear" type="Integer"/>
+    <aura:attribute name="maxYear" type="Integer"/>
+    <aura:attribute name="bookGenre" type="String"/>
+    <aura:attribute name="movieGenre" type="String"/>
+    <aura:attribute name="bookGenres" type="String[]"/>
+    <aura:attribute name="movieGenres" type="String[]"/>
+    <aura:attribute name="author" type="String"/>
+    <aura:attribute name="director" type="String"/>
+    <aura:attribute name="productType" type="String" default="All"/>
+    <aura:attribute name="productTypes" type="Object[]"/>
+    <aura:attribute name="searchByProductType" type="Boolean" default="false"/>
+    <aura:attribute name="currentPageNum" type="Integer" default="1"/>
+    <aura:attribute name="maxPageNum" type="Integer" />
+    <aura:attribute name="offset" type="Integer" default="0"/>
+    <aura:attribute name="resultsOnPageSize" type="Integer" default="2"/>
+
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
 
-    <div class="mi-padding" style="display: inline-block; width: 85%; float: right">
-        <aura:if isTrue="{!v.noResults}">
-            <p>No results</p>
-        </aura:if>
-        <aura:iteration items="{!v.products}" var="item">
-            <c:BM_ProductSearchResultItem product="{!item}"/>
-        </aura:iteration>
+    <div style="display: inline-block; width: 100%; float: right">
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_1-of-3"
+                 style="border-right: 1px solid gainsboro; width: 22%; padding-right: 0;">
+                <h1 class="resultsTitle">Filters</h1>
+                <div class="filtersContainer" style="margin-top: 10px; text-align: right">
+                    <div style="border-bottom: 1px solid gainsboro">
+                        <aura:if isTrue="{!v.noResults==false}">
+                            <aura:iteration items="{!v.productTypes}" var="pType" indexVar="ind">
+                                <p id="{!ind}" data-record="{!pType.name}" onclick="{!c.filterProductType}"
+                                   class="productTypeStyle">{!pType.name} &nbsp; ({!pType.count})</p>
+                            </aura:iteration>
+                        </aura:if>
+                    </div>
+                    <aura:if isTrue="{!v.searchText}">
+                        <p class="paramStyle">{!$Label.c.Product_name}&nbsp;<span>"{!v.searchText}"</span></p>
+                    </aura:if>
+                    <aura:if isTrue="{!v.minPrice}">
+                        <p class="paramStyle">
+                            <lightning:input label="{!$Label.c.Min_price}" value="{!v.minPrice}" onblur="{!c.handleSearch}"/>
+                        </p>
+                    </aura:if>
+                    <aura:if isTrue="{!v.maxPrice}">
+                        <p class="paramStyle">
+                            <lightning:input label="{!$Label.c.Max_price}" value="{!v.maxPrice}" onblur="{!c.handleSearch}"/>
+                        </p>
+                    </aura:if>
+                    <aura:if isTrue="{!v.bookGenre}">
+                        <p class="paramStyle">
+                            <lightning:input label="{!$Label.c.Book_genre}" value="{!v.bookGenre}" onblur="{!c.handleSearch}"/>
+                        </p>
+                    </aura:if>
+                    <aura:if isTrue="{!v.movieGenre}">
+                        <p class="paramStyle">
+                            <lightning:input label="{!$Label.c.Movie_genre}" value="{!v.movieGenre}" onblur="{!c.handleSearch}"/>
+                        </p>
+                    </aura:if>
+                    <aura:if isTrue="{!v.director}">
+                        <p class="paramStyle">
+                            <lightning:input label="{!$Label.c.Director}" value="{!v.director}" onblur="{!c.handleSearch}"/>
+                        </p>
+                    </aura:if>
+                    <aura:if isTrue="{!v.author}">
+                        <p class="paramStyle">
+                            <lightning:input label="{!$Label.c.Author}" value="{!v.author}" onblur="{!c.handleSearch}"/>
+                        </p>
+                    </aura:if>
+                    <aura:if isTrue="{!v.minYear}">
+                        <p class="paramStyle">
+                            <lightning:input label="{!$Label.c.From_year}" value="{!v.minYear}" onblur="{!c.handleSearch}"/>
+                        </p>
+                    </aura:if>
+                    <aura:if isTrue="{!v.maxYear}">
+                        <p class="paramStyle">
+                            <lightning:input label="{!$Label.c.To_year}" value="{!v.maxYear}" onblur="{!c.handleSearch}"/>
+                        </p>
+                    </aura:if>
+                    <aura:if isTrue="{!v.specificYear}">
+                        <p class="paramStyle">
+                            <lightning:input label="{!$Label.c.Specific_year}" value="{!v.specificYear}"
+                                             onblur="{!c.handleSearch}"/>
+                        </p>
+                    </aura:if>
+                </div>
+            </div>
+            <div class="slds-col slds-size_2-of-3" style="padding-left: 1rem;">
+                <aura:if isTrue="{!v.noResults}">
+                    <p>{!$Label.c.No_results}</p>
+                </aura:if>
+                <aura:if isTrue="{!v.noResults==false}">
+
+                    <!-- pagination -->
+                    <div style="text-align: center; width: 113%">
+                        <div class="pagination" style="position: relative">
+                            <aura:if isTrue="{!greaterthan(v.currentPageNum,1)}">
+                                <a data-record="{!v.currentPageNum-1}" onclick="{!c.handlePreviousPage}">&laquo;</a>
+                            </aura:if>
+                            <aura:if isTrue="{!greaterthan(v.currentPageNum,4)}">
+                                <a data-record="1" onclick="{!c.handlePreviousPage}">1</a>
+                                <a class="revertPagination">...</a>
+                            </aura:if>
+                            <aura:if isTrue="{!greaterthan(v.currentPageNum,2)}">
+                                <a data-record="{!v.currentPageNum-2}" onclick="{!c.handlePreviousPage}">{!v.currentPageNum-2}</a>
+                            </aura:if>
+                            <aura:if isTrue="{!greaterthan(v.currentPageNum,1)}">
+                                <a data-record="{!v.currentPageNum-1}" onclick="{!c.handlePreviousPage}">{!v.currentPageNum-1}</a>
+                            </aura:if>
+                            <a class="active" >{!v.currentPageNum}</a>
+                            <aura:if isTrue="{!greaterthanorequal(v.maxPageNum,v.currentPageNum+1)}">
+                                <a data-record="{!v.currentPageNum+1}" onclick="{!c.handleNextPage}">{!v.currentPageNum+1}</a>
+                            </aura:if>
+                            <aura:if isTrue="{!greaterthanorequal(v.maxPageNum,v.currentPageNum+2)}">
+                                <a data-record="{!v.currentPageNum+2}" onclick="{!c.handleNextPage}">{!v.currentPageNum+2}</a>
+                            </aura:if>
+                            <aura:if isTrue="{!greaterthan(v.maxPageNum-2,v.currentPageNum)}">
+                                <a class="revertPagination">...</a>
+                                <a data-record="{!v.maxPageNum}" onclick="{!c.handleNextPage}">{!v.maxPageNum}</a>
+                            </aura:if>
+                            <aura:if isTrue="{!greaterthan(v.maxPageNum,v.currentPageNum)}">
+                                <a data-record="{!v.currentPageNum+1}" onclick="{!c.handleNextPage}">&raquo;</a>
+                            </aura:if>
+                        </div>
+                    </div>
+
+                    <aura:iteration items="{!v.products}" var="item">
+                        <c:BM_ProductSearchResultItem product="{!item}"/>
+                    </aura:iteration>
+                </aura:if>
+            </div>
+        </div>
     </div>
 </aura:component>

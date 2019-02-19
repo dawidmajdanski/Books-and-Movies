@@ -1,0 +1,103 @@
+<!--
+ - Created by Dawid Majdański on 12.02.2019.
+ -->
+
+<aura:component description="BM_UserOrders" controller="BM_OrderController"
+                implements="forceCommunity:availableForAllPageTypes">
+    <aura:attribute name="myOrders" type="Order[]" />
+    <aura:attribute name="myOrdersBackup" type="Order[]" />
+    <aura:attribute name="isRolledDown" type="Boolean[]" />
+    <aura:attribute name = "currentPageNum" type="Integer" default="1"/>
+    <aura:attribute name = "maxPageNum" type="Integer" />
+    <aura:attribute name = "offset" type="Integer" default="0"/>
+    <aura:attribute name = "resultsOnPageSize" type="Integer" default="2"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+
+    <div class="myOrdersContainer">
+        <aura:if isTrue="{!v.myOrders==null}">
+            <p style="font-style: italic; font-size: 140%; text-align: center; padding-top: 2.5rem; padding-bottom: 2.5rem">
+                {!$Label.c.No_orders}
+            </p>
+        </aura:if>
+        <aura:if isTrue="{!v.myOrders.length!=null}">
+            <div class="titleMyOrders">
+                {!$Label.c.My_orders_title}
+            </div>
+
+            <!-- pagination -->
+            <div style="text-align: center;">
+                <div class="pagination" style="position: relative">
+                    <aura:if isTrue="{!greaterthan(v.currentPageNum,1)}">
+                        <a data-record="{!v.currentPageNum-1}" onclick="{!c.handlePreviousPage}">&laquo;</a>
+                    </aura:if>
+                    <aura:if isTrue="{!greaterthan(v.currentPageNum,4)}">
+                        <a data-record="1" onclick="{!c.handlePreviousPage}">1</a>
+                        <a class="revertPagination">...</a>
+                    </aura:if>
+                    <aura:if isTrue="{!greaterthan(v.currentPageNum,2)}">
+                        <a data-record="{!v.currentPageNum-2}" onclick="{!c.handlePreviousPage}">{!v.currentPageNum-2}</a>
+                    </aura:if>
+                    <aura:if isTrue="{!greaterthan(v.currentPageNum,1)}">
+                        <a data-record="{!v.currentPageNum-1}" onclick="{!c.handlePreviousPage}">{!v.currentPageNum-1}</a>
+                    </aura:if>
+                    <a class="active" >{!v.currentPageNum}</a>
+                    <aura:if isTrue="{!greaterthanorequal(v.maxPageNum,v.currentPageNum+1)}">
+                        <a data-record="{!v.currentPageNum+1}" onclick="{!c.handleNextPage}">{!v.currentPageNum+1}</a>
+                    </aura:if>
+                    <aura:if isTrue="{!greaterthanorequal(v.maxPageNum,v.currentPageNum+2)}">
+                        <a data-record="{!v.currentPageNum+2}" onclick="{!c.handleNextPage}">{!v.currentPageNum+2}</a>
+                    </aura:if>
+                    <aura:if isTrue="{!greaterthan(v.maxPageNum-2,v.currentPageNum)}">
+                        <a class="revertPagination">...</a>
+                        <a data-record="{!v.maxPageNum}" onclick="{!c.handleNextPage}">{!v.maxPageNum}</a>
+                    </aura:if>
+                    <aura:if isTrue="{!greaterthan(v.maxPageNum,v.currentPageNum)}">
+                        <a data-record="{!v.currentPageNum+1}" onclick="{!c.handleNextPage}">&raquo;</a>
+                    </aura:if>
+                </div>
+            </div>
+            <aura:iteration items="{!v.myOrders}" var="myOrder" indexVar="ind">
+                <div class="singleOrderContainer">
+                    <div class="orderInfo">
+                        <span style="font-size: 150%; font-weight: bold; font-family: 'Lucida Sans Unicode';">
+                                {!$Label.c.Order_number}
+                        </span>
+                        <span style="font-size: 120%;">
+                                {!myOrder.OrderNumber}
+                        </span><br/>
+                        <span class="spanInfoContainer">
+                                {!$Label.c.Date_of_purchase}</span><span>{!myOrder.EffectiveDate}
+                        </span><br/>
+                        <span class="spanInfoContainer">
+                                {!$Label.c.Total_cost}</span><span>{!myOrder.TotalAmount}$
+                        </span><br/>
+                        <span class="spanInfoContainer">
+                                {!$Label.c.Status}
+                        </span>
+                        <span>
+                                {!myOrder.Status}
+                        </span>
+                    </div>
+
+                    <div id="{!ind}" class="itemInfoContainer">
+                        <h4 style="padding-top: 10px">{!$Label.c.Ordered_title}</h4>
+                        <aura:iteration items="{!myOrder.OrderItems}" var="item">
+                            <span style="padding-right: 5px">
+                                <a data-record="{!item.PricebookEntry.Name}" data-index="{!ind}" onclick="{!c.handleItemClick}">{!item.PricebookEntry.Name}</a>:
+                            </span>
+                            <span>
+                                {!item.Quantity}{!$Label.c.Multiply_sign} &nbsp;{!item.UnitPrice}$
+                            </span><br/>
+                        </aura:iteration>
+                    </div>
+                    <div class="reel">
+                        <div id="{!ind+'A'}" class="downIcoContainer" onclick="{!c.handleRoll}" data-index="{!ind}">
+                            <lightning:icon iconName="utility:down" size="small"/>
+                        </div>
+                    </div>
+                </div>
+            </aura:iteration>
+        </aura:if>
+    </div>
+</aura:component>

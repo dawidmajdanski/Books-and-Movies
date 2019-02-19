@@ -23,8 +23,8 @@
         helper.selectMaxYear(component, event);
     },
     clearAvailableYearsOption: function(component, event, helper){
-        component.find("selectYearSpec1").set("v.value", '--none--');
-        component.find("selectYearMin1").set("v.value", '--none--');
-        component.find("selectYearMax1").set("v.value", '--none--');
+        component.find("selectYearSpec1").set("v.value", $A.get('$Label.c.Default_option'));
+        component.find("selectYearMin1").set("v.value", $A.get('$Label.c.Default_option'));
+        component.find("selectYearMax1").set("v.value", $A.get('$Label.c.Default_option'));
     }
 })

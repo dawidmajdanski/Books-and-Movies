@@ -1,0 +1,52 @@
+/**
+ * Created by Majdan on 17.02.2019.
+ */
+.THIS .resultsTitle{
+    font-size: 150%;
+    color: #585858;
+    text-align: center;
+}
+
+.THIS .filtersContainer{
+    margin-top: 10px;
+    text-align: right;
+    padding-right: 1rem;
+    font-size: 116%;
+}
+
+.THIS .productTypeStyle{
+    cursor: pointer;
+}
+
+.THIS .productTypeStyle:hover{
+    background-color: #f7f7f7;
+}
+
+.THIS .paramStyle{
+    padding-top: 8px;
+}
+
+.THIS .slds-input{
+    text-align: right;
+}
+
+.THIS .pagination {
+  display: inline-block;
+}
+.THIS .pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+.THIS .revertPagination{
+    cursor:default;
+}
+.THIS .revertPagination:hover{
+    background-color: white !important;
+}
+.THIS .pagination a.active {
+  background-color: #3762a8;
+  color: white;
+}
+.THIS .pagination a:hover:not(.active) {background-color: #ddd;}
