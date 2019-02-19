@@ -2,7 +2,7 @@
  * Created by Majdan on 10.02.2019.
  */
 .THIS.container{
-    height: 180px;
+    height: 285px;
     padding: 1rem;
     position: relative;
     display: inline-block;
@@ -13,11 +13,37 @@
     background-color: #f9f9f9;
     width: 74%;
     margin-left: 13%;
+    display: inline-block;
 }
 
 .THIS .orderTitle{
-    color: #29ab29;
+    color: #6d6d6d;
     font-size: 200%;
-    border-bottom: 1px solid #dbe8d9;
+    border-bottom: 1px solid #e1e1e1;
     margin: 3rem;
+    position: absolute;
+    top: 38px;
+    left: 43px;
+    font-family: 'Lucida Sans Unicode';
+    font-weight: bold;
+}
+
+.THIS .imgStyle{
+    opacity: 0.06;
+    position: absolute;
+    width: 314px;
+    right: 22px;
+    bottom: 11px;
+}
+
+.THIS .bottomTitle{
+    position: absolute;
+    font-size: 145%;
+    color: #8e8e8e;
+    font-family: 'Lucida Sans Unicode';
+    top: 132px;
+    left: 201px;
+    overflow:hidden;
+    height: 0;
+    transition: 1s;
 }

@@ -3,14 +3,20 @@
  -->
 
 <aura:component description="BM_OrderSuccessful" implements="forceCommunity:availableForAllPageTypes" access="global">
-    <aura:attribute type="Boolean" name="showPage" default="false"/>
+    <aura:attribute name="showPage" type="Boolean" default="false" />
+    <aura:attribute name="orderNumber" type="String" />
+
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
 
     <aura:if isTrue="{!v.showPage}">
         <div class="container">
+            <img class="imgStyle" src="{!$Resource.BMlogo}" />
             <h1 class="orderTitle">
-                Order has been successfully completed
+                {!$Label.c.Order_completed}&nbsp;{!v.orderNumber}&nbsp;{!$Label.c.Order_placed}
             </h1>
+            <div id="thanks-comm" class="bottomTitle">
+                {!$Label.c.Thanks}
+            </div>
         </div>
     </aura:if>
 </aura:component>
