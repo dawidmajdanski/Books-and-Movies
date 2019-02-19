@@ -21,14 +21,14 @@
     },
     validateReview: function(component, event){
         if(!component.get("v.newVote")){
-            this.handleToast($A.get('$Label.c.Error_toast_title'), "Your vote cannot be empty", "error");
+            this.handleToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Vote_error'), "error");
             return false;
         }
     },
     validateQuantity: function(component, event){
         var quantity = component.get("v.quantity");
         if(!quantity || quantity<=0){
-            this.handleToast($A.get('$Label.c.Error_toast_title'), "You must enter valid quantity", "error");
+            this.handleToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Quantity_not_valid'), "error");
             return false;
         }
     },

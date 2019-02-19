@@ -12,11 +12,10 @@
         $A.enqueueAction(component.get('c.getUserRating'));
     },
     sortPicsOrder: function(component){
-        console.log('dupa');
         var pics = component.get("v.pictures");
         var temp;
         for(var i=0; i<pics.length; i++){
-            if(pics[i].pictureName.includes("Main")){
+            if(pics[i].pictureName.includes($A.get('$Label.c.Main_picture_name'))){
                 temp=pics[0];
                 pics[0]=pics[i];
                 pics[i]=temp;

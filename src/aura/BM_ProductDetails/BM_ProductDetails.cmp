@@ -4,18 +4,20 @@
 
 <aura:component controller="BM_ProductSearchController" description="BM_ProductDetails"
                 implements="forceCommunity:availableForAllPageTypes" access="global">
+    <ltng:require styles="{!$Resource.staticStarsRating}"/>
+
+    <aura:attribute name="product" type="Object" />
+    <aura:attribute name="pictures" type="Object" />
+    <aura:attribute name="userRating" type="Product_rating__c" />
+    <aura:attribute name="newComment" type="String" />
+    <aura:attribute name="newVote" type="Integer" />
+    <aura:attribute name="user" type="User" />
+    <aura:attribute name="quantity" type="Integer"  default="1"/>
+    <aura:attribute name="editReviewMode" type="Boolean"  default="false"/>
+
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
-    <aura:attribute type="Object" name="product"/>
-    <aura:attribute type="Object" name="pictures"/>
-    <aura:attribute type="Product_rating__c" name="userRating"/>
-    <aura:attribute type="String" name="newComment"/>
-    <aura:attribute type="Integer" name="newVote"/>
-    <aura:attribute type="User" name="user"/>
-    <aura:attribute type="Integer" name="quantity" default="1"/>
-    <aura:attribute type="Boolean" name="editReviewMode" default="false"/>
     <aura:registerEvent name="getProductReviews" type="c:BM_ProductRatingEvent"/>
     <aura:registerEvent name="getProductsQuantityInCart" type="c:BM_ProductsCartQuantityEvent"/>
-    <ltng:require styles="{!$Resource.staticStarsRating}"/>
 
     <aura:if isTrue="{!v.product!=null}">
         <div class="mainContainer">
@@ -33,15 +35,20 @@
                 </div>
                 <div class="slds-col slds-size_1-of-3" style="width: 55%">
                     <p style="font-weight: bold; font-size: 150%">{!v.product.productName}</p>
-
+                    <aura:if isTrue="{!v.product.productRecordType == $Label.c.Book}">
+                        <img title="{!$Label.c.Book}" class="productTypeImg" src="{!$Resource.BookSymbol}" />
+                    </aura:if>
+                    <aura:if isTrue="{!v.product.productRecordType == $Label.c.Movie}">
+                        <img title="{!$Label.c.Movie}" class="productTypeImg" src="{!$Resource.MovieSymbol}" />
+                    </aura:if>
                     <aura:if isTrue="{!v.product.discountPrice==null}">
                         <p style="padding-bottom: 10px; padding-top: 10px; font-size: 125%">
-                            Price:&nbsp; {!v.product.productPrice}$
+                            {!$Label.c.Price}&nbsp; {!v.product.productPrice}$
                         </p>
                     </aura:if>
                     <aura:if isTrue="{!v.product.discountPrice!=null}">
                         <p style="padding-bottom: 10px; padding-top: 10px; font-size: 125%">
-                            Price:&nbsp;
+                            {!$Label.c.Price}&nbsp;
                             <span style="text-decoration: line-through; color: red;">
                                 {!v.product.productPrice}$
                              </span>
@@ -53,57 +60,54 @@
                     </aura:if>
 
                     <p style="padding-bottom: 10px; padding-top: 10px; font-size: 125%">
-                        Release date:&nbsp; {!v.product.releaseDate}</p>
+                        {!$Label.c.Release_date}&nbsp; {!v.product.releaseDate}</p>
                     <aura:if isTrue="{!v.product.author!=null}">
                         <p style="padding-bottom: 10px; padding-top: 10px; font-size: 125%">
-                            Author:&nbsp; {!v.product.author}</p>
+                        {!$Label.c.Author}&nbsp; {!v.product.author}</p>
                     </aura:if>
                     <aura:if isTrue="{!v.product.director!=null}">
                         <p style="padding-bottom: 10px; padding-top: 10px; font-size: 125%">
-                            Director:&nbsp; {!v.product.director}</p>
+                        {!$Label.c.Director}&nbsp; {!v.product.director}</p>
                     </aura:if>
 
-                    <p style="font-weight:bold">Rating based on {!v.product.countRating} votes</p>
-                    <div class="container" title="Average rating" style="transition: 3s !important">
-                        <aura:if isTrue="{!v.product.averageRating!=0}">
-                            <div class="avgRating avgRatingInner"
-                                 style="{!'width: '+v.product.averageRating*10*2+'%;'}"></div>
-                        </aura:if>
-                        <aura:if isTrue="{!v.product.averageRating==0}">
-                            <div class="avgRating avgRatingInner" style="padding-right: 0px; padding-left: 0px;"></div>
-                        </aura:if>
+                    <p style="font-size: 120%; padding-top: 34px; padding-left: 5px;">{!v.product.countRating}&nbsp;{!$Label.c.Votes}</p>
+                    <div class="starsContainer" style="top: 180px;" title="{!$Label.c.Average_rating}">
+                        <div class="star-ratings-css">
+                            <div class="star-ratings-css top" style="{!'width: '+v.product.averageRating*10*2+'%;'}"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                            <div class="star-ratings-css bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                        </div>
                     </div>
 
-                    <div style="padding-bottom: 10px; padding-top: 10px; font-size: 125%; width: 200px;">
-                        <lightning:input messageWhenRangeUnderflow="Quantity must be at least 1" type="number"
-                                         value="{!v.quantity}" label="Quantity" min="1"/>
+                    <div style="font-size: 125%; position: absolute; top: 311px; width: 200px;">
+                        <lightning:input messageWhenRangeUnderflow="{!$Label.c.Quantity_error}" type="number"
+                                         value="{!v.quantity}" label="{!$Label.c.Quantity}" min="1"/>
                     </div>
 
                     <button onclick="{!c.handleAddToCart}"
                             class="slds-button slds-button_success addToCartButton">
-                        Add to cart
+                        {!$Label.c.Add_to_cart}
                     </button>
                 </div>
 
             </div>
             <div class="tabsetContainer">
                 <lightning:tabset variant="scoped">
-                    <lightning:tab label="Description">
+                    <lightning:tab label="{!$Label.c.Description}">
                         <p style="text-align: justify; font-size: 120%; padding-right: 1rem; padding-left: 1rem; padding-bottom: 1rem">{!v.product.description}</p>
                     </lightning:tab>
-                    <lightning:tab label="Comments and Reviews">
+                    <lightning:tab label="{!$Label.c.Comments_and_Reviews}">
                         <c:BM_ProductReviews productId="{!v.product.productId}"/>
                     </lightning:tab>
-                    <lightning:tab label="Your review">
-                        <aura:if isTrue="{!v.user.Id=='0051t000002PhRiAAK'}">
+                    <lightning:tab label="{!$Label.c.Your_review}">
+                        <aura:if isTrue="{!v.user.Id==$Label.c.Guest_user}">
                             <div style="text-align: center; font-style:italic; font-size: 130%">
-                                You must be logged in to add review
+                                {!$Label.c.Priviledge_error}
                             </div>
                         </aura:if>
-                        <aura:if isTrue="{!v.user.Id!='0051t000002PhRiAAK'}">
+                        <aura:if isTrue="{!v.user.Id!=$Label.c.Guest_user}">
                             <aura:if isTrue="{!v.userRating==null}">
                                 <div style="text-align: center; font-style:italic; font-size: 130%">
-                                    You have not added a review for this product yet
+                                    {!$Label.c.No_review_yet}
                                 </div>
                                 <div style="width: 100%; position: relative">
                                     <div class="starsRatingPos">
@@ -116,7 +120,7 @@
                                     </lightning:layoutItem>
 
                                     <lightning:layoutItem size="12" class="slds-align--absolute-center">
-                                        <lightning:button iconName="utility:save" label="Add review"
+                                        <lightning:button iconName="utility:save" label="{!$Label.c.Add_review}"
                                                           onclick="{!c.handleSaveReview}"/>
                                     </lightning:layoutItem>
                                 </div>
@@ -132,17 +136,17 @@
                                                                          minute="2-digit" timeZoneName="short"
                                                                          hour12="true"/>
                                         </div>
-                                        <div class="editButtonContainer" title="Edit review"
+                                        <div class="editButtonContainer" title="{!$Label.c.Edit_review}"
                                              onclick="{!c.handleEditReview}">
                                             <lightning:icon iconName="utility:edit" size="small"/>
                                         </div>
-                                        <div class="deleteButtonContainer" title="Delete review"
+                                        <div class="deleteButtonContainer" title="{!$Label.c.Delete_review}"
                                              onclick="{!c.handleDeleteReview}">
                                             <lightning:icon iconName="utility:delete" size="small"/>
                                         </div>
 
                                         <div class="ratingContainer">
-                                            <div class="star-ratings-css" title="Your rating" style="cursor: default">
+                                            <div class="star-ratings-css" title="{!$Label.c.Your_rating}" style="cursor: default">
                                                 <div class="star-ratings-css top"
                                                      style="{!'width: '+v.userRating.Rating__c*10*2+'%;'}">
                                                     <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
@@ -176,9 +180,9 @@
 
                                 <lightning:layoutItem size="12" class="slds-align--absolute-center">
                                     <div class="slds-button-group" role="group">
-                                        <lightning:button iconName="utility:save" label="Save"
+                                        <lightning:button iconName="utility:save" label="{!$Label.c.Save}"
                                                           onclick="{!c.handleUpdateReview}"/>
-                                        <lightning:button iconName="utility:close" label="Cancel"
+                                        <lightning:button iconName="utility:close" label="{!$Label.c.Cancel}"
                                                           onclick="{!c.handleCancelEdit}"/>
                                     </div>
                                 </lightning:layoutItem>

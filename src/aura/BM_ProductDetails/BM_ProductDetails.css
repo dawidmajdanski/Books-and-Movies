@@ -141,10 +141,30 @@
     height: auto;
     background-color: #fdfffb;
     transition: 0.8s;
+    position: relative;
 }
 
 .THIS .addToCartButton{
-    transition: 0.8s;
+    transition: .8s;
     position: absolute;
-    top: 574px;
+    top: 336px;
+    right: 16px;
+    border-radius: 0px;
+    width: 295px;
+}
+
+.THIS .starsContainer{
+    position: absolute;
+}
+
+.THIS .star-ratings-css {
+    width: auto;
+
+}
+
+.THIS .productTypeImg{
+    width: 4%;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
 }
