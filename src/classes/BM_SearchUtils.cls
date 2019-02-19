@@ -54,14 +54,14 @@ public with sharing class BM_SearchUtils {
     }
 
     private static String parseProductCategory(String productCategory){
-        if(productCategory=='AllTab'){
+        if(productCategory==System.Label.All_tab){
              return '(Product2.RecordType.Name=\'Book\' or Product2.RecordType.Name=\'Movie\') ';
         }else{
-            if(productCategory=='BookTab'){
-                return 'Product2.RecordType.Name=\'Book\' ';
+            if(productCategory==System.Label.Books_tab){
+                return 'Product2.RecordType.Name=\''+System.Label.Book_record_type+'\' ';
             }else{
-                if(productCategory=='MovieTab'){
-                    return 'Product2.RecordType.Name=\'Movie\' ';
+                if(productCategory==System.Label.Movies_tab){
+                    return 'Product2.RecordType.Name=\''+System.Label.Movie_record_type+'\' ';
                 }
             }
         }

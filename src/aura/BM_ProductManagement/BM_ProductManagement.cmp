@@ -1,0 +1,316 @@
+<!--
+ - Created by Majdan on 03.02.2019.
+ -->
+
+<aura:component controller="BM_ProductManagement" description="BM_ProductUploadPicture"
+                implements="flexipage:availableForAllPageTypes" access="global">
+    <aura:attribute name="products" type="Product2[]" />
+    <aura:attribute name="productSelected" type="Boolean" />
+    <aura:attribute name="productPictures" type="Object[]" />
+    <aura:attribute name="parentId" type="Id"/>
+    <aura:attribute name="fileName" type="String" default="No File Selected.."/>
+    <aura:attribute name="disabled" type="Boolean" default="false"/>
+    <aura:attribute name="sideTabsetOption" type="String" default="currProm"/>
+    <aura:attribute name="currentPromoProducts" type="Object[]"/>
+    <aura:attribute name="searchText" type="String" default=""/>
+    <aura:attribute name="minPrice" type="Decimal"/>
+    <aura:attribute name="maxPrice" type="Decimal"/>
+    <aura:attribute name="minRating" type="Integer"/>
+    <aura:attribute name="specificYear" type="Integer"/>
+    <aura:attribute name="minYear" type="Integer"/>
+    <aura:attribute name="maxYear" type="Integer"/>
+    <aura:attribute name="bookGenre" type="String"/>
+    <aura:attribute name="movieGenre" type="String"/>
+    <aura:attribute name="bookGenres" type="String[]"/>
+    <aura:attribute name="movieGenres" type="String[]"/>
+    <aura:attribute name="author" type="String"/>
+    <aura:attribute name="director" type="String"/>
+    <aura:attribute name="productsToDiscount" type="Object[]"/>
+    <aura:attribute name="productType" type="String" default="All"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+
+    <lightning:card class="mainContainer">
+        <lightning:tabset class="tabsetStyle">
+            <lightning:tab label="{!$Label.c.Product_pictures}" id="productPictures">
+                <div style="padding: 1rem">
+                    <lightning:select aura:id="productsList" label="{!$Label.c.Products}" name="selectType"
+                                      onchange="{!c.handleSelectProduct}">
+                        <option value="">{!$Label.c.Select_product_option}</option>
+                        <aura:iteration items="{!v.products}" var="product">
+                            <option value="{!product.Id}">{!product.Name}</option>
+                        </aura:iteration>
+                    </lightning:select>
+                </div>
+
+                <div style="padding: 1rem; display: inline-block; width: 100%;">
+                    <aura:iteration items="{!v.productPictures}" var="pic">
+                        <aura:if isTrue="{!pic.pictureName!=$Label.c.Main_picture_name}">
+                            <div class="tileOuterDiv" title="{!$Label.c.Set_main_pic_hint}">
+                                <img class="tileImg"
+                                     src="{!pic.pictureURL}" onclick="{!c.onSetMainPicture}"
+                                     data-record="{!pic.pictureId}"/>
+                                <div class="delIcoContainer" title="{!$Label.c.Delete}" onclick="{!c.onDeletePicture}"
+                                     data-record="{!pic.pictureId}">
+                                    <lightning:icon iconName="action:delete" class="delIco" size="xx-small"/>
+                                </div>
+
+                            </div>
+                        </aura:if>
+                        <aura:if isTrue="{!pic.pictureName==$Label.c.Main_picture_name}">
+                            <div class="tileOuterDivBordered" title="{!$Label.c.Main_picture}">
+                                <img class="tileImg"
+                                     src="{!pic.pictureURL}"/>
+                                <div class="delIcoContainerBordered" title="{!$Label.c.Delete}" onclick="{!c.onDeletePicture}"
+                                     data-record="{!pic.pictureId}">
+                                    <lightning:icon iconName="action:delete" class="delIco" size="xx-small"/>
+                                </div>
+                            </div>
+                        </aura:if>
+                    </aura:iteration>
+                </div>
+
+                <aura:if isTrue="{!v.productSelected}">
+                    <div style="padding: 1rem">
+                        <lightning:input aura:id="fileId" onchange="{!c.handleFilesChange}" type="file" name="file"
+                                         label="{!$Label.c.Upload_picture}" multiple="true" disabled="{!v.disabled}"/>
+                        <div class="slds-text-body_small slds-text-color_error">{!v.fileName} </div>
+                        <button class="slds-button slds-button_brand" style="margin-top:10px" onclick="{!c.doSave}">
+                            {!$Label.c.Save}
+                        </button>
+                    </div>
+                </aura:if>
+
+            </lightning:tab>
+            <lightning:tab label="{!$Label.c.Promotions}" id="promotions">
+
+                <div class="slds-grid slds-gutters" style="height: auto;">
+                    <div class="slds-col slds-size_1-of-3" style="border-right: 1px solid gainsboro; width: 17%">
+                        <div class="sideTabset">
+                            <ul class="ulSideTabset">
+                                <li id="currentPromo" class="liElem" onclick="{!c.handleCurrentPromo}"
+                                    style="background-color: #e8faff;">
+                                    {!$Label.c.Current_promotions}
+                                </li>
+                                <li id="addPromo" class="liElem" onclick="{!c.handleAddPromo}">
+                                    {!$Label.c.Add_promotions}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_2-of-3" style="width: 83.3%;">
+                        <aura:if isTrue="{!v.sideTabsetOption=='currProm'}">
+                            <button class="slds-button slds-button_neutral"
+                                    onclick="{! c.handleRemovePromotions}">{!$Label.c.Remove_promotions}
+                            </button>
+                            <div class="currentPromoContainer">
+                                <table class="slds-table slds-table_cell-buffer slds-table_bordered" id="dataTable">
+                                    <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <th class="slds-text-title_caps" scope="col">
+                                            <div class="slds-truncate" title="{!$Label.c.Product_name_col}">{!$Label.c.Product_name_col}</div>
+                                        </th>
+                                        <th class="slds-text-title_caps" scope="col">
+                                            <div class="slds-truncate" title="{!$Label.c.Standard_price_col}">{!$Label.c.Standard_price_col}
+                                            </div>
+                                        </th>
+                                        <th class="slds-text-title_caps" scope="col">
+                                            <div class="slds-truncate" title="{!$Label.c.Discount_price}">{!$Label.c.Discount_price}</div>
+                                        </th>
+                                        <th class="slds-text-title_caps" scope="col">
+                                            <div class="slds-truncate" title="{!$Label.c.Discount_percentage}">{!$Label.c.Discount_percentage}</div>
+                                        </th>
+                                        <th class="slds-text-title_caps" scope="col">
+                                            <div class="slds-truncate" title="{!$Label.c.Action}">{!$Label.c.Action}</div>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <aura:iteration items="{!v.currentPromoProducts}" var="product" indexVar="ind">
+                                        <tr class="slds-hint-parent" id="{!ind}">
+                                            <td data-label="{!product.productName}" scope="row">
+                                                <div class="slds-truncate" title="{!product.productName}">
+                                                        {!product.productName}
+                                                </div>
+                                            </td>
+                                            <td data-label="{!product.productPrice}">
+                                                <div class="slds-truncate"
+                                                     title="{!product.productPrice}">{!product.productPrice}</div>
+                                            </td>
+                                            <td data-label="{!product.discountPrice}">
+                                                <div class="slds-truncate"
+                                                     title="{!product.discountPrice}">{!product.discountPrice}</div>
+                                            </td>
+                                            <td data-label="{!product.discountPrice}">
+                                                <div class="slds-truncate"
+                                                     title="{!product.discountPercentage}">{!product.discountPercentage}</div>
+                                            </td>
+                                            <td data-label="{!$Label.c.Remove_promotion}"
+                                                onclick="{!c.handleRemoveSinglePromotionAction}"
+                                                data-record="{!product.pricebookEntryId}">
+                                                <div class="slds-truncate"
+                                                     title="{!$Label.c.Remove_promotion}"><a>{!$Label.c.Remove_promotion}</a></div>
+                                            </td>
+                                        </tr>
+                                    </aura:iteration>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </aura:if>
+                        <aura:if isTrue="{!v.sideTabsetOption=='addProm'}">
+                            <div class="addPromoContainer">
+                                <div id="searchSection" class="">
+                                    <ui:inputText value="{!v.searchText}"
+                                                  class="slds-lookup__search-input slds-input searchInputCustom"
+                                                  placeholder="{!$Label.c.Search_placeholder}"/>
+                                    <lightning:tabset class="searchTabset" selectedTabId="{!v.productType}"
+                                                      onselect="{!c.handleChangeTabset}">
+                                        <lightning:tab label="{!$Label.c.All_tab}" id="All">
+                                            <div class="slds-form-element tabsetPadding">
+                                                <c:BM_ProductSearchSharedParams aura:id="clearAvailableYears"
+                                                                                specificYear="{!v.specificYear}"
+                                                                                minYear="{!v.minYear}"
+                                                                                maxYear="{!v.maxYear}"
+                                                                                minPrice="{!v.minPrice}"
+                                                                                maxPrice="{!v.maxPrice}"/>
+                                            </div>
+                                        </lightning:tab>
+                                        <lightning:tab label="{!$Label.c.Books_tab}" id="Books">
+                                            <div class="slds-form-element tabsetPadding">
+                                                <c:BM_ProductSearchSharedParams aura:id="clearAvailableYears1"
+                                                                                specificYear="{!v.specificYear}"
+                                                                                minYear="{!v.minYear}"
+                                                                                maxYear="{!v.maxYear}"
+                                                                                minPrice="{!v.minPrice}"
+                                                                                maxPrice="{!v.maxPrice}"/>
+                                                <div id="book_genre_param" class="searchParamsGridStyle">
+                                                    <lightning:select aura:id="selectBookGenre" name="selectBookGenre"
+                                                                      label="{!$Label.c.Genre}"
+                                                                      onchange="{!c.handleBookGenreChange}">
+                                                        <option value="">{!$Label.c.All_genres}</option>
+                                                        <aura:iteration items="{!v.bookGenres}" var="genre">
+                                                            <option>{!genre}</option>
+                                                        </aura:iteration>
+                                                    </lightning:select>
+                                                </div>
+                                                <div id="book_author_param" class="searchParamsGridStyle">
+                                                    <lightning:input label="{!$Label.c.Author}" class="input_Param" type="text"
+                                                                     value="{!v.author}"/>
+                                                </div>
+                                            </div>
+                                        </lightning:tab>
+                                        <lightning:tab label="{!$Label.c.Movies_tab}" id="Movies">
+                                            <div class="slds-form-element tabsetPadding">
+                                                <c:BM_ProductSearchSharedParams aura:id="clearAvailableYears2"
+                                                                                specificYear="{!v.specificYear}"
+                                                                                minYear="{!v.minYear}"
+                                                                                maxYear="{!v.maxYear}"
+                                                                                minPrice="{!v.minPrice}"
+                                                                                maxPrice="{!v.maxPrice}"/>
+                                                <div id="movie_genre_param" class="searchParamsGridStyle">
+                                                    <lightning:select aura:id="selectMovieGenre" name="selectMovieGenre"
+                                                                      label="{!$Label.c.Genre}"
+                                                                      onchange="{!c.handleMovieGenreChange}">
+                                                        <option value="">{!$Label.c.All_genres}</option>
+                                                        <aura:iteration items="{!v.movieGenres}" var="genre">
+                                                            <option>{!genre}</option>
+                                                        </aura:iteration>
+                                                        >
+                                                    </lightning:select>
+                                                </div>
+                                                <div id="director_param" class="searchParamsGridStyle">
+                                                    <lightning:input label="{!$Label.c.Director}" class="input_Param" type="text"
+                                                                     value="{!v.director}"/>
+                                                </div>
+                                            </div>
+                                        </lightning:tab>
+                                        <div class="slds-button-group customBtnGroup" role="group">
+                                            <button class="slds-button slds-button_neutral"
+                                                    onclick="{! c.handleClear}">{!$Label.c.Clear}
+                                            </button>
+                                            <button class="slds-button slds-button_brand" onclick="{! c.handleSearch }">
+                                                {!$Label.c.Search}
+                                            </button>
+                                        </div>
+                                    </lightning:tabset>
+                                </div>
+                                <aura:if isTrue="{!v.productsToDiscount.length!=0}">
+                                    <div class="resultSection">
+                                        <table class="slds-table slds-table_cell-buffer slds-table_bordered"
+                                               id="dataTable">
+                                            <thead>
+                                            <tr class="slds-line-height_reset">
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="{!$Label.c.Product_name}">
+                                                        {!$Label.c.Product_name}
+                                                    </div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="{!$Label.c.Standard_price_col}">
+                                                        {!$Label.c.Standard_price_col}
+                                                    </div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="{!$Label.c.Discount_price}">
+                                                        {!$Label.c.Discount_price}
+                                                    </div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="{!$Label.c.Discount_percentage}">
+                                                        {!$Label.c.Discount_percentage}
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <aura:iteration items="{!v.productsToDiscount}" var="product"
+                                                            indexVar="ind">
+                                                <tr class="slds-hint-parent" id="{!ind}">
+                                                    <td data-label="{!product.productName}" scope="row">
+                                                        <div class="slds-truncate" title="{!product.productName}">
+                                                            {!product.productName}
+                                                        </div>
+                                                    </td>
+                                                    <td data-label="{!product.productPrice}">
+                                                        <div class="slds-truncate"
+                                                             title="{!product.productPrice}">{!product.productPrice}</div>
+                                                    </td>
+                                                    <td data-label="{!product.discountPrice}">
+                                                        <div class="slds-truncate"
+                                                             title="{!product.discountPrice}">{!product.discountPrice}</div>
+                                                    </td>
+                                                    <td data-label="{!product.discountPercentage}">
+                                                        <div class="slds-truncate"
+                                                             title="{!product.discountPercentage}">
+                                                            <input  onblur="{!c.handleSingleProductDiscountChange}"
+                                                                    class="slds-input"
+                                                                    style="padding-right: 0; width:40%"
+                                                                    type="number"
+                                                                    value="{!product.discountPercentage}"
+                                                                    data-record="{!product.productId}"
+                                                                    id="{!product.productId}"/>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </aura:iteration>
+                                            </tbody>
+                                        </table>
+                                        <div class="addPromoToAllProducts">
+                                            <button class="slds-button slds-button_brand"
+                                                    onclick="{! c.handleAddDiscountToAllProducts }">
+                                                    {!$Label.c.Add_discount}
+                                            </button>
+                                            <input id="discountInput" placeholder="{!$Label.c.Discount_format_placeholder}"
+                                                   class="slds-input" type="number"
+                                                   style="width: 25%; margin-left: 10px;"/>
+                                        </div>
+                                    </div>
+                                </aura:if>
+                            </div>
+                        </aura:if>
+                    </div>
+                </div>
+            </lightning:tab>
+        </lightning:tabset>
+    </lightning:card>
+</aura:component>
