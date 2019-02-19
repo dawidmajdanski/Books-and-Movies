@@ -4,13 +4,16 @@
 
 <aura:component description="BM_HomePage" implements="forceCommunity:availableForAllPageTypes"
                 controller="BM_ProductSearchController">
-    <aura:attribute type="Object[]" name="products"/>
-    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
     <ltng:require styles="{!$Resource.staticStarsRating}"/>
     <ltng:require styles="{!$Resource.ribbonBadge}"/>
+
+    <aura:attribute name="products" type="Object[]"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+
     <!--most popular -->
     <h1 class="pageTitle">
-        Recent popular
+        {!$Label.c.Popular_books_and_movies}
     </h1>
     <div class="content">
         <div style="display: inline-block; width: 100%; float: right; padding-left: 1rem;">
@@ -20,7 +23,7 @@
                         <aura:if isTrue="{!product.discountPrice!=null}">
                             <div class="discountTriangle">
                                 <h1 class="saleTitle">
-                                    Sale
+                                    {!$Label.c.Sale_ribbon_title}
                                 </h1>
                             </div>
                         </aura:if>
@@ -30,7 +33,13 @@
                     </div>
                     <div class="tileContent">
                         <h2 class="productTitle">
-                                {!product.productName}
+                            {!product.productName}
+                            <aura:if isTrue="{!product.productRecordType == $Label.c.Book}">
+                                <img title="{!$Label.c.Book}" class="productTypeImg" src="{!$Resource.BookSymbol}" />
+                            </aura:if>
+                            <aura:if isTrue="{!product.productRecordType == $Label.c.Movie}">
+                                <img title="{!$Label.c.Movie}" style="bottom: -174px !important; width: 7% !important" class="productTypeImg" src="{!$Resource.MovieSymbol}" />
+                            </aura:if>
                         </h2>
                         <div class="starsContainer">
                             <div class="star-ratings-css">
@@ -43,7 +52,7 @@
                         <aura:if isTrue="{!product.discountPrice!=null}">
                             <div class="discountRibbonContainer">
                                 <div class="discount-label green">
-                                    <span>{!product.discountPercentage}%</span>
+                                    <span><lightning:formattedNumber value="{!product.discountPercentage*100}" maximumFractionDigits="0"/>%</span>
                                 </div>
                             </div>
                         </aura:if>
