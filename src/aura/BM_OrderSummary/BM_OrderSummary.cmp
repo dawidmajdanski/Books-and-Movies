@@ -4,24 +4,28 @@
 
 <aura:component description="BM_OrderSummary" controller="BM_OrderController"
                 implements="forceCommunity:availableForAllPageTypes" access="global">
-    <aura:attribute type="Object" name="shippingAddress"/>
-    <aura:attribute type="Object[]" name="productsToOrder"/>
-    <aura:attribute type="Decimal" name="totalOrderPrice" />
-    <aura:attribute type="Boolean" name="showPage" default="false"/>
-    <aura:attribute type="Object" name="user"/>
+    <aura:attribute name="shippingAddress" type="Object" />
+    <aura:attribute name="productsToOrder" type="Object[]" />
+    <aura:attribute name="totalOrderPrice" type="Decimal" />
+    <aura:attribute name="showPage" default="false" type="Boolean" />
+    <aura:attribute name="user" type="Object" />
+
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <aura:registerEvent name="getProductsQuantityInCart" type="c:BM_ProductsCartQuantityEvent"/>
+
+    <c:BM_LoadingSpinner aura:id="loadingSpinner"/>
 
     <aura:if isTrue="{!v.showPage}">
         <div class="orderSummaryContainer">
             <div class="summaryTitle">
-                <p>Order summary</p>
+                <p>{!$Label.c.Order_summary}</p>
             </div>
             <div class="slds-grid slds-gutters" style="padding:1rem">
                 <div class="slds-form" role="list" style="width: 100%">
                     <div class="slds-form__row">
                         <div class="slds-form__item" role="listitem">
                             <div style="border: none" class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal slds-hint-parent">
-                                <span class="slds-form-element__label">Shipping Address</span>
+                                <span class="slds-form-element__label">{!$Label.c.Shipping_address}</span>
                                 <div class="slds-form-element__control">
                                     <div class="slds-form-element__static" style="font-family: 'Lucida Sans Unicode'; font-size: 110%;">
                                         {!v.shippingAddress.shippingStreet} <br/>
@@ -29,9 +33,6 @@
                                         {!v.shippingAddress.shippingState} <br/>
                                         {!v.shippingAddress.shippingCountry} <br/>
                                     </div>
-                                    <button class="slds-button slds-button_icon" title="Edit: Shipping Address">
-                                        <span class="slds-assistive-text">Edit: Shipping Address</span>
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -56,7 +57,7 @@
                         <table style="font-weight:bold; font-family: 'Lucida Sans Unicode'; margin-top: 0.25rem;">
                             <tr>
                                 <td style="text-align: right">
-                                    Total order price:
+                                   {!$Label.c.Total_order_price}
                                 </td>
                                 <td style="text-align: right">
                                     {!v.totalOrderPrice}$

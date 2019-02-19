@@ -10,5 +10,5 @@
       }else {
            console.error('No such event: BM_ProductsCartQuantityEvent');
       }
-  }
+  },
 })

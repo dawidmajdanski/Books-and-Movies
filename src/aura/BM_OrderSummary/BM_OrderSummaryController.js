@@ -28,7 +28,12 @@
         component.set("v.totalOrderPrice", totalOrderPrice);
     },
     handleFinalizeOrder: function(component, event, helper){
-        console.log('makarene');
+        var loading = component.find("loadingSpinner");
+        if(loading){
+              loading.waiting();
+        }else{
+            console.error('No such component: loadingSpinner');
+        }
         let action = component.get('c.createOrder');
         action.setParams({productsToOrder: JSON.stringify(component.get("v.productsToOrder")), shippingAddress: JSON.stringify(component.get("v.shippingAddress"))});
         action.setCallback(this, function(response) {
@@ -41,6 +46,7 @@
                sessionStorage.removeItem('deliverySelectionDone');
                sessionStorage.removeItem('orderCompletedSuccessfully');
                sessionStorage.setItem('orderCompletedSuccessfully', true);
+               sessionStorage.setItem('orderNumber', response.getReturnValue());
                var navEvt = $A.get('e.force:navigateToURL');
                navEvt.setParams({url: '/success'});
                navEvt.fire();
@@ -48,4 +54,5 @@
         });
         $A.enqueueAction(action);
     },
+
 })
