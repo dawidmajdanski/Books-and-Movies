@@ -2,7 +2,7 @@
  * Created by Majdan on 09.02.2019.
  */
 
-public with sharing class BM_OrderController {
+public without sharing class BM_OrderController {
     @AuraEnabled
     public static String createOrder(String productsToOrder, String shippingAddress) {
         String newOrderId = prepareNewOrderObj(shippingAddress);
@@ -33,7 +33,7 @@ public with sharing class BM_OrderController {
     @AuraEnabled
     public static List<Order> getMyOrders() {
         List<Order> orders = [
-                SELECT Id, Status, CreatedBy.Name, TotalAmount, Name, OrderNumber, EffectiveDate, (SELECT PricebookEntry.Pricebook2Id, Quantity, PricebookEntry.Name, Product2.Name, UnitPrice from OrderItems)
+                SELECT Id, Status, CreatedBy.Name, TotalAmount, Name, OrderNumber, EffectiveDate, (SELECT PricebookEntry.Pricebook2Id, Quantity, PricebookEntry.Name, Product2.Name, Product2.ProductCode, UnitPrice from OrderItems)
                 FROM ORDER
                 WHERE CreatedBy.Id = :UserInfo.getUserId() ORDER BY OrderNumber Desc
         ];
@@ -57,7 +57,7 @@ public with sharing class BM_OrderController {
     }
 
     public static User getCurrentUser() {
-        return [SELECT Id, Name, Email FROM User WHERE Id = :UserInfo.getUserId()];
+        return [SELECT Id, Name, Email, ContactId FROM User WHERE Id = :UserInfo.getUserId()];
     }
 
     @AuraEnabled
@@ -83,6 +83,41 @@ public with sharing class BM_OrderController {
             }
         }
         return null;
+    }
+
+    @AuraEnabled
+    public static Boolean submitNewComplaint(Order orderObj, OrderItem orderItemObj, User person, String caseSubject, String caseDescription){
+        Case newCase = new Case();
+        newCase.Status = 'New';
+        newCase.Priority = 'Medium';
+        newCase.Origin = 'Web';
+        newCase.Subject = caseSubject;
+        newCase.Description = caseDescription;
+        newCase.Order__c = orderObj.Id;
+        newCase.Order_product__c = orderItemObj.Id;
+        newCase.ContactId = person.ContactId;
+
+        try{
+            insert newCase;
+            return true;
+        }catch (DmlException e){
+            system.debug(e);
+        }
+        return false;
+    }
+
+    @AuraEnabled
+    public static String getMyComplaints(){
+        List<Case> userCases = [
+                SELECT Id, ContactId, Order__c,
+                        Order_Product__c, Order__r.OrderNumber, Order__r.CreatedDate, Order_Product__r.Product2.Name,
+                        CaseNumber, Status, Reason, CreatedDate, Order_Product__r.UnitPrice,
+                        Subject, Description, ClosedDate,
+                        (SELECT NewValue, OldValue, CreatedDate from Histories where Field='Status' ORDER BY CreatedDate ASC),
+                        (SELECT id, textbody, CreatedBy.Name, CreatedDate from emailmessages)
+                FROM Case WHERE ContactId =: [SELECT ContactId FROM User WHERE Id =: UserInfo.getUserId()].get(0).ContactId ORDER BY Status DESC,CreatedDate];
+
+        return userCases.size()!=0?JSON.serialize(userCases):null;
     }
 
 }
