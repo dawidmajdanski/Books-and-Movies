@@ -96,11 +96,6 @@ public class BM_ProductSearchController {
     }
 
     @AuraEnabled
-    public static User getLoggedUser(){
-        return [SELECT id, name, country, city, postalcode, street, state, email FROM USER WHERE Id =: UserInfo.getUserId()];
-    }
-
-    @AuraEnabled
     public static Product_rating__c saveReviewForProduct(String newComment,Integer newVote, String productId, String userId){
         Product_rating__c productRating = new Product_rating__c();
         productRating.Product__c = productId;
@@ -161,5 +156,9 @@ public class BM_ProductSearchController {
         return serializedProducts;
     }
 
+    @AuraEnabled
+    public static User getLoggedUser(){
+        return [SELECT id, name, country, city, postalcode, street, state, email FROM USER WHERE Id =: UserInfo.getUserId()];
+    }
 
 }
