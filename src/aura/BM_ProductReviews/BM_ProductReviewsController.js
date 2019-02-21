@@ -8,4 +8,5 @@
     handleReceiveProductReviews: function(component, event, helper){
         helper.getProductReviews(component, event);
     }
+
 })
