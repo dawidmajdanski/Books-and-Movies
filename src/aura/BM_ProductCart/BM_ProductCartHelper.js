@@ -2,19 +2,9 @@
  * Created by Majdan on 09.02.2019.
  */
 ({
-    getUser: function(component, event){
-        let action = component.get('c.getLoggedUser');
-        action.setCallback(this, function(response) {
-          var state = response.getState();
-          if (state === 'SUCCESS') {
-                component.set("v.user", response.getReturnValue());
-          }
-        });
-        $A.enqueueAction(action);
-    },
-    getTotalCartPrice: function(component, event, cartProducts){
-        var totalCartPrice = 0;
-        for(var i=0; i<cartProducts.length; i++){
+    getTotalCartPrice: function(component, cartProducts){
+        let totalCartPrice = 0;
+        for(let i=0; i<cartProducts.length; i++){
             let partialSum = 0;
             if(cartProducts[i].discountPrice){
                 partialSum += cartProducts[i].quantity * cartProducts[i].discountPrice;
@@ -26,7 +16,7 @@
         component.set("v.totalCartPrice", totalCartPrice);
     },
     validateQuantityInput: function(value, inputId){
-        var input = document.getElementById(inputId);
+        let input = document.getElementById(inputId);
         if(!value || value<=0){
             input.classList.add("slds-input-customError");
             document.getElementById("proceedToDelivery").disabled = true;
@@ -38,12 +28,12 @@
         }
     },
     handleToast: function(titleMessage, errorName, toastType){
-        var toastParams = {
+        let toastParams = {
             title: titleMessage,
             message: errorName,
             type: toastType
         };
-        var toastEvent = $A.get("e.force:showToast");
+        let toastEvent = $A.get("e.force:showToast");
         toastEvent.setParams(toastParams);
         toastEvent.fire();
     },

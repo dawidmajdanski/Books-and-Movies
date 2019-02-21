@@ -5,7 +5,6 @@
 <aura:component description="BM_ProductCart" implements="forceCommunity:availableForAllPageTypes"
                 controller="BM_ProductSearchController">
     <aura:attribute name="cartProducts" type="Object[]" />
-    <aura:attribute name="user" type="User" />
     <aura:attribute name="totalCartPrice" type="Decimal" />
 
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>

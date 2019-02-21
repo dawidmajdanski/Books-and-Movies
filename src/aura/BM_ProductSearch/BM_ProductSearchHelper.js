@@ -20,6 +20,18 @@
 
       return queryObj;
     },
+    getCurrentUser: function(component, event){
+        if(!sessionStorage.getItem('user--info')){
+            var action = component.get("c.getLoggedUser");
+            action.setCallback(this, function(response) {
+                var state = response.getState();
+                if (state === 'SUCCESS') {
+                   sessionStorage.setItem('user--info', JSON.stringify(response.getReturnValue()));
+                }
+            });
+            $A.enqueueAction(action);
+        }
+    },
     advancedSearchModalAppearance: function(component, event){
         var isAdvSearchDisplayed = component.get("v.isAdvSearchDisplayed");
         if(isAdvSearchDisplayed){

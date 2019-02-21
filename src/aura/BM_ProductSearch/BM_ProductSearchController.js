@@ -6,6 +6,7 @@
         $A.enqueueAction(component.get('c.getMovieGenresPicklistValues'));
         $A.enqueueAction(component.get('c.getBookGenresPicklistValues'));
         helper.getCartItemsQuantity(component, event);
+        helper.getCurrentUser(component, event);
     },
     handleClick : function(component, event, helper) {
       var isPricingCorrect = helper.checkIfMaxPriceLesserThanMin(component, event, helper);
