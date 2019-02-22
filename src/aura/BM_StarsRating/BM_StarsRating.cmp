@@ -15,7 +15,7 @@
 
     <div id="changeStarMouseOver"  onmouseover="{!c.handleVoteBarToggleOver}" onmouseleave="{!c.handleVoteBarToggleLeave}" style="cursor: default; z-index: 99; display:none; position: absolute; background-color: #ededed; border-radius: 25px; width: 50px">
         <p style="margin: 3px; font-size: 10px">
-            Your vote
+            {!$Label.c.User_vote}
         </p>
     </div>
     <ul  class="{!v.readonly ? 'readonly c-rating' : 'c-rating'}" aura:id="ratingarea" onmouseover="{!c.handleVoteBarToggleOver}" onmouseleave="{!c.handleVoteBarToggleLeave}">

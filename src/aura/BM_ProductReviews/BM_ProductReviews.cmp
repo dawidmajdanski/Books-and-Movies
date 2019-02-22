@@ -11,6 +11,8 @@
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
     <aura:handler event="c:BM_ProductRatingEvent" action="{!c.handleReceiveProductReviews}"/>
 
+    <c:BM_Toast aura:id="toastMsg"/>
+
     <div style="overflow-y: scroll; max-height:42vh; height: auto">
         <div class="slds-feed">
             <ul class="slds-feed__list">

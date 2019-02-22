@@ -13,13 +13,11 @@
         if (component.ratingObj) {
              var value = component.get('v.value');
              component.ratingObj.setRating(value,false);
-             console.log(component.get('v.value'));
         }
     },
     handleVoteBarToggleOver: function(component, event, helper){
         var element = document.getElementById("changeStarMouseOver");
         element.style.display="block";
-
         var left  = 35 + "px";
         var top  = -20 + "px";
         element.style.left = left;
