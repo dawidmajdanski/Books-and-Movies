@@ -50,15 +50,15 @@
                     this.uploadInChunk(component, file, fileContents, startPosition, endPosition, attachId);
                 }
             } else if (state === "INCOMPLETE") {
-                alert($A.get('$Label.c.Server_error') + response.getReturnValue());
+                component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Server_error') + response.getReturnValue(), 'error');
             } else if (state === "ERROR") {
                 var errors = response.getError();
                 if (errors) {
                     if (errors[0] && errors[0].message) {
-                        console.log("Error message: " + errors[0].message);
+                        console.error($A.get('$Label.c.Internal_error')+ ' ' + errors[0].message);
                     }
                 } else {
-                    console.log("Unknown error");
+                    console.error("Unknown error");
                 }
             }
         });
@@ -73,6 +73,9 @@
              if (state === 'SUCCESS') {
                var productPics = response.getReturnValue();
                component.set("v.productPictures", productPics);
+             }else{
+                console.error($A.get('$Label.c.Internal_error')+' '+state);
+                component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Internal_error'), 'error');
              }
         });
         $A.enqueueAction(action);
@@ -103,6 +106,8 @@
               component.set("v.productsToDiscount", response.getReturnValue());
           }else{
               component.set("v.productsToDiscount", []);
+              console.error($A.get('$Label.c.Internal_error')+' '+state);
+              component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Internal_error'), 'error');
           }
       });
       $A.enqueueAction(action);
@@ -124,6 +129,9 @@
              var state = response.getState();
              if (state === 'SUCCESS') {
                 component.set("v.currentPromoProducts", response.getReturnValue());
+             }else{
+                console.error($A.get('$Label.c.Internal_error')+' '+state);
+                component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Internal_error'), 'error');
              }
         });
         $A.enqueueAction(action);
@@ -134,6 +142,9 @@
         var state = response.getState();
         if (state === 'SUCCESS') {
             component.set("v.currentPromoProducts", []);
+        }else{
+            console.error($A.get('$Label.c.Internal_error')+' '+state);
+            component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Internal_error'), 'error');
         }
       });
       $A.enqueueAction(action);
@@ -147,6 +158,9 @@
         var state = response.getState();
         if (state === 'SUCCESS') {
             this.getCurrentPromoProducts(component, event);
+        }else{
+            console.error($A.get('$Label.c.Internal_error')+' '+state);
+            component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Internal_error'), 'error');
         }
       });
       $A.enqueueAction(action);
@@ -173,6 +187,9 @@
         var state = response.getState();
         if (state === 'SUCCESS') {
             this.searchForProducts(component, event);
+        }else{
+            console.error($A.get('$Label.c.Internal_error')+' '+state);
+            component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Internal_error'), 'error');
         }
       });
       $A.enqueueAction(action);
@@ -199,6 +216,9 @@
         var state = response.getState();
         if (state === 'SUCCESS') {
             component.set("v.movieGenres", response.getReturnValue());
+        }else{
+            console.error($A.get('$Label.c.Internal_error')+' '+state);
+            component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Internal_error'), 'error');
         }
       });
       $A.enqueueAction(action);
@@ -209,6 +229,9 @@
         var state = response.getState();
         if (state === 'SUCCESS') {
             component.set("v.bookGenres", response.getReturnValue());
+        }else{
+            console.error($A.get('$Label.c.Internal_error')+' '+state);
+            component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Internal_error'), 'error');
         }
       });
       $A.enqueueAction(action);

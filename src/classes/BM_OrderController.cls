@@ -113,7 +113,7 @@ public without sharing class BM_OrderController {
                         Order_Product__c, Order__r.OrderNumber, Order__r.CreatedDate, Order_Product__r.Product2.Name,
                         CaseNumber, Status, Reason, CreatedDate, Order_Product__r.UnitPrice,
                         Subject, Description, ClosedDate,
-                        (SELECT NewValue, OldValue, CreatedDate from Histories where Field='Status' ORDER BY CreatedDate ASC),
+                        (SELECT NewValue, OldValue, CreatedDate from Histories where Field='Status' ORDER BY CreatedDate DESC ),
                         (SELECT id, textbody, CreatedBy.Name, CreatedDate from emailmessages)
                 FROM Case WHERE ContactId =: [SELECT ContactId FROM User WHERE Id =: UserInfo.getUserId()].get(0).ContactId ORDER BY Status DESC,CreatedDate];
 
