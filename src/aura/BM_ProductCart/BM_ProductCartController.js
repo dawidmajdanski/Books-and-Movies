@@ -4,7 +4,7 @@
 ({
     init: function(component, event, helper){
         if(localStorage.getItem('cartItems')){
-            let cartProducts = JSON.parse(localStorage.getItem('cartItems'));
+            var cartProducts = JSON.parse(localStorage.getItem('cartItems'));
             component.set("v.cartProducts", cartProducts);
             helper.getTotalCartPrice(component, event, cartProducts);
         }
@@ -39,7 +39,7 @@
         if(updateQuantityEvt){
              updateQuantityEvt.fire();
         }else {
-             helper.handleToast($A.get('$Label.c.Error_toast_title'), "Couldn't find: BM_ProductsCartQuantityEvent", "error");
+             component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), "Couldn't find: BM_ProductsCartQuantityEvent", 'error');
         }
     },
     handleQuantityChange: function(component, event, helper){
@@ -64,7 +64,7 @@
     handleGoToDeliveryPage: function(component, event, helper){
         let user = JSON.parse(sessionStorage.getItem('user--info'));
         if(user.Id==$A.get('$Label.c.Guest_user')){
-            helper.handleToast("", $A.get('$Label.c.User_not_logged_msg'), "info");
+            component.find("toastMsg").showToast('', $A.get('$Label.c.User_not_logged_msg'), "info");
         }else{
             sessionStorage.setItem('itemsInCartAccepted', true);
             let navEvt = $A.get('e.force:navigateToURL');
@@ -72,7 +72,7 @@
                 navEvt.setParams({url: '/delivery'});
                 navEvt.fire();
             }else{
-                helper.handleToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Navigation_error'), "error");
+                 component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Navigation_error'), 'error');
             }
         }
     },
@@ -87,7 +87,7 @@
                      navEvt.setParams({url: '/details'});
                      navEvt.fire();
                  }else{
-                     helper.handleToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Navigation_error'), "error");
+                     component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Navigation_error'), 'error');
                  }
                  break;
             }

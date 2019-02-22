@@ -2,7 +2,7 @@
  * Created by Majdan on 09.02.2019.
  */
 ({
-    getTotalCartPrice: function(component, cartProducts){
+    getTotalCartPrice: function(component, event, cartProducts){
         let totalCartPrice = 0;
         for(let i=0; i<cartProducts.length; i++){
             let partialSum = 0;
@@ -20,21 +20,11 @@
         if(!value || value<=0){
             input.classList.add("slds-input-customError");
             document.getElementById("proceedToDelivery").disabled = true;
-            this.handleToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Wrong_quantity'), "error");
+            component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Wrong_quantity'), 'error');
             return false;
         }else{
             input.classList.remove("slds-input-customError");
             document.getElementById("proceedToDelivery").disabled = false;
         }
-    },
-    handleToast: function(titleMessage, errorName, toastType){
-        let toastParams = {
-            title: titleMessage,
-            message: errorName,
-            type: toastType
-        };
-        let toastEvent = $A.get("e.force:showToast");
-        toastEvent.setParams(toastParams);
-        toastEvent.fire();
     },
 })

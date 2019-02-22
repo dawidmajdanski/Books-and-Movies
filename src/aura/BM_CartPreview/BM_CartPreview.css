@@ -1,0 +1,99 @@
+/**
+ * Created by Dawid Majdański on 21.02.2019.
+ */
+.THIS .myOrdersContainer:hover{
+    background-color: rgb(83, 85,86, 0.65);
+}
+
+.THIS.cartContainer:hover{
+    background-color: rgb(90, 91, 93);
+}
+
+.THIS .cartIco{
+    width: 33px;
+    position: static;
+    padding-top: 4px;
+    padding-left: 9px;
+}
+
+.THIS .cartItemsQuantity{
+    background: #ff8300;
+    border-radius: .8em;
+    color: #ffffff;
+    display: inline-block;
+    font-weight: bold;
+    line-height: 1.6em;
+    margin-right: 5px;
+    text-align: center;
+    width: 1.6em;
+    position: absolute;
+    left: 33px;
+    top: 9px;
+}
+
+.THIS .cartItemsTotalPrice{
+    color: white;
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-family: 'Lucida Sans Unicode';
+    font-size: 105%;
+    overflow: hidden;
+    width: 0;
+    transition: 0.35s;
+    margin-left: 70px;
+}
+
+.THIS.mainContainer{
+    position: relative;
+    width: 100%;
+}
+
+.THIS .cartEmptyInfo{
+    color: white;
+    font-size: 115%;
+    text-align: center;
+    font-style: italic;
+    padding-top: 25px;
+}
+
+.THIS.cartContainer{
+    cursor: pointer;
+    z-index: 97;
+    width: 5%;
+    top: 193px;
+    height: 32px;
+    margin-left: 79.5%;
+    position: absolute;
+    transition: .35s;
+    overflow: hidden;
+}
+
+.THIS.cartPreview{
+    z-index: 91;
+    margin-left: 79.5%;
+    top: 225px;
+    background-color: rgb(90, 91, 93);
+    position: absolute;
+    height: 0;
+    width: 298px;
+    transition: .35s;
+    overflow: hidden;
+}
+
+.THIS .productsInCartBtn{
+    position: absolute;
+    bottom: 1.8rem;
+    left: 1.2rem;
+    right: 1.2rem;
+    border-radius: 0;
+    width: 86.4%;
+    transition: .6s;
+}
+
+.THIS .iconScrollUp{
+    position: absolute;
+    bottom: -1px;
+    right: 136px;
+    cursor: pointer;
+}

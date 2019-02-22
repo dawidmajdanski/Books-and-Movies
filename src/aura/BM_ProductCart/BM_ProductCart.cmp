@@ -9,6 +9,8 @@
 
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
 
+    <c:BM_Toast aura:id="toastMsg"/>
+
     <div class="cartContainer">
         <aura:if isTrue="{!v.cartProducts.length==0}">
             <p style="font-style: italic; font-size: 140%; text-align: center; padding-top: 2.5rem; padding-bottom: 2.5rem">
