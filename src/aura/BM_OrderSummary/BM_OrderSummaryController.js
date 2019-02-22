@@ -10,8 +10,10 @@
         }else{
             component.set("v.showPage", false);
             var navEvt = $A.get('e.force:navigateToURL');
-            navEvt.setParams({url: '/'});
-            navEvt.fire();
+            if(navEvt){
+                navEvt.setParams({url: '/'});
+                navEvt.fire();
+            }
         }
     },
     getTotalOrderPrice: function(component, event, helper){
@@ -48,8 +50,10 @@
                sessionStorage.setItem('orderCompletedSuccessfully', true);
                sessionStorage.setItem('orderNumber', response.getReturnValue());
                var navEvt = $A.get('e.force:navigateToURL');
-               navEvt.setParams({url: '/success'});
-               navEvt.fire();
+               if(navEvt){
+                   navEvt.setParams({url: '/success'});
+                   navEvt.fire();
+               }
           }
         });
         $A.enqueueAction(action);

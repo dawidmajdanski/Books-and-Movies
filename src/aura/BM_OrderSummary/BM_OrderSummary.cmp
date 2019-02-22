@@ -14,7 +14,7 @@
     <aura:registerEvent name="getProductsQuantityInCart" type="c:BM_ProductsCartQuantityEvent"/>
 
     <c:BM_LoadingSpinner aura:id="loadingSpinner"/>
-
+    
     <aura:if isTrue="{!v.showPage}">
         <div class="orderSummaryContainer">
             <div class="summaryTitle">

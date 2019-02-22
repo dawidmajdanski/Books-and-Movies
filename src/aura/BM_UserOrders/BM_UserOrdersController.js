@@ -4,30 +4,19 @@
 ({
     init: function(component, event, helper){
         helper.searchForOrders(component, event);
+        helper.searchForUserComplaints(component, event);
     },
-    handleRoll: function(component, event, helper){
-        var selectedSection = event.currentTarget;
-        var index = selectedSection.dataset.index;
-        var isRolledDown = component.get("v.isRolledDown");
-        for(var i=0; i<component.get("v.myOrders").length; i++){
-            document.getElementById(i).style='max-height: 0;';
-            document.getElementById(i+'A').style='transform: rotate(0)';
-            if(index.valueOf() != i.valueOf() ){
-                 isRolledDown[i] = false;
-            }
-        }
-        if(!isRolledDown[index]){
-            document.getElementById(index).style='max-height: 650px;';
-            document.getElementById(index+'A').style='transform: rotate(180deg)';
-            isRolledDown[index] = true;
-        }else{
-            document.getElementById(index).style='max-height: 0;';
-            document.getElementById(index+'A').style='transform: rotate(0)';
-            isRolledDown[index] = false;
-        }
-        component.set("v.isRolledDown", isRolledDown);
+    onSearchForUserComplaints: function(component, event, helper){
+        helper.searchForUserComplaints(component, event);
     },
-    handleItemClick: function(component, event, helper){
+    handleRollOrder: function(component, event, helper){
+        component.set("v.isOrderRolledDown", helper.handleRoll(component, event, component.get("v.myOrders"), component.get("v.isOrderRolledDown"), 'OrderItem', 'OrderArrow'));
+    },
+    handleRollCase: function(component, event, helper){
+        component.set("v.isCaseRolledDown", helper.handleRoll(component, event, component.get("v.complaints"), component.get("v.isCaseRolledDown"), 'CaseItem', 'CaseArrow'));
+        helper.getCaseInfo(component, event);
+    },
+    handleOrderItemClick: function(component, event, helper){
         var selectedSection = event.currentTarget;
         var index = selectedSection.dataset.index;
         var record = selectedSection.dataset.record;
@@ -38,6 +27,17 @@
              }
         }
         helper.getOrderItem(component, event, orderItemName);
+    },
+    handleCaseItemClick: function(component, event, helper){
+        var selectedSection = event.currentTarget;
+        var record = selectedSection.dataset.record;
+        var caseItemName;
+        for(var j=0; j<component.get('v.complaints').length; j++){
+             if(component.get('v.complaints')[j].Order_Product__r.Product2.Name == record){
+                 caseItemName = component.get('v.complaints')[j].Order_Product__r.Product2.Name;
+             }
+        }
+        helper.getOrderItem(component, event, caseItemName);
     },
     handleNextPage: function(component, event, helper){
         var pageNumber = event.currentTarget.dataset.record;
@@ -62,6 +62,19 @@
         component.set('v.currentPageNum', pageNumber);
         var parsedItems = helper.splitResults(component, event, component.get('v.myOrdersBackup'));
         component.set('v.myOrders', parsedItems);
-    }
+    },
+    onOpenCaseForm: function(component, event, helper){
+        let selectedSection = event.currentTarget;
+        let index = selectedSection.dataset.index;
+        let record = selectedSection.dataset.record;
+        let selectedOrder = helper.getSelectedOrder(component, record);
+        let selectedOrderItem = helper.getSelectedOrderItem(component, selectedOrder, index);
+        let caseModal = component.find("newCaseForm");
+        if(caseModal){
+            caseModal.openCaseModal(selectedOrder, selectedOrderItem);
+        }else{
+            console.error('No such component: CaseForm');
+        }
+    },
 
 })

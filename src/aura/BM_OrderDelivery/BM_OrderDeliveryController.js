@@ -9,8 +9,10 @@
         }else{
             component.set("v.showPage", false);
             var navEvt = $A.get('e.force:navigateToURL');
-            navEvt.setParams({url: '/'});
-            navEvt.fire();
+            if(navEvt){
+                navEvt.setParams({url: '/'});
+                navEvt.fire();
+            }
         }
     },
     handleSetShippingAddress: function(component, event, helper){

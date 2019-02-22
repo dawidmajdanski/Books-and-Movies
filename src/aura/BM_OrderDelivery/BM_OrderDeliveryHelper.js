@@ -20,22 +20,14 @@
             sessionStorage.setItem('user--shipping', JSON.stringify(shippingAddress));
             sessionStorage.setItem('deliverySelectionDone', true);
             var navEvt = $A.get('e.force:navigateToURL');
-            navEvt.setParams({url: '/summary'});
-            navEvt.fire();
+            if(navEvt){
+                navEvt.setParams({url: '/summary'});
+                navEvt.fire();
+            }
         }else{
             this.addErrorClasses(shippingAddress);
-            this.handleToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Fill_fields'), "error");
+            component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Fill_fields'), 'error');
         }
-    },
-    handleToast: function(titleMessage, errorName, toastType){
-        var toastParams = {
-            title: titleMessage,
-            message: errorName,
-            type: toastType
-        };
-        var toastEvent = $A.get("e.force:showToast");
-        toastEvent.setParams(toastParams);
-        toastEvent.fire();
     },
     addErrorClasses: function(shippingAddress){
         if(!shippingAddress.shippingCity){
