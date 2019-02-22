@@ -55,70 +55,6 @@
     background-color: #2196F3;
 }
 
-.THIS .starsRatingPos{
-    position: absolute;
-    z-index: 97;
-    top: 32px;
-    right: 127px;
-    text-align: center;
-}
-
-.THIS .userCommentBox{
-    background-color: #fafafa;
-    width: 100%;
-    max-height: 40vh;
-    -webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
-    -moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
-    box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
-    box-shadow: 0 5px 10px 0 rgba(0,0,0,0.5);
-    position: relative;
-    overflow-y: auto;
-}
-
-.THIS .upperSeparator{
-    border-top: 1px solid #cecece;
-    width: 97%;
-    position: absolute;
-    top: 30px;
-    padding-left: 1rem;
-    margin-left: 15px;
-}
-
-.THIS .commentDateContainer{
-    position: absolute;
-    left: 15px;
-    top: 5px;
-    font-style: italic;
-}
-
-.THIS .commentContainer{
-    margin-top: 2.5rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
-    text-align: justify;
-    padding-bottom: 15px;
-}
-
-.THIS .ratingContainer{
-    position: absolute;
-    top: -6px;
-    left: 200px;
-}
-
-.THIS .editButtonContainer{
-    position: absolute;
-    right: 50px;
-    top: 2px;
-    cursor: pointer;
-}
-
-.THIS .deleteButtonContainer{
-    position: absolute;
-    right: 15px;
-    top: 2px;
-    cursor: pointer;
-}
-
 .THIS .slds-input{
     line-height: 1.874rem;
     padding-right: 0.20rem !important;
@@ -155,11 +91,6 @@
 
 .THIS .starsContainer{
     position: absolute;
-}
-
-.THIS .star-ratings-css {
-    width: auto;
-
 }
 
 .THIS .productTypeImg{
