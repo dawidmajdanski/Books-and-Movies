@@ -5,7 +5,6 @@
     init: function(component, event, helper){
         $A.enqueueAction(component.get('c.getMovieGenresPicklistValues'));
         $A.enqueueAction(component.get('c.getBookGenresPicklistValues'));
-        helper.getCartItemsQuantity(component, event);
         helper.getCurrentUser(component, event);
     },
     handleClick : function(component, event, helper) {
@@ -27,8 +26,10 @@
           }
           sessionStorage.setItem('customSearch--records', JSON.stringify(products));
           var navEvt = $A.get('e.force:navigateToURL');
-          navEvt.setParams({url: '/search-results'});
-          navEvt.fire();
+          if(navEvt){
+              navEvt.setParams({url: '/search-results'});
+              navEvt.fire();
+          }
       });
       $A.enqueueAction(action);
       helper.hideAdvancedSearchModal(component, event);
@@ -72,6 +73,9 @@
         var state = response.getState();
         if (state === 'SUCCESS') {
             component.set("v.movieGenres", response.getReturnValue());
+        }else{
+            console.error($A.get('$Label.c.Internal_error')+' '+state);
+            component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Internal_error'), 'error');
         }
       });
       $A.enqueueAction(action);
@@ -82,6 +86,9 @@
         var state = response.getState();
         if (state === 'SUCCESS') {
             component.set("v.bookGenres", response.getReturnValue());
+        }else{
+            console.error($A.get('$Label.c.Internal_error')+' '+state);
+            component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Internal_error'), 'error');
         }
       });
       $A.enqueueAction(action);
@@ -92,39 +99,4 @@
     handleBookGenreChange: function(component, event, helper){
         component.set("v.bookGenre", component.find('selectBookGenre').get('v.value'));
     },
-    handleProductsInCart: function(component, event, helper){
-        $A.enqueueAction(component.get('c.handleCartRollUp'));
-        var navEvt = $A.get('e.force:navigateToURL');
-        navEvt.setParams({url: '/cart'});
-        navEvt.fire();
-    },
-    handleUpdateCartProductsQuantity: function(component, event, helper){
-        helper.getCartItemsQuantity(component, event);
-    },
-    handleMyOrders: function(component, event, helper){
-        var navEvt = $A.get('e.force:navigateToURL');
-        navEvt.setParams({url: '/my-orders'});
-        navEvt.fire();
-    },
-    handleCartRollDown: function(component, event, helper){
-        helper.getCartItems(component, event);
-        document.getElementById('cart').style = 'width: 35%; background-color: rgb(90, 91, 93)';
-        setTimeout(function(){
-            document.getElementById('cartItemsTotalPrice').style = 'width: auto';
-        }, 100);
-        setTimeout(function(){
-            document.getElementById('cartPreview').style = 'height: 409px;';
-        }, 350);
-    },
-    handleCartRollUp: function(component, event, helper){
-        document.getElementById('cartPreview').style = 'height: 0';
-        setTimeout(function(){
-             document.getElementById('cartItemsTotalPrice').style = 'width: 0';
-             document.getElementById('cart').style = 'width: 9%; background-color: none';
-        }, 350);
-    },
-    handleRemoveProductFromCart: function(component, event, helper){
-        helper.removeProductFromCart(component, event);
-    },
-
 })
