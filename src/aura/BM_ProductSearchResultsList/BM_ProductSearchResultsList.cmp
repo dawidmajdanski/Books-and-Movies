@@ -30,6 +30,8 @@
 
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
 
+    <c:BM_Toast aura:id="toastMsg"/>
+
     <div style="display: inline-block; width: 100%; float: right">
         <div class="slds-grid slds-gutters">
             <div class="slds-col slds-size_1-of-3"
