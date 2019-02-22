@@ -14,7 +14,9 @@
      }
      sessionStorage.setItem('customSearch--record', JSON.stringify(product));
      var navEvt = $A.get('e.force:navigateToURL');
-     navEvt.setParams({url: '/details'});
-     navEvt.fire();
+     if(navEvt){
+         navEvt.setParams({url: '/details'});
+         navEvt.fire();
+     }
   },
 })

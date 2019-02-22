@@ -11,6 +11,8 @@
 
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
 
+    <c:BM_Toast aura:id="toastMsg"/>
+
     <!--most popular -->
     <h1 class="pageTitle">
         {!$Label.c.Popular_books_and_movies}
