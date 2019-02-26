@@ -11,6 +11,7 @@
           if (state === 'SUCCESS') {
               component.set("v.reviews", response.getReturnValue());
           }else{
+              console.error($A.get('$Label.c.Internal_error')+' '+state);
               component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Cannot_get_reviews'), 'error');
           }
         });

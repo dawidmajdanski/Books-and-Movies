@@ -31,7 +31,7 @@
                     <c:BM_StarsRating value="{!v.newVote}"/>
                 </div>
                 <lightning:layoutItem size="12">
-                    <label class="slds-form-element__label" for="input-id-01"></label>
+                    <label class="slds-form-element__label"></label>
                     <lightning:inputRichText value="{!v.newComment}"
                                              disabledCategories="FORMAT_FONT"/>
                 </lightning:layoutItem>
@@ -79,7 +79,6 @@
                     <div class="commentContainer">
                         <ui:outputRichText value="{!v.userRating.Review__c}"/>
                     </div>
-
                 </div>
             </aura:if>
         </aura:if>
@@ -90,7 +89,7 @@
                 <c:BM_StarsRating value="{!v.userRating.Rating__c}"/>
             </div>
             <lightning:layoutItem size="12">
-                <label class="slds-form-element__label" for="input-id-01"></label>
+                <label class="slds-form-element__label"></label>
                 <lightning:inputRichText value="{!v.userRating.Review__c}"
                                          disabledCategories="FORMAT_FONT"/>
             </lightning:layoutItem>
