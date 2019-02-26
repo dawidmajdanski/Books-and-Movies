@@ -3,10 +3,10 @@
  */
 ({
     handleToast: function(component, event){
-        var params = event.getParam('arguments');
-        var titleMessage = params.titleMessage;
-        var errorName = params.errorName;
-        var toastType = params.toastType;
+        let params = event.getParam('arguments');
+        let titleMessage = params.titleMessage;
+        let errorName = params.errorName;
+        let toastType = params.toastType;
 
         let toastParams = {
             title: titleMessage,
