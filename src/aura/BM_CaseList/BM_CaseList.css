@@ -1,0 +1,102 @@
+/**
+ * Created by Dawid Majdański on 26.02.2019.
+ */
+
+.THIS.casesContainer{
+    display: inline-block;
+    width: 74%;
+    margin-left: 13%;
+    font-size: 125%;
+}
+
+.THIS .caseContainer{
+    padding-top: 1rem;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    -webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    box-shadow: 0 5px 10px 0 rgba(0,0,0,0.5);
+    position: relative;
+    overflow: hidden;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    transition: 0.8s;
+}
+
+.THIS .caseContainer:hover{
+    background-color: #f8fff5;
+}
+
+.THIS .caseBanner{
+    text-align: right;
+}
+
+.THIS .caseInfo{
+    transition: max-height 0.85s;
+    max-height: 0;
+    overflow: hidden;
+}
+
+.THIS .statusContainer{
+    width: 64%;
+    padding-top: 1.25rem;
+    float: left;
+}
+
+.THIS .caseProductInfoContainer{
+    float: left;
+    width: 33.5%;
+    padding-top: 1.25rem;
+    padding-left: 1rem;
+    padding-bottom: 1rem;
+    border-left: 1px solid gainsboro;
+    margin-left: 18px;
+}
+
+.THIS .caseMoreInfo{
+    border-top: 1px solid gainsboro;
+    float: left;
+    width: 100%;
+}
+
+.THIS .caseEmailsContainer{
+    float: left;
+    width: 100%;
+    margin-top: 1.5rem;
+    border-top: 1px solid gainsboro;
+    padding-top: 0.25rem;
+    overflow-y: auto;
+    height: 265px;
+}
+
+.THIS .singleEmail{
+    text-align: justify;
+    border: 1px solid gainsboro;
+    margin: 0.6rem;
+    margin-right:1.5rem !important;
+    padding: 1rem;
+    -webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    box-shadow: 0 1px 9px 0 rgba(0,0,0,0.5);
+}
+
+.THIS .emailContent{
+    border-bottom: 1px solid gainsboro;
+    margin-bottom: .5rem;
+    font-size: 80% !important;
+    color: gray;
+}
+
+.THIS .caseReel{
+    text-align: center;
+}
+
+.THIS .downIcoContainer{
+    cursor: pointer;
+    width: 30px;
+    margin: auto;
+    transition: 0.45s;
+}
