@@ -10,7 +10,7 @@
             sessionStorage.removeItem('orderCompletedSuccessfully');
         }else{
             component.set("v.showPage", false);
-            var navEvt = $A.get('e.force:navigateToURL');
+            let navEvt = $A.get('e.force:navigateToURL');
             if(navEvt){
                 navEvt.setParams({url: '/'});
                 navEvt.fire();

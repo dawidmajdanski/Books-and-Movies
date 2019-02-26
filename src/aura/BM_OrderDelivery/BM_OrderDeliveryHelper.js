@@ -3,12 +3,12 @@
  */
 ({
     cacheAddress: function(component, event){
-        var shippingCity = component.get("v.shippingCity");
-        var shippingStreet = component.get("v.shippingStreet");
-        var shippingCountry = component.get("v.shippingCountry");
-        var shippingPostal = component.get("v.shippingPostal");
-        var shippingState = component.get("v.shippingState");
-        var shippingAddress = {
+        let shippingCity = component.get("v.shippingCity");
+        let shippingStreet = component.get("v.shippingStreet");
+        let shippingCountry = component.get("v.shippingCountry");
+        let shippingPostal = component.get("v.shippingPostal");
+        let shippingState = component.get("v.shippingState");
+        let shippingAddress = {
             "shippingCity" : shippingCity,
             "shippingStreet" : shippingStreet,
             "shippingCountry" : shippingCountry,
@@ -19,7 +19,7 @@
             this.removeErrorClasses(shippingAddress);
             sessionStorage.setItem('user--shipping', JSON.stringify(shippingAddress));
             sessionStorage.setItem('deliverySelectionDone', true);
-            var navEvt = $A.get('e.force:navigateToURL');
+            let navEvt = $A.get('e.force:navigateToURL');
             if(navEvt){
                 navEvt.setParams({url: '/summary'});
                 navEvt.fire();

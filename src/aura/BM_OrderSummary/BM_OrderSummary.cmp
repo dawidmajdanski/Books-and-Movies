@@ -8,7 +8,6 @@
     <aura:attribute name="productsToOrder" type="Object[]" />
     <aura:attribute name="totalOrderPrice" type="Decimal" />
     <aura:attribute name="showPage" default="false" type="Boolean" />
-    <aura:attribute name="user" type="Object" />
 
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
     <aura:registerEvent name="getProductsQuantityInCart" type="c:BM_ProductsCartQuantityEvent"/>
@@ -47,8 +46,8 @@
                                     {!product.productName}&nbsp;
                                 </td>
                                 <td style="text-align: right">
-                                    <aura:if isTrue="{!product.discountPrice!=null}">{!product.quantity}x&nbsp;{!product.discountPrice}$<br/></aura:if>
-                                    <aura:if isTrue="{!product.discountPrice==null}">{!product.quantity}x&nbsp;{!product.productPrice}$<br/></aura:if>
+                                    <aura:if isTrue="{!product.price!=product.standardPrice}">{!product.quantity}x&nbsp;<ui:outputCurrency aura:id="curr" value="{!product.price}"/><br/></aura:if>
+                                    <aura:if isTrue="{!product.price==product.standardPrice}">{!product.quantity}x&nbsp;<ui:outputCurrency aura:id="curr" value="{!product.standardPrice}"/><br/></aura:if>
                                 </td>
                             </tr>
                         </table>
@@ -59,8 +58,8 @@
                                 <td style="text-align: right">
                                    {!$Label.c.Total_order_price}
                                 </td>
-                                <td style="text-align: right">
-                                    {!v.totalOrderPrice}$
+                                <td style="text-align: right; width: 20%;">
+                                   <ui:outputCurrency aura:id="curr" value="{!v.totalOrderPrice}"/>
                                 </td>
                             </tr>
                         </table>
@@ -68,7 +67,7 @@
                 </div>
             </div>
             <div class="finalizeBtnContainer">
-                <button id="finalizeOrder" onclick="{!c.handleFinalizeOrder}" class="slds-button slds-button_brand finalizeBtn">Finalize order</button>
+                <button id="finalizeOrder" onclick="{!c.handleFinalizeOrder}" class="slds-button slds-button_brand finalizeBtn">{!$Label.c.Finalize_order}</button>
             </div>
         </div>
     </aura:if>

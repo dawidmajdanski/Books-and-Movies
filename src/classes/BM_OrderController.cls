@@ -13,13 +13,11 @@ public without sharing class BM_OrderController {
             orderItems.add(new OrderItem(
                     Product2Id = String.valueOf(resultProduct.get('productId')),
                     Quantity = Integer.valueOf(resultProduct.get('quantity')),
-                    UnitPrice = resultProduct.get('discountPrice') != null ? Decimal.valueOf(String.valueOf(resultProduct.get('discountPrice'))) : Decimal.valueOf(String.valueOf(resultProduct.get('productPrice'))),
+                    UnitPrice = Decimal.valueOf(String.valueOf(resultProduct.get('price'))),
                     OrderId = newOrderId,
                     PricebookEntryId = String.valueOf(resultProduct.get('pricebookEntryId'))
             ));
         }
-
-        system.debug(orderItems.get(0).Product2Id + ' ' + orderItems.get(0).Quantity + ' ' + orderItems.get(0).UnitPrice + ' ' + orderItems.get(0).OrderId + ' ' + orderItems.get(0).PricebookEntryId);
 
         try {
             insert orderItems;
@@ -33,9 +31,10 @@ public without sharing class BM_OrderController {
     @AuraEnabled
     public static List<Order> getMyOrders() {
         List<Order> orders = [
-                SELECT Id, Status, CreatedBy.Name, TotalAmount, Name, OrderNumber, EffectiveDate, (SELECT PricebookEntry.Pricebook2Id, Quantity, PricebookEntry.Name, Product2.Name, Product2.ProductCode, UnitPrice from OrderItems)
+                SELECT Id, Status, CreatedBy.Name, TotalAmount, Name, OrderNumber, EffectiveDate, (SELECT PricebookEntry.Standard_price__c, PricebookEntry.Pricebook2Id, Quantity, PricebookEntry.Name, Product2.Name, Product2.ProductCode, UnitPrice from OrderItems)
                 FROM ORDER
-                WHERE CreatedBy.Id = :UserInfo.getUserId() ORDER BY OrderNumber Desc
+                WHERE CreatedBy.Id = :UserInfo.getUserId()
+                ORDER BY OrderNumber Desc
         ];
         return orders;
     }
@@ -45,7 +44,7 @@ public without sharing class BM_OrderController {
         Order newOrder = new Order();
         newOrder.AccountId = System.Label.Registrants_account_id;
         newOrder.Status = System.Label.New_order_initial_status;
-        newOrder.Pricebook2Id = System.Label.New_order_pricebook_id;
+        newOrder.Pricebook2Id = System.Label.Standard_Pricebook_Id;
         newOrder.EffectiveDate = Date.today();
         newOrder.ShippingCity = String.valueOf(shippingAddressResult.get('shippingCity'));
         newOrder.ShippingCountry = String.valueOf(shippingAddressResult.get('shippingCountry'));
@@ -61,28 +60,14 @@ public without sharing class BM_OrderController {
     }
 
     @AuraEnabled
-    public static Map<String, Object> getPricebookEntryProduct(String orderItemName) {
-        List<PricebookEntry> priceBookEntryItem = [
-                SELECT Discount_percentage__c, Product2.RecordType.Name, Product2.Release_date__c, Product2.Director__c, Product2.Book_author__c, Product2.Description, Pricebook2.Name, Pricebook2.Id, Product2.Name, UnitPrice, ProductCode
-                FROM PricebookEntry
-                WHERE Product2.Name =: orderItemName
+    public static List<Object> getPricebookEntryProduct(String orderItemName) {
+        List<Product2> productItem = [
+                SELECT (SELECT Discount_percentage__c, Pricebook2.Name, Pricebook2.Id, UnitPrice, ProductCode, Name, Standard_price__c FROM PricebookEntries where IsActive=true AND Pricebook2.Ongoing_promotion__c = true), RecordType.Name, Release_date__c, Director__c, Book_author__c, Description, Name
+                FROM Product2
+                WHERE Name =: orderItemName
         ];
-        List<String> productIds = BM_ProductUtils.getIds(priceBookEntryItem);
-        List<Attachment> mainPics = BM_ProductUtils.getMainPictures(productIds);
-        List<AggregateResult> productsRating = BM_ProductUtils.getRatingForProducts(productIds);
-        for(Integer i=0; i<priceBookEntryItem.size(); i++){
-            if (priceBookEntryItem.get(i).Pricebook2.Name == System.Label.Standard_pricebook_name) {
-                Map<String, Object> jsonItem = BM_ProductUtils.getParsedJSON(priceBookEntryItem.get(i), productsRating, mainPics);
-                for(Integer j=0; j<priceBookEntryItem.size(); j++){
-                    if (priceBookEntryItem.get(j).Pricebook2.Name == System.Label.Regular_discount_pricebook_name) {
-                        jsonItem.put('discountPrice', priceBookEntryItem.get(j).UnitPrice);
-                        jsonItem.put('discountPercentage', priceBookEntryItem.get(j).Discount_percentage__c);
-                    }
-                }
-                return jsonItem;
-            }
-        }
-        return null;
+
+        return BM_ProductUtils.parseObj(productItem);
     }
 
     @AuraEnabled

@@ -4,7 +4,7 @@
 ({
   clearCart: function(component, event){
       localStorage.removeItem('cartItems');
-      var updateQuantityEvt = $A.get("e.c:BM_ProductsCartQuantityEvent");
+      let updateQuantityEvt = $A.get("e.c:BM_ProductsCartQuantityEvent");
       if(updateQuantityEvt){
            updateQuantityEvt.fire();
       }else {
