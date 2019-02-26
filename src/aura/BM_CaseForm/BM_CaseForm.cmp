@@ -18,14 +18,14 @@
     <c:BM_Toast aura:id="toastMsg"/>
 
     <!-- case modal -->
-    <div role="dialog" tabindex="-1" aria-labelledby="header43" aura:id="CaseModalBox" class="slds-modal">
+    <div role="dialog" tabindex="-1" aura:id="CaseModalBox" class="slds-modal">
         <div class="slds-modal__container">
             <div class="slds-modal__header">
                 <button class="slds-button slds-modal__close slds-button--icon-inverse" title="{!$Label.c.Close_window}"
                         onclick="{!c.onCloseModal}">
                     <span class="textSize">{!$Label.c.Close_sign}</span>
                 </button>
-                <h2 id="header43" class="slds-text-heading--medium">Complaint</h2>
+                <h2 id="header43" class="slds-text-heading--medium">{!$Label.c.Complaint}</h2>
             </div>
             <div class="slds-modal__content slds-p-around--medium">
                 <div class="slds-p-bottom_large slds-p-left_large" style="padding-right: 0; padding-left: 0;">
@@ -34,8 +34,9 @@
                             <div class="slds-form-element__row ">
                                 <div class="slds-size_4-of-6" >
                                     <div class="slds-form-element">
-                                        <label class="slds-form-element__label"
-                                               for="form-element-id-06">Product name</label>
+                                        <label class="slds-form-element__label">
+                                            {!$Label.c.Product_name}
+                                        </label>
                                         <div class="slds-form-element__control">
                                             <span>{!v.orderItem.Product2.Name}</span>
                                         </div>
@@ -43,8 +44,9 @@
                                 </div>
                                 <div class="slds-size_1-of-6">
                                     <div class="slds-form-element">
-                                        <label class="slds-form-element__label"
-                                               for="form-element-id-06">Product code</label>
+                                        <label class="slds-form-element__label">
+                                            {!$Label.c.Product_code}
+                                        </label>
                                         <div class="slds-form-element__control">
                                             <span>{!v.orderItem.Product2.ProductCode}</span>
                                         </div>
@@ -52,8 +54,9 @@
                                 </div>
                                 <div class="slds-size_1-of-6">
                                     <div class="slds-form-element">
-                                        <label class="slds-form-element__label"
-                                               for="form-element-id-05">Order number</label>
+                                        <label class="slds-form-element__label">
+                                            {!$Label.c.Order_number}
+                                        </label>
                                         <div class="slds-form-element__control">
                                             <span>{!v.order.OrderNumber}</span>
                                         </div>
@@ -67,19 +70,19 @@
                                     <div class="slds-size_4-of-6">
                                         <div class="slds-form-element">
                                             <div class="slds-form-element__control">
-                                                <lightning:input required="true" label="Subject" type="text" value="{!v.caseSubject}" />
+                                                <lightning:input required="true" label="{!$Label.c.Subject}" type="text" value="{!v.caseSubject}" />
                                             </div>
                                         </div>
                                     </div>
                                     <div class="slds-size_2-of-6">
                                         <div class="slds-form-element">
                                             <div class="slds-form-element__control">
-                                                <lightning:select aura:id="selectedReason" name="selectComplaintReason" label="Complaint reason">
-                                                    <option value="Order">Order</option>
-                                                    <option value="Damaged product">Damaged product</option>
-                                                    <option value="Shipping delay">Shipping delay</option>
-                                                    <option value="Other">Other</option>
-                                                    <option value="Feedback">Feedback</option>
+                                                <lightning:select aura:id="selectedReason" name="selectComplaintReason" label="{!$Label.c.Complaint_reason}">
+                                                    <option value="{!$Label.c.Order}">{!$Label.c.Order}</option>
+                                                    <option value="{!$Label.c.Damaged_product}">{!$Label.c.Damaged_product}</option>
+                                                    <option value="{!$Label.c.Shipping_delay}">{!$Label.c.Shipping_delay}</option>
+                                                    <option value="{!$Label.c.Other}">{!$Label.c.Other}</option>
+                                                    <option value="{!$Label.c.Feedback}">{!$Label.c.Feedback}</option>
                                                 </lightning:select>
                                             </div>
                                         </div>
@@ -89,7 +92,7 @@
                                     <div class="slds-size_1-of-1">
                                         <div class="slds-form-element">
                                             <div class="slds-form-element__control">
-                                                <lightning:textarea required="true" label="Description" value="{!v.caseDescription}" />
+                                                <lightning:textarea required="true" label="{!$Label.c.Description}" value="{!v.caseDescription}" />
                                             </div>
                                         </div>
                                     </div>
@@ -98,7 +101,7 @@
                                     <div class="slds-size_1-of-2">
                                         <div class="slds-form-element">
                                             <div class="slds-form-element__control">
-                                                <lightning:input required="true" label="Contact email" type="text" value="{!v.user.Email}" />
+                                                <lightning:input required="true" label="{!$Label.c.Contact_email}" type="text" value="{!v.user.Email}" />
                                             </div>
                                         </div>
                                     </div>
@@ -109,7 +112,7 @@
                 </div>
             </div>
             <div class="slds-modal__footer">
-                <lightning:button label="Submit case"
+                <lightning:button label="{!$Label.c.Submit_case}"
                                   variant="brand"
                                   class="slds-m-top_medium"
                                   onclick="{!c.onSubmitComplaint}">

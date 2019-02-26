@@ -3,18 +3,18 @@
  */
 ({
     openModal: function(component, event){
-        var params = event.getParam('arguments');
+        let params = event.getParam('arguments');
         component.set("v.order", params.receivedOrder);
         component.set("v.orderItem", params.receivedOrderItem);
 
-        var cmpTarget = component.find('CaseModalBox');
-        var cmpBack = component.find('CaseModalBackdrop');
+        let cmpTarget = component.find('CaseModalBox');
+        let cmpBack = component.find('CaseModalBackdrop');
         $A.util.addClass(cmpTarget, 'slds-fade-in-open');
         $A.util.addClass(cmpBack, 'slds-backdrop--open');
     },
     closeModal: function(component, event){
-        var cmpTarget = component.find('CaseModalBox');
-        var cmpBack = component.find('CaseModalBackdrop');
+        let cmpTarget = component.find('CaseModalBox');
+        let cmpBack = component.find('CaseModalBackdrop');
         $A.util.removeClass(cmpBack,'slds-backdrop--open');
         $A.util.removeClass(cmpTarget, 'slds-fade-in-open');
     },
