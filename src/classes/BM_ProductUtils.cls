@@ -26,25 +26,24 @@ public with sharing class BM_ProductUtils {
                 }
             }
             query += ')';
-            system.debug(query);
             return Database.query(query);
         }
         return null;
     }
 
-    public static String findAttachmentIdForResult(List<Attachment> attList, PricebookEntry resultItem){
+    public static String findAttachmentIdForResult(List<Attachment> attList, Product2 resultItem){
         for(Attachment a: attList){
-            if(a.ParentId==resultItem.Product2.Id){
+            if(a.ParentId==resultItem.Id){
                 return System.Label.Picture_url_prefix+a.Id;
             }
         }
         return System.Label.Product_placeholder_url_prefix+PageReference.forResource('ProductPlaceholder').getUrl();
     }
 
-    public static List<String> getIds(List<PricebookEntry> objectList){
+    public static List<String> getIds(List<Product2> objectList){
         List<String> ids = new List<String>();
-        for(PricebookEntry entry: objectList){
-            ids.add(entry.Product2.Id);
+        for(Product2 entry: objectList){
+            ids.add(entry.Id);
         }
         return ids;
     }
@@ -57,27 +56,80 @@ public with sharing class BM_ProductUtils {
         return null;
     }
 
-    public static Map<String, Object> getParsedJSON(PricebookEntry priceBookEntryItem, List<AggregateResult> productsRating, List<Attachment> mainPics){
-        Map<String, Object> productsRatingMap = BM_ProductUtils.getProductRatingIdForProduct(productsRating, priceBookEntryItem.Product2.Id);
-        Map<String, Object> jsonItem = addJsonKey(priceBookEntryItem);
+    public static Map<String, Object> getParsedJSON(Product2 productItem, List<AggregateResult> productsRating, List<Attachment> mainPics){
+        Map<String, Object> productsRatingMap = BM_ProductUtils.getProductRatingIdForProduct(productsRating, productItem.Id);
+        Map<String, Object> jsonItem = addJsonKey(productItem);
         jsonItem.put('averageRating', productsRatingMap!=null?productsRatingMap.get('averageRating'):0);
         jsonItem.put('countRating', productsRatingMap!=null?productsRatingMap.get('countRating'):0);
-        jsonItem.put('productMainPic', ''+BM_ProductUtils.findAttachmentIdForResult(mainPics, priceBookEntryItem));
+        jsonItem.put('productMainPic', ''+BM_ProductUtils.findAttachmentIdForResult(mainPics, productItem));
         return jsonItem;
     }
 
-    public static Map<String, Object> addJsonKey(PricebookEntry priceBookEntryItem){
+    public static Map<String, Object> addJsonKey(Product2 productItem){
         Map<String, Object> jsonItem = new Map<String, Object>();
-        jsonItem.put('productPrice', priceBookEntryItem.UnitPrice);
-        jsonItem.put('productName', priceBookEntryItem.Product2.Name);
-        jsonItem.put('author',priceBookEntryItem.Product2.Book_author__c);
-        jsonItem.put('director',priceBookEntryItem.Product2.Director__c);
-        jsonItem.put('description', priceBookEntryItem.Product2.Description);
-        jsonItem.put('releaseDate', priceBookEntryItem.Product2.Release_date__c);
-        jsonItem.put('pricebookId', priceBookEntryItem.Pricebook2.Id);
-        jsonItem.put('pricebookEntryId', priceBookEntryItem.Id);
-        jsonItem.put('productId', priceBookEntryItem.Product2.Id);
-        jsonItem.put('productRecordType', priceBookEntryItem.Product2.RecordType.Name);
+        jsonItem.put('productName', productItem.Name);
+        jsonItem.put('author',productItem.Book_author__c);
+        jsonItem.put('director',productItem.Director__c);
+        jsonItem.put('description', productItem.Description);
+        jsonItem.put('releaseDate', productItem.Release_date__c);
+        jsonItem.put('productId', productItem.Id);
+        jsonItem.put('productRecordType', productItem.RecordType.Name);
         return jsonItem;
     }
+
+    public static List<Object> parseObj(List<Product2> productsList){
+        List<String> productIds = BM_ProductUtils.getIds(productsList);
+        List<Attachment> mainPics = BM_ProductUtils.getMainPictures(productIds);
+        List<AggregateResult> productsRating = BM_ProductUtils.getRatingForProducts(productIds);
+        List<Object> serializedProducts = new List<Object>();
+        for(Integer i = 0; i < productsList.size(); i++){
+            if(productsList.get(i).PricebookEntries.size()!=0) {
+                Map<String, Object> jsonItem = BM_ProductUtils.getParsedJSON(productsList.get(i), productsRating, mainPics);
+                PricebookEntry lowestEntry = productsList.get(i).PricebookEntries.get(0);
+                String standardPricebookEntryId = null;
+                for(PricebookEntry pBookEntry: productsList.get(i).PricebookEntries){
+                    standardPricebookEntryId = pBookEntry.Pricebook2.Name==System.Label.Standard_pricebook_name?pBookEntry.Id:standardPricebookEntryId;
+                    if(pBookEntry.UnitPrice<lowestEntry.UnitPrice){
+                        lowestEntry = pBookEntry;
+                    }
+                }
+                jsonItem.put('standardPrice', lowestEntry.Standard_price__c);
+                jsonItem.put('pricebookId', lowestEntry.Pricebook2.Id);
+                jsonItem.put('price', lowestEntry.UnitPrice);
+                jsonItem.put('pricebookName', lowestEntry.Pricebook2.Name);
+                jsonItem.put('pricebookEntryId', standardPricebookEntryId);
+                if(lowestEntry.Standard_price__c!=lowestEntry.UnitPrice) {
+                    jsonItem.put('discountPercentage', lowestEntry.Discount_percentage__c);
+                }
+                serializedProducts.add(jsonItem);
+            }
+        }
+        return serializedProducts;
+    }
+
+    public static List<Object> searchAction(String searchObj) {
+        String productQuery='';
+        String pricebookEntryQuery='';
+        List<String> productSearchParams = BM_SearchUtils.parseQueryProductSearch(searchObj);
+        List<String> pricebookEntryParams = BM_SearchUtils.parseQueryPricebookEntrySearch(searchObj);
+        for(String param: productSearchParams){
+            productQuery += param;
+        }
+        for(String param: pricebookEntryParams){
+            pricebookEntryQuery += param;
+        }
+        String searchQuery = 'Select RecordType.Name, Release_date__c, Director__c, Book_author__c, Description, Name, ' +
+                '(SELECT IsActive, Pricebook2.Name, UnitPrice, ProductCode, Discount_percentage__c, Standard_price__c FROM PricebookEntries WHERE Pricebook2.Ongoing_promotion__c=true AND IsActive = true '+pricebookEntryQuery+') ' +
+                'FROM Product2 WHERE '+productQuery;
+
+        system.debug(searchQuery);
+
+        List<Product2> results = new List<Product2>();
+        if(productQuery!='' || pricebookEntryQuery!=''){
+            results = Database.query(searchQuery);
+        }
+
+        return BM_ProductUtils.parseObj(results);
+    }
+
 }

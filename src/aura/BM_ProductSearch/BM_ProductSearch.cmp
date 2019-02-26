@@ -86,15 +86,14 @@
                     </lightning:tab>
                 </lightning:tabset>
 
-                <div onclick="{! c.handleClearParams}">
+                <div onclick="{!c.handleClearParams}">
                     <lightning:icon iconName="utility:clear" title="{!$Label.c.Clear_search}" class="custom-slds-icon-clear"
                                     size="x-small"/>
                 </div>
-                <div onclick="{! c.handleClick }">
+                <div onclick="{!c.handleClick}">
                     <lightning:icon iconName="utility:search" title="{!$Label.c.Search}" class="custom-slds-icon-search"
                                     size="x-small"/>
                 </div>
-
             </div>
         </div>
     </div>

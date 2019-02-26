@@ -8,24 +8,24 @@
         helper.getCurrentUser(component, event);
     },
     handleClick : function(component, event, helper) {
-      var isPricingCorrect = helper.checkIfMaxPriceLesserThanMin(component, event, helper);
-      var isYearsCorrect = helper.checkIfMaxYearLesserThanMin(component, event, helper);
+      let isPricingCorrect = helper.checkIfMaxPriceLesserThanMin(component, event, helper);
+      let isYearsCorrect = helper.checkIfMaxYearLesserThanMin(component, event, helper);
       if(!isPricingCorrect || !isYearsCorrect){
           return false;
       }
 
-      var action = component.get('c.searchForProducts');
-      var products;
+      let action = component.get('c.searchForProducts');
+      let products;
       action.setParams({searchObj : JSON.stringify(helper.getQueryObject(component))});
       action.setCallback(this, function(response) {
-          var state = response.getState();
+          let state = response.getState();
           if (state === 'SUCCESS') {
               products = response.getReturnValue();
           }else{
               products = [];
           }
           sessionStorage.setItem('customSearch--records', JSON.stringify(products));
-          var navEvt = $A.get('e.force:navigateToURL');
+          let navEvt = $A.get('e.force:navigateToURL');
           if(navEvt){
               navEvt.setParams({url: '/search-results'});
               navEvt.fire();
@@ -53,11 +53,11 @@
         $A.enqueueAction(component.get('c.resetToDefaultGenres'));
     },
     resetToDefaultAvailableYears: function(component, event, helper){
-        var clearAvailYears = component.find("clearAvailableYears");
+        let clearAvailYears = component.find("clearAvailableYears");
         clearAvailYears.resetYearsPicklist();
-        var clearAvailYears1 = component.find("clearAvailableYears1");
+        let clearAvailYears1 = component.find("clearAvailableYears1");
         clearAvailYears1.resetYearsPicklist();
-        var clearAvailYears2 = component.find("clearAvailableYears2");
+        let clearAvailYears2 = component.find("clearAvailableYears2");
         clearAvailYears2.resetYearsPicklist();
     },
     resetToDefaultGenres: function(component, event, helper){
@@ -68,9 +68,9 @@
         helper.advancedSearchModalAppearance(component, event);
     },
     getMovieGenresPicklistValues: function(component, event, helper){
-      var action = component.get('c.getMovieGenresEntries');
+      let action = component.get('c.getMovieGenresEntries');
       action.setCallback(this, function(response) {
-        var state = response.getState();
+        let state = response.getState();
         if (state === 'SUCCESS') {
             component.set("v.movieGenres", response.getReturnValue());
         }else{
@@ -81,9 +81,9 @@
       $A.enqueueAction(action);
     },
     getBookGenresPicklistValues: function(component, event, helper){
-      var action = component.get('c.getBookGenresEntries');
+      let action = component.get('c.getBookGenresEntries');
       action.setCallback(this, function(response) {
-        var state = response.getState();
+        let state = response.getState();
         if (state === 'SUCCESS') {
             component.set("v.bookGenres", response.getReturnValue());
         }else{

@@ -5,19 +5,7 @@
 public class BM_ProductSearchController {
     @AuraEnabled
     public static List<Object> searchForProducts(String searchObj) {
-        List<String> queryParams = BM_SearchUtils.parseQuery(searchObj);
-        String searchquery = 'Select IsActive, Product2.RecordType.Name, Product2.Release_date__c, Product2.Director__c, Product2.Book_author__c, Product2.Description, Pricebook2.Name, Pricebook2.Id, Product2.Name, UnitPrice, ProductCode, Discount_percentage__c From PricebookEntry WHERE ';
-
-        for(String param: queryParams){
-            searchquery += param;
-        }
-
-        List<PricebookEntry> results = new List<PricebookEntry>();
-        if(!queryParams.isEmpty()){
-            results = Database.query(searchquery);
-        }
-
-        return parseObj(results);
+        return BM_ProductUtils.searchAction(searchObj);
     }
 
     @AuraEnabled
@@ -27,8 +15,8 @@ public class BM_ProductSearchController {
         for(AggregateResult ar: avgPopular){
             ids.add(String.valueOf(ar.get('pId')));
         }
-        List<PricebookEntry> popularProducts = [Select Discount_percentage__c, Product2.RecordType.Name, Product2.Release_date__c, Product2.Director__c, Product2.Book_author__c, Product2.Description, Pricebook2.Name, Pricebook2.Id, Product2.Name, UnitPrice, ProductCode From PricebookEntry WHERE Product2.Id in :(ids)];
-        return parseObj(popularProducts);
+        List<Product2> popularProducts = [SELECT (SELECT Discount_percentage__c, Pricebook2.Name, Pricebook2.Id, UnitPrice, ProductCode, Standard_price__c FROM PricebookEntries WHERE IsActive=true AND Pricebook2.IsActive=true), RecordType.Name, Release_date__c, Director__c, Book_author__c, Description, Name From Product2 WHERE Id in :(ids)];
+        return BM_ProductUtils.parseObj(popularProducts);
     }
 
     @AuraEnabled
@@ -136,25 +124,6 @@ public class BM_ProductSearchController {
         return null;
     }
 
-    public static List<Object> parseObj(List<PricebookEntry> pricebookEntryList){
-        List<String> productIds = BM_ProductUtils.getIds(pricebookEntryList);
-        List<Attachment> mainPics = BM_ProductUtils.getMainPictures(productIds);
-        List<AggregateResult> productsRating = BM_ProductUtils.getRatingForProducts(productIds);
-        List<Object> serializedProducts = new List<Object>();
-        for(Integer i = 0; i < pricebookEntryList.size(); i++){
-            if (pricebookEntryList.get(i).Pricebook2.Name == System.Label.Standard_pricebook_name) {
-                Map<String, Object> jsonItem = BM_ProductUtils.getParsedJSON(pricebookEntryList.get(i), productsRating, mainPics);
-                for(Integer j = 0; j < pricebookEntryList.size(); j++){
-                    if (pricebookEntryList.get(i).Product2.Id == pricebookEntryList.get(j).Product2.Id && pricebookEntryList.get(j).Pricebook2.Name == System.Label.Regular_discount_pricebook_name) {
-                        jsonItem.put('discountPrice', pricebookEntryList.get(j).UnitPrice);
-                        jsonItem.put('discountPercentage', pricebookEntryList.get(j).Discount_percentage__c);
-                    }
-                }
-                serializedProducts.add(jsonItem);
-            }
-        }
-        return serializedProducts;
-    }
 
     @AuraEnabled
     public static User getLoggedUser(){
