@@ -22,7 +22,7 @@
             <aura:iteration items="{!v.products}" var="product">
                 <div class="tileContainer">
                     <div class="imageContainer">
-                        <aura:if isTrue="{!product.discountPrice!=null}">
+                        <aura:if isTrue="{!product.price!=product.standardPrice}">
                             <div class="discountTriangle">
                                 <h1 class="saleTitle">
                                     {!$Label.c.Sale_ribbon_title}
@@ -51,7 +51,7 @@
                                     <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
                             </div>
                         </div>
-                        <aura:if isTrue="{!product.discountPrice!=null}">
+                        <aura:if isTrue="{!product.price!=product.standardPrice}">
                             <div class="discountRibbonContainer">
                                 <div class="discount-label green">
                                     <span><lightning:formattedNumber value="{!product.discountPercentage*100}" maximumFractionDigits="0"/>%</span>
@@ -59,16 +59,20 @@
                             </div>
                         </aura:if>
                         <div class="priceContainer">
-                            <aura:if isTrue="{!product.discountPrice==null}">
+                            <aura:if isTrue="{!product.price==product.standardPrice}">
                                 <p style="padding-top: 10px;">
-                                {!product.productPrice}$
+                                    <ui:outputCurrency aura:id="curr" value="{!product.price}"/>
                                 </p>
                             </aura:if>
-                            <aura:if isTrue="{!product.discountPrice!=null}">
+                            <aura:if isTrue="{!product.price!=product.standardPrice}">
                                 <p style="padding-top: 10px;">
-                                    <span class="strikethrough" style="color: red;">{!product.productPrice}$</span>
+                                    <span class="strikethrough" style="color: red;">
+                                        <ui:outputCurrency aura:id="curr" value="{!product.standardPrice}"/>
+                                    </span>
                                     &nbsp;
-                                    <span style="color: green;">{!product.discountPrice}$</span>
+                                    <span style="color: green;">
+                                        <ui:outputCurrency aura:id="curr" value="{!product.price}"/>
+                                    </span>
                                 </p>
                             </aura:if>
                         </div>
@@ -77,5 +81,4 @@
             </aura:iteration>
         </div>
     </div>
-
 </aura:component>
