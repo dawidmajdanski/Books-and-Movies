@@ -11,7 +11,7 @@
     sortPictures: function(component){
         let pics = component.get("v.pictures");
         let temp;
-        for(var i=0; i<pics.length; i++){
+        for(let i=0; i<pics.length; i++){
             if(pics[i].pictureName.includes($A.get('$Label.c.Main_picture_name'))){
                 temp=pics[0];
                 pics[0]=pics[i];
@@ -22,28 +22,16 @@
         component.set("v.pictures", pics);
     },
     handleAddToCart: function(component, event, helper){
-       if(helper.validateQuantity(component, event)!=false){
-           let cartItem = component.get('v.product');
-           let parsedCartItemsToAdd = [];
-           cartItem.quantity = component.get('v.quantity');
-           if(localStorage.getItem('cartItems')){
-               let cartItems = localStorage.getItem('cartItems');
-               let parsedCartItems = JSON.parse(cartItems);
-               for(let i=0; i<parsedCartItems.length; i++){
-                   parsedCartItemsToAdd.push(parsedCartItems[i]);
-               }
-               localStorage.removeItem('cartItems');
-           }
-           parsedCartItemsToAdd.push(cartItem);
-           localStorage.setItem('cartItems', JSON.stringify(parsedCartItemsToAdd));
-
-           let updateQuantityEvt = $A.get("e.c:BM_ProductsCartQuantityEvent");
-           if(updateQuantityEvt){
-                updateQuantityEvt.fire();
-           }else {
-                component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), "Internal error. No such event: BM_ProductsCartQuantityEvent", 'error');
-           }
-       }
+        if(helper.validateQuantity(component, event)!=false){
+            let cartItem = component.get('v.product');
+            let addToCartEvt = $A.get("e.c:BM_AddToCartEvent");
+            if(addToCartEvt){
+                addToCartEvt.setParams({"productToCart" : cartItem, "quantity": component.get("v.quantity")});
+                addToCartEvt.fire();
+            }else {
+                console.error('No such event: BM_AddToCartEvent');
+            }
+        }
     },
     getPicturesForProduct: function(component, event){
         let product = component.get("v.product");

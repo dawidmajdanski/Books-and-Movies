@@ -8,11 +8,11 @@
 
     <aura:attribute name="product" type="Object" />
     <aura:attribute name="pictures" type="Object" />
-    <aura:attribute name="quantity" type="Integer"  default="1"/>
+    <aura:attribute name="quantity" type="Integer" default="1"/>
 
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
     <aura:registerEvent name="getProductReviews" type="c:BM_ProductRatingEvent"/>
-    <aura:registerEvent name="getProductsQuantityInCart" type="c:BM_ProductsCartQuantityEvent"/>
+    <aura:registerEvent name="addItemToCart" type="c:BM_AddToCartEvent"/>
 
     <c:BM_Toast aura:id="toastMsg"/>
 
@@ -38,21 +38,22 @@
                     <aura:if isTrue="{!v.product.productRecordType == $Label.c.Movie}">
                         <img title="{!$Label.c.Movie}" class="productTypeImg" src="{!$Resource.MovieSymbol}" />
                     </aura:if>
-                    <aura:if isTrue="{!v.product.discountPrice==null}">
+                    <aura:if isTrue="{!v.product.price==v.product.standardPrice}">
                         <p style="padding-bottom: 10px; padding-top: 10px; font-size: 125%">
-                            {!$Label.c.Price}&nbsp; {!v.product.productPrice}$
+                            {!$Label.c.Price}&nbsp;
+                            <ui:outputCurrency aura:id="curr" value="{!v.product.price}"/>
                         </p>
                     </aura:if>
-                    <aura:if isTrue="{!v.product.discountPrice!=null}">
+                    <aura:if isTrue="{!v.product.price!=v.product.standardPrice}">
                         <p style="padding-bottom: 10px; padding-top: 10px; font-size: 125%">
                             {!$Label.c.Price}&nbsp;
                             <span style="text-decoration: line-through; color: red;">
-                                {!v.product.productPrice}$
-                             </span>
+                                <ui:outputCurrency aura:id="curr" value="{!v.product.standardPrice}"/>
+                            </span>
                             &nbsp;
                             <span style="color: green;">
-                                {!v.product.discountPrice}$
-                             </span>
+                                <ui:outputCurrency aura:id="curr" value="{!v.product.price}"/>
+                            </span>
                         </p>
                     </aura:if>
 
