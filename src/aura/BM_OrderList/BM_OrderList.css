@@ -1,0 +1,83 @@
+/**
+ * Created by Dawid Majdański on 26.02.2019.
+ */
+
+.THIS .pagination {
+  display: inline-block;
+}
+.THIS .pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+.THIS .revertPagination{
+    cursor:default;
+}
+.THIS .revertPagination:hover{
+    background-color: white !important;
+}
+.THIS .pagination a.active {
+  background-color: #3762a8;
+  color: white;
+}
+.THIS .pagination a:hover:not(.active) {background-color: #ddd;}
+
+.THIS.singleOrderContainer{
+    overflow: hidden;
+    display: inline-block;
+    padding-top: 1rem;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    height: auto;
+    min-height: 90px;
+    width: 70%;
+    margin-left: 15%;
+    position: relative;
+    float: left;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    margin-bottom: 21px !important;
+    background-color: white;
+    transition: 0.8s;
+    font-size: 125%;
+}
+
+.THIS.singleOrderContainer:hover{
+    background-color: #e8ffdc;
+}
+
+.THIS .orderInfo{
+    border-bottom: 1px solid #d2d2d2;
+    padding-bottom: 2px;
+}
+
+.THIS .caseBanner{
+    text-align: right;
+}
+
+.THIS .itemInfoContainer{
+    overflow: hidden;
+    transition: max-height 0.85s;
+    max-height: 0;
+}
+
+.THIS .complaintBtn{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    cursor: pointer;
+}
+
+.THIS .orderReel{
+    text-align: center;
+}
+
+.THIS .downIcoContainer{
+    cursor: pointer;
+    width: 30px;
+    margin: auto;
+    transition: 0.45s;
+}

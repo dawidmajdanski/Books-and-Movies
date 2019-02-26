@@ -1,0 +1,131 @@
+<!--
+ - Created by Dawid Majdański on 26.02.2019.
+ -->
+
+<aura:component description="BM_OrderList" controller="BM_OrderController">
+    <aura:attribute name="myOrders" type="Order[]"/>
+    <aura:attribute name="myOrdersBackup" type="Order[]"/>
+    <aura:attribute name="isOrderRolledDown" type="Boolean[]"/>
+    <aura:attribute name="currentPageNum" type="Integer" default="1"/>
+    <aura:attribute name="maxPageNum" type="Integer"/>
+    <aura:attribute name="offset" type="Integer" default="0"/>
+    <aura:attribute name="resultsOnPageSize" type="Integer" default="2"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <aura:handler event="c:BM_GetOrderItemEvent" action="{!c.handleGetOrderItem}"/>
+    <c:BM_Toast aura:id="toastMsg"/>
+
+    <!-- pagination -->
+    <div style="text-align: center;">
+        <div class="pagination" style="position: relative">
+            <aura:if isTrue="{!greaterthan(v.currentPageNum,1)}">
+                <a data-record="{!v.currentPageNum-1}" onclick="{!c.handlePreviousPage}">&laquo;</a>
+            </aura:if>
+            <aura:if isTrue="{!greaterthan(v.currentPageNum,4)}">
+                <a data-record="1" onclick="{!c.handlePreviousPage}">1</a>
+                <a class="revertPagination">...</a>
+            </aura:if>
+            <aura:if isTrue="{!greaterthan(v.currentPageNum,2)}">
+                <a data-record="{!v.currentPageNum-2}"
+                   onclick="{!c.handlePreviousPage}">{!v.currentPageNum-2}</a>
+            </aura:if>
+            <aura:if isTrue="{!greaterthan(v.currentPageNum,1)}">
+                <a data-record="{!v.currentPageNum-1}"
+                   onclick="{!c.handlePreviousPage}">{!v.currentPageNum-1}</a>
+            </aura:if>
+            <a class="active">{!v.currentPageNum}</a>
+            <aura:if isTrue="{!greaterthanorequal(v.maxPageNum,v.currentPageNum+1)}">
+                <a data-record="{!v.currentPageNum+1}"
+                   onclick="{!c.handleNextPage}">{!v.currentPageNum+1}</a>
+            </aura:if>
+            <aura:if isTrue="{!greaterthanorequal(v.maxPageNum,v.currentPageNum+2)}">
+                <a data-record="{!v.currentPageNum+2}"
+                   onclick="{!c.handleNextPage}">{!v.currentPageNum+2}</a>
+            </aura:if>
+            <aura:if isTrue="{!greaterthan(v.maxPageNum-2,v.currentPageNum)}">
+                <a class="revertPagination">...</a>
+                <a data-record="{!v.maxPageNum}" onclick="{!c.handleNextPage}">{!v.maxPageNum}</a>
+            </aura:if>
+            <aura:if isTrue="{!greaterthan(v.maxPageNum,v.currentPageNum)}">
+                <a data-record="{!v.currentPageNum+1}" onclick="{!c.handleNextPage}">&raquo;</a>
+            </aura:if>
+        </div>
+    </div>
+    <aura:iteration items="{!v.myOrders}" var="myOrder" indexVar="ind">
+        <div class="singleOrderContainer">
+            <div class="orderInfo">
+                <fieldset class="slds-form-element slds-form-element_compound slds-form-element_address">
+                    <div class="slds-form-element__row ">
+                        <div class="slds-size_3-of-6" >
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">
+                                        {!$Label.c.Order_number}
+                                </label>
+                                <div class="slds-form-element__control">
+                                    <span>{!myOrder.OrderNumber}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-size_1-of-6 caseBanner" >
+                            <div class="slds-form-element" style="padding-right: 0;">
+                                <label class="slds-form-element__label" style="padding-right: 0;">
+                                        {!$Label.c.Date_of_purchase}
+                                </label>
+                                <div class="slds-form-element__control">
+                                    <span>{!myOrder.EffectiveDate}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-size_1-of-6 caseBanner" >
+                            <div class="slds-form-element" style="padding-right: 0;">
+                                <label class="slds-form-element__label" style="padding-right: 0;">
+                                        {!$Label.c.Total_cost}
+                                </label>
+                                <div class="slds-form-element__control">
+                                    <span><ui:outputCurrency aura:id="curr" value="{!myOrder.TotalAmount}"/></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-size_1-of-6 caseBanner" >
+                            <div class="slds-form-element" style="padding-right: 0;">
+                                <label class="slds-form-element__label" style="padding-right: 0;">
+                                        {!$Label.c.Status}
+                                </label>
+                                <div class="slds-form-element__control">
+                                    <span>{!myOrder.Status}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div id="{!ind+'OrderItem'}" class="itemInfoContainer">
+                <h4 style="padding-top: 10px">{!$Label.c.Ordered_title}</h4>
+                <aura:iteration items="{!myOrder.OrderItems}" var="item">
+                    <div class="childContainer">
+                                    <span style="padding-right: 5px">
+                                        <a data-record="{!item.PricebookEntry.Name}" data-index="{!ind}"
+                                           onclick="{!c.handleOrderItemClick}">{!item.PricebookEntry.Name}&nbsp;
+                                        </a>
+                                    </span>
+                        <span>
+                                        {!item.Quantity}{!$Label.c.Multiply_sign} &nbsp;<ui:outputCurrency aura:id="curr" value="{!item.UnitPrice}"/>
+                                    </span><br/>
+                        <span class="complaintBtn" onclick="{!c.onOpenCaseForm}" data-record="{!myOrder.Id}"
+                              data-index="{!item.Id}">
+                                        <lightning:icon iconName="utility:questions_and_answers" size="small"
+                                                        title="Submit complaint"/>
+                                    </span>
+                    </div>
+                </aura:iteration>
+            </div>
+            <div class="orderReel">
+                <div id="{!ind+'OrderArrow'}" class="downIcoContainer" onclick="{!c.handleRollOrder}" data-index="{!ind}">
+                    <lightning:icon iconName="utility:down" size="small"/>
+                </div>
+            </div>
+        </div>
+    </aura:iteration>
+    <c:BM_CaseForm aura:id="newCaseForm"/>
+</aura:component>
