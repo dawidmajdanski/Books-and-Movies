@@ -4,9 +4,9 @@
 ({
     init: function(component, event, helper){
         if(localStorage.getItem('cartItems')){
-            var cartProducts = JSON.parse(localStorage.getItem('cartItems'));
+            let cartProducts = JSON.parse(localStorage.getItem('cartItems'));
             component.set("v.cartProducts", cartProducts);
-            helper.getTotalCartPrice(component, event, cartProducts);
+            helper.getTotalCartPrice(component, cartProducts);
         }
     },
     handleRemoveFromCart: function(component, event, helper){
@@ -17,11 +17,7 @@
         let cartProducts = JSON.parse(cachedProducts);
         for(let i=0; i<cartProducts.length; i++){
             if(i == index){
-                if(cartProducts[i].discountPrice){
-                    totalCartPrice -= cartProducts[i].quantity * cartProducts[i].discountPrice;
-                }else{
-                    totalCartPrice -= cartProducts[i].quantity * cartProducts[i].productPrice;
-                }
+                totalCartPrice -= cartProducts[i].quantity * cartProducts[i].price;
                 cartProducts.splice(i, 1);
                 break;
             }
@@ -79,10 +75,10 @@
     handleCartProductClick: function(component, event, helper){
         let selectedSection = event.currentTarget;
         let index = selectedSection.dataset.index;
-        for(var i=0; i<component.get("v.cartProducts").length; i++){
+        for(let i=0; i<component.get("v.cartProducts").length; i++){
             if(index == i){
                  sessionStorage.setItem('customSearch--record', JSON.stringify(component.get("v.cartProducts")[i]));
-                 var navEvt = $A.get('e.force:navigateToURL');
+                 let navEvt = $A.get('e.force:navigateToURL');
                  if(navEvt){
                      navEvt.setParams({url: '/details'});
                      navEvt.fire();
@@ -93,5 +89,4 @@
             }
         }
     },
-
 })

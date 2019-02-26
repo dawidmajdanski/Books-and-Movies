@@ -2,15 +2,11 @@
  * Created by Majdan on 09.02.2019.
  */
 ({
-    getTotalCartPrice: function(component, event, cartProducts){
+    getTotalCartPrice: function(component, cartProducts){
         let totalCartPrice = 0;
         for(let i=0; i<cartProducts.length; i++){
             let partialSum = 0;
-            if(cartProducts[i].discountPrice){
-                partialSum += cartProducts[i].quantity * cartProducts[i].discountPrice;
-            }else{
-                partialSum += cartProducts[i].quantity * cartProducts[i].productPrice;
-            }
+            partialSum += cartProducts[i].quantity * cartProducts[i].price;
             totalCartPrice += partialSum;
         }
         component.set("v.totalCartPrice", totalCartPrice);

@@ -4,7 +4,7 @@
 ({
     getCartItemsQuantity: function(component, event){
         if(localStorage.getItem('cartItems')){
-            var cartItems = JSON.parse(localStorage.getItem('cartItems'));
+            let cartItems = JSON.parse(localStorage.getItem('cartItems'));
             component.set("v.cartItemsQuantity", cartItems.length);
             this.getCartItems(component, event);
         }else{
@@ -14,26 +14,26 @@
         }
     },
     getTotalCartPrice: function(component, event){
-        var cartProducts = component.get("v.cartProducts");
-        var totalCartPrice = 0;
-        for(var i=0; i<cartProducts.length; i++){
+        let cartProducts = component.get("v.cartProducts");
+        let totalCartPrice = 0;
+        for(let i=0; i<cartProducts.length; i++){
             totalCartPrice += this.calcTotalPrice(component, event, cartProducts[i], 'add');
         }
         component.set("v.totalCartPrice", totalCartPrice);
     },
     getCartItems: function(component, event){
         if(localStorage.getItem('cartItems')){
-            var cartProducts = JSON.parse(localStorage.getItem('cartItems'));
+            let cartProducts = JSON.parse(localStorage.getItem('cartItems'));
             component.set("v.cartProducts", cartProducts);
             this.getTotalCartPrice(component, event);
         }
     },
     removeProductFromCart: function(component, event){
-        var selectedSection = event.currentTarget;
-        var index = selectedSection.dataset.index;
-        var cartProducts = component.get("v.cartProducts");
-        var totalCartPrice = component.get("v.totalCartPrice");
-        for(var i=0; i<cartProducts.length; i++){
+        let selectedSection = event.currentTarget;
+        let index = selectedSection.dataset.index;
+        let cartProducts = component.get("v.cartProducts");
+        let totalCartPrice = component.get("v.totalCartPrice");
+        for(let i=0; i<cartProducts.length; i++){
             if(i == index){
                 totalCartPrice += this.calcTotalPrice(component, event, cartProducts[i], 'subtract');
                 cartProducts.splice(i, 1);
@@ -46,20 +46,12 @@
         localStorage.setItem('cartItems', JSON.stringify(cartProducts));
     },
     calcTotalPrice: function(component, event, cartProduct, operation){
-        var totalCartPrice = 0;
+        let totalCartPrice = 0;
         if(operation=='subtract'){
-            if(cartProduct.discountPrice){
-                totalCartPrice -= cartProduct.quantity * cartProduct.discountPrice;
-            }else{
-                totalCartPrice -= cartProduct.quantity * cartProduct.productPrice;
-            }
+            totalCartPrice -= cartProduct.quantity * cartProduct.price;
         }else{
             if(operation=='add'){
-                if(cartProduct.discountPrice){
-                    totalCartPrice += cartProduct.quantity * cartProduct.discountPrice;
-                }else{
-                    totalCartPrice += cartProduct.quantity * cartProduct.productPrice;
-                }
+                totalCartPrice += cartProduct.quantity * cartProduct.price;
             }
         }
         return totalCartPrice;

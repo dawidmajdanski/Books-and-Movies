@@ -29,11 +29,13 @@
                     <div class="cartProductInfo">
                             <span style="font-size: 170%;">{!cartProduct.productName}</span>
                             <p style="font-weight: bold; font-size:110%; padding-top:5px">{!cartProduct.quantity}{!$Label.c.Multiply_sign} &nbsp;
-                                <aura:if isTrue="{!cartProduct.discountPrice!=null}" >
-                                    <span style="color: green">{!cartProduct.discountPrice}$</span>
+                                <aura:if isTrue="{!cartProduct.price!=cartProduct.standardPrice}" >
+                                    <span style="color: green">
+                                        <ui:outputCurrency aura:id="curr" value="{!cartProduct.price}"/>
+                                    </span>
                                 </aura:if>
-                                <aura:if isTrue="{!cartProduct.discountPrice==null}" >
-                                    {!cartProduct.productPrice}$
+                                <aura:if isTrue="{!cartProduct.price==cartProduct.standardPrice}" >
+                                        <ui:outputCurrency aura:id="curr" value="{!cartProduct.standardPrice}"/>
                                 </aura:if>
                             </p>
                             <div class="slds-form-element" style="padding-top:5px">
@@ -51,7 +53,7 @@
             <div style="background-color: aquamarine;" class="bottomCartInfo">
             </div>
                 <div class="totalPriceInfo">
-                    {!$Label.c.Total_price} &nbsp; {!v.totalCartPrice}$
+                    {!$Label.c.Total_price} &nbsp; <ui:outputCurrency aura:id="curr" value="{!v.totalCartPrice}"/>
                 </div>
             <div class="bottomCartInfo">
                 <button id="proceedToDelivery" style="margin-top: 6px;" onclick="{!c.handleGoToDeliveryPage}" class="slds-button slds-button_success proceedBtn">{!$Label.c.Proceed_to_delivery}</button>

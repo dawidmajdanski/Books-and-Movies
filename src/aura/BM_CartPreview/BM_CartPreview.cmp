@@ -8,12 +8,14 @@
     <aura:attribute name="cartProducts" type="Object[]"/>
     <aura:attribute name="totalCartPrice" type="Decimal" default="0"/>
 
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
     <aura:handler event="c:BM_ProductsCartQuantityEvent" action="{!c.handleUpdateCartProductsQuantity}"/>
+    <aura:handler event="c:BM_AddToCartEvent" action="{!c.handleAddProductToCart}"/>
 
     <div id="cart" class="cartContainer" onclick="{!c.handleCartRollDown}">
         <img class="cartIco" src="{!$Resource.CartIcon}" />
         <span class="cartItemsQuantity">{!v.cartItemsQuantity}</span>
-        <span id="cartItemsTotalPrice" class="cartItemsTotalPrice">{!$Label.c.Total_price}&nbsp;{!v.totalCartPrice}$</span>
+        <span id="cartItemsTotalPrice" class="cartItemsTotalPrice">{!$Label.c.Total_price}&nbsp;<ui:outputCurrency aura:id="curr" value="{!v.totalCartPrice}"/></span>
     </div>
 
     <div id="cartPreview" class="cartPreview">
@@ -23,12 +25,16 @@
         <table style="width:91.5%; margin-left: 0.85rem; margin-right: 0.5rem; color: white; font-family: 'Lucida Sans Unicode'; margin-top: 0.25rem;">
             <aura:iteration items="{!v.cartProducts}" var="cartProduct" indexVar="ind">
                 <tr>
-                    <td style="padding-top: 0.25rem">
-                    {!cartProduct.productName}&nbsp;
+                    <td style="padding-top: 0.25rem; width: 100%">
+                        {!cartProduct.productName}&nbsp;
                     </td>
-                    <td style="text-align: right; padding-top: 0.25rem; padding-left: 69px;">
-                        <aura:if isTrue="{!cartProduct.discountPrice!=null}">{!cartProduct.quantity}x&nbsp;{!cartProduct.discountPrice}$<br/></aura:if>
-                        <aura:if isTrue="{!cartProduct.discountPrice==null}">{!cartProduct.quantity}x&nbsp;{!cartProduct.productPrice}$<br/></aura:if>
+                    <td style="text-align: right; padding-top: 0.25rem; padding-right: 0.25rem;">
+                        <aura:if isTrue="{!cartProduct.price!=cartProduct.standardPrice}">
+                            {!cartProduct.quantity}x&nbsp;<ui:outputCurrency aura:id="curr" value="{!cartProduct.price}"/><br/>
+                        </aura:if>
+                        <aura:if isTrue="{!cartProduct.price==cartProduct.standardPrice}">
+                            {!cartProduct.quantity}x&nbsp;<ui:outputCurrency aura:id="curr" value="{!cartProduct.standardPrice}"/><br/>
+                        </aura:if>
                     </td>
                     <td style="text-align: right; padding-top: 0.25rem; padding-left: 7px; cursor: pointer" onclick="{!c.handleRemoveProductFromCart}" data-index="{!ind}">
                         <lightning:icon iconName="utility:clear" size="xx-small" variant="inverse"/>

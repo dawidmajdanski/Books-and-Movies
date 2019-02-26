@@ -79,6 +79,7 @@
     width: 298px;
     transition: .35s;
     overflow: hidden;
+    border-radius: 0 0 5px 5px;
 }
 
 .THIS .productsInCartBtn{
