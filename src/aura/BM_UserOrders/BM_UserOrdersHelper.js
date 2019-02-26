@@ -3,38 +3,41 @@
  */
 ({
     searchForOrders: function(component, event){
-        var action = component.get('c.getMyOrders');
+        let action = component.get('c.getMyOrders');
         action.setCallback(this, function(response) {
-          var state = response.getState();
+          let state = response.getState();
           if (state === 'SUCCESS') {
-            var items =  response.getReturnValue();
-            var parsedItems = this.splitResults(component, event, items);
-            var resultsOnPageSize = component.get('v.resultsOnPageSize');
-            component.set('v.maxPageNum', items.length%resultsOnPageSize==0?items.length/resultsOnPageSize:(Math.floor(items.length/resultsOnPageSize))+1);
-            component.set('v.currentPageNum', 1);
-            component.set("v.myOrders", parsedItems);
-            component.set("v.myOrdersBackup", items);
+              let items =  response.getReturnValue();
+              let parsedItems = this.splitResults(component, event, items);
+              let resultsOnPageSize = component.get('v.resultsOnPageSize');
+              component.set('v.maxPageNum', items.length%resultsOnPageSize==0?items.length/resultsOnPageSize:(Math.floor(items.length/resultsOnPageSize))+1);
+              component.set('v.currentPageNum', 1);
+              component.set("v.myOrders", parsedItems);
+              component.set("v.myOrdersBackup", items);
+          }else{
+              console.error($A.get('$Label.c.Internal_error')+' '+state);
+              component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Internal_error'), 'error');
           }
         });
         $A.enqueueAction(action);
     },
     searchForUserComplaints: function(component, event){
-        var action = component.get('c.getMyComplaints');
+        let action = component.get('c.getMyComplaints');
         action.setCallback(this, function(response) {
-          var state = response.getState();
+          let state = response.getState();
           if (state === 'SUCCESS') {
-                var results = JSON.parse(response.getReturnValue());
-                component.set("v.complaints", this.parseDates(component, results));
+              let results = JSON.parse(response.getReturnValue());
+              component.set("v.complaints", this.parseDates(component, results));
           }else{
-                console.error($A.get('$Label.c.Internal_error')+' '+state);
-                component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Internal_error'), 'error');
+              console.error($A.get('$Label.c.Internal_error')+' '+state);
+              component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Internal_error'), 'error');
           }
         });
         $A.enqueueAction(action);
     },
     parseDates: function(component, results){
         for(let i=0; i<results.length; i++){
-            var date = new Date(results[i].CreatedDate.split(' ')[0]);
+            let date = new Date(results[i].CreatedDate.split(' ')[0]);
             results[i].CreatedDate = date.toLocaleDateString("en-GB");
             date = results[i].ClosedDate?new Date(results[i].ClosedDate.split(' ')[0]):null;
             results[i].ClosedDate = date?date.toLocaleDateString("en-GB"):null;
@@ -54,28 +57,28 @@
         return results;
     },
     getOrderItem: function(component, event, orderItemName){
-        var action = component.get('c.getPricebookEntryProduct');
+        let action = component.get('c.getPricebookEntryProduct');
         action.setParams({'orderItemName' : orderItemName});
         action.setCallback(this, function(response) {
-          var state = response.getState();
+          let state = response.getState();
           if (state === 'SUCCESS') {
-             var productDetails = response.getReturnValue();
-             sessionStorage.setItem('customSearch--record', JSON.stringify(productDetails));
-             var navEvt = $A.get('e.force:navigateToURL');
+             let productDetails = response.getReturnValue();
+             sessionStorage.setItem('customSearch--record', JSON.stringify(productDetails[0]));
+             let navEvt = $A.get('e.force:navigateToURL');
              if(navEvt){
                  navEvt.setParams({url: '/details'});
                  navEvt.fire();
              }
           }else{
                 console.error($A.get('$Label.c.Internal_error')+' '+state);
-                component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Internal_error'), 'error');
+                component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Internal_error'), 'error');               
           }
         });
         $A.enqueueAction(action);
     },
     splitResults: function(component, event, results){
-        var currentPageResults = [];
-        for(var i=component.get('v.offset'); i<component.get('v.offset')+component.get('v.resultsOnPageSize'); i++){
+        let currentPageResults = [];
+        for(let i=component.get('v.offset'); i<component.get('v.offset')+component.get('v.resultsOnPageSize'); i++){
             if(i<=results.length-1 && i>=0){
                 currentPageResults.push(results[i]);
             }
@@ -103,7 +106,7 @@
         let selectedSection = event.currentTarget;
         let index = selectedSection.dataset.index;
 
-        for(var i=0; i<objList.length; i++){
+        for(let i=0; i<objList.length; i++){
             document.getElementById(i+divIdSuffix).style='max-height: 0;';
             document.getElementById(i+arrowIdSuffix).style='transform: rotate(0)';
             if(index.valueOf() != i.valueOf() ){

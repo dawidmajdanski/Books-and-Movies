@@ -69,8 +69,9 @@
                                 <div class="slds-form-element__row ">
                                     <div class="slds-size_3-of-6" >
                                         <div class="slds-form-element">
-                                            <label class="slds-form-element__label"
-                                                   for="form-element-id-06">{!$Label.c.Order_number}</label>
+                                            <label class="slds-form-element__label">
+                                                    {!$Label.c.Order_number}
+                                            </label>
                                             <div class="slds-form-element__control">
                                                 <span>{!myOrder.OrderNumber}</span>
                                             </div>
@@ -78,8 +79,9 @@
                                     </div>
                                     <div class="slds-size_1-of-6 caseBanner" >
                                         <div class="slds-form-element" style="padding-right: 0;">
-                                            <label class="slds-form-element__label" style="padding-right: 0;"
-                                                   for="form-element-id-06">{!$Label.c.Date_of_purchase}</label>
+                                            <label class="slds-form-element__label" style="padding-right: 0;">
+                                                    {!$Label.c.Date_of_purchase}
+                                            </label>
                                             <div class="slds-form-element__control">
                                                 <span>{!myOrder.EffectiveDate}</span>
                                             </div>
@@ -87,17 +89,19 @@
                                     </div>
                                     <div class="slds-size_1-of-6 caseBanner" >
                                         <div class="slds-form-element" style="padding-right: 0;">
-                                            <label class="slds-form-element__label" style="padding-right: 0;"
-                                                   for="form-element-id-06">{!$Label.c.Total_cost}</label>
+                                            <label class="slds-form-element__label" style="padding-right: 0;">
+                                                    {!$Label.c.Total_cost}
+                                            </label>
                                             <div class="slds-form-element__control">
-                                                <span>{!myOrder.TotalAmount}$</span>
+                                                <span><ui:outputCurrency aura:id="curr" value="{!myOrder.TotalAmount}"/></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="slds-size_1-of-6 caseBanner" >
                                         <div class="slds-form-element" style="padding-right: 0;">
-                                            <label class="slds-form-element__label" style="padding-right: 0;"
-                                                   for="form-element-id-06">{!$Label.c.Status}</label>
+                                            <label class="slds-form-element__label" style="padding-right: 0;">
+                                                    {!$Label.c.Status}
+                                            </label>
                                             <div class="slds-form-element__control">
                                                 <span>{!myOrder.Status}</span>
                                             </div>
@@ -105,7 +109,6 @@
                                     </div>
                                 </div>
                             </fieldset>
-
                         </div>
 
                         <div id="{!ind+'OrderItem'}" class="itemInfoContainer">
@@ -114,11 +117,11 @@
                                 <div class="childContainer">
                                     <span style="padding-right: 5px">
                                         <a data-record="{!item.PricebookEntry.Name}" data-index="{!ind}"
-                                           onclick="{!c.handleOrderItemClick}">{!item.PricebookEntry.Name}
-                                        </a>:
+                                           onclick="{!c.handleOrderItemClick}">{!item.PricebookEntry.Name}&nbsp;
+                                        </a>
                                     </span>
                                     <span>
-                                        {!item.Quantity}{!$Label.c.Multiply_sign} &nbsp;{!item.UnitPrice}$
+                                        {!item.Quantity}{!$Label.c.Multiply_sign} &nbsp;<ui:outputCurrency aura:id="curr" value="{!item.UnitPrice}"/>
                                     </span><br/>
                                     <span class="complaintBtn" onclick="{!c.onOpenCaseForm}" data-record="{!myOrder.Id}"
                                           data-index="{!item.Id}">
@@ -144,8 +147,9 @@
                                 <div class="slds-form-element__row ">
                                     <div class="slds-size_3-of-6" >
                                         <div class="slds-form-element">
-                                            <label class="slds-form-element__label"
-                                                   for="form-element-id-06">Subject</label>
+                                            <label class="slds-form-element__label">
+                                                {!$Label.c.Subject}
+                                            </label>
                                             <div class="slds-form-element__control">
                                                 <span>{!complaint.Subject}</span>
                                             </div>
@@ -153,8 +157,9 @@
                                     </div>
                                     <div class="slds-size_1-of-6 caseBanner">
                                         <div class="slds-form-element" style="padding-right: 0;">
-                                            <label class="slds-form-element__label" style="padding-right: 0;"
-                                                   for="form-element-id-06">Status</label>
+                                            <label class="slds-form-element__label" style="padding-right: 0;">
+
+                                            </label>
                                             <div class="slds-form-element__control">
                                                 <span>{!complaint.Status}</span>
                                             </div>
@@ -162,8 +167,9 @@
                                     </div>
                                     <div class="slds-size_1-of-6 caseBanner" >
                                         <div class="slds-form-element" style="padding-right: 0;">
-                                            <label class="slds-form-element__label" style="padding-right: 0;"
-                                                   for="form-element-id-06">Case number</label>
+                                            <label class="slds-form-element__label" style="padding-right: 0;">
+                                                {!$Label.c.Case_number}
+                                            </label>
                                             <div class="slds-form-element__control">
                                                 <span>{!complaint.CaseNumber}</span>
                                             </div>
@@ -171,8 +177,9 @@
                                     </div>
                                     <div class="slds-size_1-of-6 caseBanner" >
                                         <div class="slds-form-element" style="padding-right: 0;">
-                                            <label class="slds-form-element__label" style="padding-right: 0;"
-                                                   for="form-element-id-06">Case date</label>
+                                            <label class="slds-form-element__label" style="padding-right: 0;">
+                                                {!$Label.c.Case_date}
+                                            </label>
                                             <div class="slds-form-element__control">
                                                 <span>{!complaint.CreatedDate}</span>
                                             </div>
@@ -184,24 +191,26 @@
                                 <div class="statusContainer">
                                     <aura:if isTrue="{!complaint.Histories==undefined}">
                                        <div style="text-align: center; font-size: 140%; font-style: italic; padding-top: 4.5rem; color: gray;">
-                                           Pending case
+                                           {!$Label.c.Pending_case}
                                        </div>
                                     </aura:if>
                                     <aura:if isTrue="{!complaint.Histories!=undefined}">
-                                        <label class="slds-form-element__label" for="form-element-id-06">Status history</label>
+                                        <label class="slds-form-element__label">
+                                           {!$Label.c.Status_history}
+                                        </label>
                                         <table class="slds-table slds-table_cell-buffer slds-table_bordered" id="dataTable" >
                                             <thead>
-                                            <tr class="slds-line-height_reset">
-                                                <th class="slds-text-title_caps" scope="col">
-                                                    <div class="slds-truncate" title="Old status">Old status</div>
-                                                </th>
-                                                <th class="slds-text-title_caps" scope="col">
-                                                    <div class="slds-truncate" title="New status">New status</div>
-                                                </th>
-                                                <th class="slds-text-title_caps" scope="col">
-                                                    <div class="slds-truncate" title="Date">Date</div>
-                                                </th>
-                                            </tr>
+                                                <tr class="slds-line-height_reset">
+                                                    <th class="slds-text-title_caps" scope="col">
+                                                        <div class="slds-truncate" title="{!$Label.c.Old_status}">{!$Label.c.Old_status}</div>
+                                                    </th>
+                                                    <th class="slds-text-title_caps" scope="col">
+                                                        <div class="slds-truncate" title="{!$Label.c.New_status}">{!$Label.c.New_status}</div>
+                                                    </th>
+                                                    <th class="slds-text-title_caps" scope="col">
+                                                        <div class="slds-truncate" title="{!$Label.c.Status_date}">{!$Label.c.Status_date}</div>
+                                                    </th>
+                                                </tr>
                                             </thead>
                                             <tbody>
                                                 <aura:iteration items="{!complaint.Histories.records}" var="caseHistory">
@@ -217,7 +226,9 @@
                                                             </div>
                                                         </td>
                                                         <td data-label="{!caseHistory.CreatedDate}">
-                                                            <div class="slds-truncate" title="{!caseHistory.CreatedDate}">{!caseHistory.CreatedDate}</div>
+                                                            <div class="slds-truncate" title="{!caseHistory.CreatedDate}">
+                                                                    {!caseHistory.CreatedDate}
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 </aura:iteration>
@@ -234,27 +245,37 @@
                                             </a>
                                         </span>
                                     </div>
-                                    <label class="slds-form-element__label" for="form-element-id-06">Cost</label>
+                                    <label class="slds-form-element__label">
+                                        {!$Label.c.Cost}
+                                    </label>
                                     <div class="slds-form-element__control">
-                                        <span>{!complaint.Order_Product__r.UnitPrice}$</span>
+                                        <span><ui:outputCurrency aura:id="curr" value="{!complaint.Order_Product__r.UnitPrice}"/></span>
                                     </div>
-                                    <label class="slds-form-element__label" for="form-element-id-06">Order</label>
+                                    <label class="slds-form-element__label">
+                                        {!$Label.c.Order}
+                                    </label>
                                     <div class="slds-form-element__control">
                                         <span>{!complaint.Order__r.OrderNumber}</span>
                                     </div>
-                                    <label class="slds-form-element__label" for="form-element-id-06">Order date</label>
+                                    <label class="slds-form-element__label">
+                                        {!$Label.c.Order_date}
+                                    </label>
                                     <div class="slds-form-element__control">
                                         <span>{!complaint.Order__r.CreatedDate}</span>
                                     </div>
                                 </div>
                                 <div class="caseMoreInfo">
-                                    <label class="slds-form-element__label" for="form-element-id-06">Description</label>
+                                    <label class="slds-form-element__label">
+                                        {!$Label.c.Description}
+                                    </label>
                                     <div class="slds-form-element__control">
                                         <span>{!complaint.Description}</span>
                                     </div>
                                 </div>
                                 <div class="caseEmailsContainer">
-                                    <label class="slds-form-element__label" for="form-element-id-06">Messages</label>
+                                    <label class="slds-form-element__label">
+                                        {!$Label.c.Messages}
+                                    </label>
                                     <aura:iteration items="{!complaint.EmailMessages.records}" var="caseEmailMessage">
                                         <div class="slds-form-element__control singleEmail" >
                                             <div class="emailContent">
@@ -275,7 +296,6 @@
                 </div>
             </lightning:tab>
         </lightning:tabset>
-
         <c:BM_CaseForm aura:id="newCaseForm"/>
     </div>
 </aura:component>

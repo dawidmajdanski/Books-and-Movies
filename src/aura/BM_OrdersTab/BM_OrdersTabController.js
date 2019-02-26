@@ -3,7 +3,7 @@
  */
 ({
     handleMyOrders: function(component, event, helper){
-        var navEvt = $A.get('e.force:navigateToURL');
+        let navEvt = $A.get('e.force:navigateToURL');
         if(navEvt){
             navEvt.setParams({url: '/my-orders'});
             navEvt.fire();
