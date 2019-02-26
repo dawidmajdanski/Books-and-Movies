@@ -1,0 +1,45 @@
+/**
+ * Created by Majdan on 26.02.2019.
+ */
+.THIS .addPromoContainer{
+    padding: 1rem;
+}
+
+.THIS .searchInputCustom{
+    margin-bottom: 10px;
+}
+
+.THIS .searchTabset{
+    border-bottom: 4px solid gainsboro;
+    padding-bottom: 5px;
+}
+
+.THIS .cBM_ProductSearchSharedParams .input_Param__rightSide{
+    width: 22%;
+    position: absolute;
+    top: 10px;
+    left: 299px;
+}
+
+.THIS .cBM_ProductSearchSharedParams .input_Param{
+    width: 22%;
+    top: 0;
+}
+
+.THIS .cBM_ProductSearchSharedParams .maxYearPosition{
+    left: 299px;
+    width: 22%;
+}
+
+.THIS .customBtnGroup{
+    margin-top: 10px;
+}
+
+.THIS .resultSection{
+    margin-top: 10px;
+    padding-top: 10px;
+}
+
+.THIS .addPromoToAllProducts{
+    margin-top: 20px;
+}

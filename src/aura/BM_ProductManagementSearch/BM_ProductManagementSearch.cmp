@@ -1,0 +1,232 @@
+<!--
+ - Created by Majdan on 26.02.2019.
+ -->
+
+<aura:component description="BM_ProductManagementSearch" controller="BM_ProductManagement">
+    <!-- search params -->
+    <aura:attribute name="searchText" type="String" default=""/>
+    <aura:attribute name="minPrice" type="Decimal"/>
+    <aura:attribute name="maxPrice" type="Decimal"/>
+    <aura:attribute name="minRating" type="Integer"/>
+    <aura:attribute name="specificYear" type="Integer"/>
+    <aura:attribute name="minYear" type="Integer"/>
+    <aura:attribute name="maxYear" type="Integer"/>
+    <aura:attribute name="bookGenre" type="String"/>
+    <aura:attribute name="movieGenre" type="String"/>
+    <aura:attribute name="bookGenres" type="String[]"/>
+    <aura:attribute name="movieGenres" type="String[]"/>
+    <aura:attribute name="author" type="String"/>
+    <aura:attribute name="director" type="String"/>
+    <aura:attribute name="productType" type="String" default="All"/>
+    <aura:attribute name="pricebookName" type="String"/>
+
+    <!-- collections -->
+    <aura:attribute name="productsToDiscount" type="Object[]"/>
+    <aura:attribute name="activePricebooks" type="Pricebook2[]"/>
+    <aura:attribute name="selectedPricebook" type="Pricebook2"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <aura:registerEvent name="getPricebooks" type="c:BM_GetPricebooksEvent"/>
+
+    <c:BM_Toast aura:id="toastMsg"/>
+
+    <div class="addPromoContainer">
+        <div id="searchSection" class="">
+            <ui:inputText value="{!v.searchText}"
+                          class="slds-lookup__search-input slds-input searchInputCustom"
+                          placeholder="{!$Label.c.Search_placeholder}"/>
+            <lightning:tabset class="searchTabset" selectedTabId="{!v.productType}"
+                              onselect="{!c.handleChangeTabset}">
+                <lightning:tab label="{!$Label.c.All_tab}" id="All">
+                    <div class="slds-form-element tabsetPadding">
+                        <c:BM_ProductSearchSharedParams aura:id="clearAvailableYears"
+                                                        specificYear="{!v.specificYear}"
+                                                        minYear="{!v.minYear}"
+                                                        maxYear="{!v.maxYear}"
+                                                        minPrice="{!v.minPrice}"
+                                                        maxPrice="{!v.maxPrice}"/>
+                    </div>
+                    <div id="pricebookName_Param" class="searchParamsGridStyle" style="margin-top:15px; width:47.3%">
+                        <lightning:select aura:id="pricebookNameSearch" name="select3"
+                                          label="{!$Label.c.Discount_price_book_name}"
+                                          onchange="{!c.handlePricebookParam}">
+                            <option value="">{!$Label.c.Pick_one_option}</option>
+                            <aura:iteration items="{!v.activePricebooks}" var="pricebook">
+                                <aura:if isTrue="{!pricebook.Name!=$Label.c.Standard_pricebook_name}">
+                                    <option value="{!pricebook.Name}">{!pricebook.Name}</option>
+                                </aura:if>
+                            </aura:iteration>
+                        </lightning:select>
+                    </div>
+                </lightning:tab>
+                <lightning:tab label="{!$Label.c.Books_tab}" id="Books">
+                    <div class="slds-form-element tabsetPadding">
+                        <c:BM_ProductSearchSharedParams aura:id="clearAvailableYears1"
+                                                        specificYear="{!v.specificYear}"
+                                                        minYear="{!v.minYear}"
+                                                        maxYear="{!v.maxYear}"
+                                                        minPrice="{!v.minPrice}"
+                                                        maxPrice="{!v.maxPrice}"/>
+                        <div id="book_genre_param" class="searchParamsGridStyle">
+                            <lightning:select aura:id="selectBookGenre" name="selectBookGenre"
+                                              label="{!$Label.c.Genre}"
+                                              onchange="{!c.handleBookGenreChange}">
+                                <option value="">{!$Label.c.All_genres}</option>
+                                <aura:iteration items="{!v.bookGenres}" var="genre">
+                                    <option>{!genre}</option>
+                                </aura:iteration>
+                            </lightning:select>
+                        </div>
+                        <div id="book_author_param" class="searchParamsGridStyle">
+                            <lightning:input label="{!$Label.c.Author}" class="input_Param" type="text"
+                                             value="{!v.author}"/>
+                        </div>
+                    </div>
+                </lightning:tab>
+                <lightning:tab label="{!$Label.c.Movies_tab}" id="Movies">
+                    <div class="slds-form-element tabsetPadding">
+                        <c:BM_ProductSearchSharedParams aura:id="clearAvailableYears2"
+                                                        specificYear="{!v.specificYear}"
+                                                        minYear="{!v.minYear}"
+                                                        maxYear="{!v.maxYear}"
+                                                        minPrice="{!v.minPrice}"
+                                                        maxPrice="{!v.maxPrice}"/>
+                        <div id="movie_genre_param" class="searchParamsGridStyle">
+                            <lightning:select aura:id="selectMovieGenre" name="selectMovieGenre"
+                                              label="{!$Label.c.Genre}"
+                                              onchange="{!c.handleMovieGenreChange}">
+                                <option value="">{!$Label.c.All_genres}</option>
+                                <aura:iteration items="{!v.movieGenres}" var="genre">
+                                    <option>{!genre}</option>
+                                </aura:iteration>
+                                >
+                            </lightning:select>
+                        </div>
+                        <div id="director_param" class="searchParamsGridStyle">
+                            <lightning:input label="{!$Label.c.Director}" class="input_Param" type="text"
+                                             value="{!v.director}"/>
+                        </div>
+                    </div>
+                </lightning:tab>
+                <div class="slds-button-group customBtnGroup" role="group">
+                    <button class="slds-button slds-button_neutral"
+                            onclick="{!c.handleClear}">{!$Label.c.Clear}
+                    </button>
+                    <button class="slds-button slds-button_brand" onclick="{!c.handleSearch}">
+                            {!$Label.c.Search}
+                    </button>
+                </div>
+            </lightning:tabset>
+        </div>
+        <aura:if isTrue="{!v.productsToDiscount.length!=0}">
+            <div class="resultSection">
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered"
+                       id="dataTable">
+                    <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="slds-text-title_caps" scope="col">
+                            <div class="slds-truncate" title="{!$Label.c.Product_name}">
+                                    {!$Label.c.Product_name}
+                            </div>
+                        </th>
+                        <th class="slds-text-title_caps" scope="col">
+                            <div class="slds-truncate" title="{!$Label.c.Standard_price_col}">
+                                    {!$Label.c.Standard_price_col}
+                            </div>
+                        </th>
+                        <th class="slds-text-title_caps" scope="col">
+                            <div class="slds-truncate" title="{!$Label.c.Discount_price}">
+                                    {!$Label.c.Discount_price}
+                            </div>
+                        </th>
+                        <th class="slds-text-title_caps" scope="col">
+                            <div class="slds-truncate" title="Pricebook name">
+                                Pricebook name
+                            </div>
+                        </th>
+                        <th class="slds-text-title_caps" scope="col">
+                            <div class="slds-truncate" title="{!$Label.c.Discount_percentage}">
+                                    {!$Label.c.Discount_percentage}
+                            </div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <aura:iteration items="{!v.productsToDiscount}" var="product"
+                                    indexVar="ind">
+                        <tr class="slds-hint-parent" id="{!ind}">
+                            <td data-label="{!product.productName}" scope="row">
+                                <div class="slds-truncate" title="{!product.productName}">
+                                        {!product.productName}
+                                </div>
+                            </td>
+                            <td data-label="{!product.standardPrice}">
+                                <div class="slds-truncate"
+                                     title="{!product.standardPrice}">
+                                        {!product.standardPrice}
+                                </div>
+                            </td>
+                            <aura:if isTrue="{!product.pricebookName!=$Label.c.Standard_pricebook_name}">
+                                <td data-label="{!product.price}">
+                                    <div class="slds-truncate"
+                                         title="{!product.price}">
+                                            {!product.price}
+                                    </div>
+                                </td>
+                            </aura:if>
+                            <aura:if isTrue="{!product.pricebookName==$Label.c.Standard_pricebook_name}">
+                                <td data-label="No discount">
+                                    <div class="slds-truncate"
+                                         title="No discount">
+                                            {!$Label.c.No_discount}
+                                    </div>
+                                </td>
+                            </aura:if>
+                            <td data-label="{!product.pricebookName}">
+                                <div class="slds-truncate"
+                                     title="{!product.pricebookName}">
+                                        {!product.pricebookName}
+                                </div>
+                            </td>
+                            <td data-label="{!product.discountPercentage}">
+                                <div class="slds-truncate"
+                                     title="{!product.discountPercentage}">
+                                    <aura:if isTrue="{!product.pricebookName!=$Label.c.Standard_pricebook_name}">
+                                        <input onblur="{!c.handleSingleProductDiscountChange}"
+                                               class="slds-input"
+                                               style="padding-right: 0; width:40%"
+                                               type="number"
+                                               value="{!product.discountPercentage}"
+                                               data-record="{!product.productId}"
+                                               data-index="{!product.pricebookId}"
+                                               id="{!product.productId}"/>
+                                    </aura:if>
+                                </div>
+                            </td>
+                        </tr>
+                    </aura:iteration>
+                    </tbody>
+                </table>
+                <div style="margin-top:15px; margin-bottom: 15px">
+                    <lightning:select aura:id="pricebookSelection" name="select1" label="Select pricebook"
+                                      required="true" onchange="{!c.handlePricebookSelect}">
+                        <aura:iteration items="{!v.activePricebooks}" var="pricebook">
+                            <aura:if isTrue="{!pricebook.Name!=$Label.c.Standard_pricebook_name}">
+                                <option value="{!pricebook.Id}">{!pricebook.Name}</option>
+                            </aura:if>
+                        </aura:iteration>
+                    </lightning:select>
+                </div>
+                <div class="addPromoToAllProducts">
+                    <button class="slds-button slds-button_brand"
+                            onclick="{! c.handleAddDiscountToAllProducts }" disabled="{!v.selectedPricebook==''}">
+                            {!$Label.c.Add_discount}
+                    </button>
+                    <input id="discountInput" placeholder="{!$Label.c.Discount_format_placeholder}"
+                           class="slds-input" type="number"
+                           style="width: 25%; margin-left: 10px;"/>
+                </div>
+            </div>
+        </aura:if>
+    </div>
+</aura:component>

@@ -1,0 +1,20 @@
+/**
+ * Created by Majdan on 26.02.2019.
+ */
+.THIS .datesContainer{
+    position:relative;
+    display:inline-block;
+    width: 100%;
+    border-bottom: 1px solid gainsboro;
+    padding-bottom: 7px;
+}
+
+.THIS .datesPosition{
+   width: 49%;
+   float:left;
+}
+
+.THIS .currentPromoContainer{
+    text-align: center;
+    padding: 1rem;
+}

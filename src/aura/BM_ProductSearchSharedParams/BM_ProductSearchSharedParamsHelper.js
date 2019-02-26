@@ -12,7 +12,7 @@
         component.set("v.maxYear", this.selectYear(component, event, 'selectYearMax1'));
     },
     selectYear: function(component, event, selectId){
-        var selectYear = component.find(selectId).get('v.value');
+        let selectYear = component.find(selectId).get('v.value');
         return selectYear;
     }
 })

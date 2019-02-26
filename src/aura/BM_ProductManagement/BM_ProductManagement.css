@@ -2,47 +2,6 @@
  * Created by Dawid Majdański on 04.02.2019.
  */
 
-.THIS .delIcoContainer{
-    position: absolute;
-    padding-top: 2px;
-    padding-left: 2px;
-    cursor: pointer;
-}
-
-.THIS .delIcoContainerBordered{
-    position: absolute;
-    cursor: pointer;
-}
-
-.THIS .delIco{
-    border: 1px solid rgb(193, 193, 193, 1);
-}
-
-.THIS .tileOuterDiv{
-    float:left;
-    width: 187px;
-    height: 224px;
-    position: relative;
-    margin: 2px;
-}
-
-.THIS .tileOuterDivBordered{
-    float:left;
-    width: 187px;
-    height: 224px;
-    position: relative;
-    margin: 2px;
-    border: 2px solid #7eaefc;
-}
-
-.THIS .tileImg{
-    border: 1px solid rgb(193, 193, 193, 0.6);
-    width:100%;
-    height: 100%;
-    position:absolute;
-    object-fit: contain;
-}
-
 .THIS .tabsetStyle{
     padding: 1rem;
 }
@@ -62,14 +21,6 @@
     background-color: #e8faff;
 }
 
-.THIS .currentPromoContainer{
-    padding: 1rem;
-}
-
-.THIS .addPromoContainer{
-    padding: 1rem;
-}
-
 .THIS.mainContainer{
     height:auto;
 }
@@ -77,44 +28,12 @@
 .THIS .cBM_ProductSearchSharedParams .separatorStyle{
     top: 40px;
     position: absolute;
-    left: 249px;
+    left: 278px;
 }
 
-.THIS .cBM_ProductSearchSharedParams .input_Param__rightSide{
-    width: 22%;
-    position: absolute;
-    top: 10px;
-    left: 264px;
-}
-
-.THIS .cBM_ProductSearchSharedParams .input_Param{
-    width: 22%;
-    top: 0;
-}
-
-.THIS .cBM_ProductSearchSharedParams .maxYearPosition{
-    left: 264px;
-    width: 22%;
-}
-
-.THIS .customBtnGroup{
-    margin-top: 10px;
-}
-
-.THIS .resultSection{
-    margin-top: 10px;
-    padding-top: 10px;
-}
-
-.THIS .searchInputCustom{
-    margin-bottom: 10px;
-}
-
-.THIS .searchTabset{
-    border-bottom: 4px solid gainsboro;
-    padding-bottom: 5px;
-}
-
-.THIS .addPromoToAllProducts{
-    margin-top: 20px;
+.THIS .saveDatesBtnContainer{
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid gainsboro;
+    padding-bottom: 9px;
 }

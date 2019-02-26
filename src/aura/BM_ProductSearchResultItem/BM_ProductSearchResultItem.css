@@ -13,7 +13,7 @@
   position: absolute;
   content: "";
   left: 0;
-  top: 40%;
+  top: 53%;
   right: 0;
   border-top: 1px solid;
   border-color: inherit;
@@ -22,7 +22,7 @@
   -moz-transform:rotate(-20deg);
   -ms-transform:rotate(-20deg);
   -o-transform:rotate(-20deg);
-  transform:rotate(-20deg);
+  transform:rotate(-14deg);
 }
 
 .THIS.tileContainer{
@@ -96,9 +96,9 @@
 }
 
 .THIS .priceContainer{
-    margin-top: 138px;
+    margin-top: 144px;
     border-bottom: 1px solid #e6e6e6;
-    font-size: 20px;
+    font-size: 17px;
 }
 
 .THIS .discountTriangle{
@@ -126,7 +126,7 @@
 }
 
 .THIS .productTypeImg{
-    width: 8%;
+    width: 6.6%;
     position: absolute;
     right: 0;
     bottom: 0;

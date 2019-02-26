@@ -10,7 +10,7 @@
 
     <div class="tileContainer">
         <div class="imageContainer">
-            <aura:if isTrue="{!v.product.discountPrice!=null}">
+            <aura:if isTrue="{!v.product.price!=v.product.standardPrice}">
                 <div class="discountTriangle">
                     <h1 class="saleTitle">
                         {!$Label.c.Sale}
@@ -28,7 +28,7 @@
                     <img title="{!$Label.c.Book}" class="productTypeImg" src="{!$Resource.BookSymbol}" />
                 </aura:if>
                 <aura:if isTrue="{!v.product.productRecordType == $Label.c.Movie}">
-                    <img title="{!$Label.c.Movie}" style="bottom: 6px !important; width: 7% !important" class="productTypeImg" src="{!$Resource.MovieSymbol}" />
+                    <img title="{!$Label.c.Movie}" style="bottom: 6px !important; width: 6.4% !important" class="productTypeImg" src="{!$Resource.MovieSymbol}" />
                 </aura:if>
             </h2>
             <div class="starsContainer">
@@ -37,7 +37,7 @@
                     <div class="star-ratings-css bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
                 </div>
             </div>
-            <aura:if isTrue="{!v.product.discountPrice!=null}">
+            <aura:if isTrue="{!v.product.price!=v.product.standardPrice}">
                 <div class="discountRibbonContainer">
                     <div class="discount-label green">
                         <span><lightning:formattedNumber value="{!v.product.discountPercentage*100}" maximumFractionDigits="0"/>%</span>
@@ -45,16 +45,20 @@
                 </div>
             </aura:if>
             <div class="priceContainer">
-                <aura:if isTrue="{!v.product.discountPrice==null}">
+                <aura:if isTrue="{!v.product.price==v.product.standardPrice}">
                     <p style="padding-top: 10px;">
-                        {!v.product.productPrice}$
+                        <ui:outputCurrency aura:id="curr" value="{!v.product.price}"/>
                     </p>
                 </aura:if>
-                <aura:if isTrue="{!v.product.discountPrice!=null}">
+                <aura:if isTrue="{!v.product.price!=v.product.standardPrice}">
                     <p style="padding-top: 10px;">
-                        <span class="strikethrough" style="color: red;">{!v.product.productPrice}$</span>
+                        <span class="strikethrough" style="color: red;">
+                            <ui:outputCurrency aura:id="curr" value="{!v.product.standardPrice}"/>
+                        </span>
                         &nbsp;
-                        <span style="color: green;">{!v.product.discountPrice}$</span>
+                        <span style="color: green;">
+                            <ui:outputCurrency aura:id="curr" value="{!v.product.price}"/>
+                        </span>
                     </p>
                 </aura:if>
             </div>

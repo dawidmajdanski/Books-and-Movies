@@ -106,42 +106,32 @@ public class BM_ProductManagement {
     }
 
     @AuraEnabled
+    public static List<Pricebook2> getPriceBooks(){
+        return [SELECT
+        (SELECT Id, UnitPrice, Standard_price__c, Discount_percentage__c, Name, Product2.Name, Product2.Id
+        FROM PricebookEntries WHERE IsActive=true AND (Product2.RecordType.Name = 'Book' OR Product2.RecordType.Name = 'Movie')), Id, Name, Start_date__c, End_date__c, Ongoing_promotion__c
+        FROM Pricebook2 WHERE Ongoing_promotion__c = true];
+    }
+
+    @AuraEnabled
+    public static List<Pricebook2> getInactivePriceBooks(){
+        return [SELECT
+        (SELECT Id, UnitPrice, Standard_price__c, Discount_percentage__c, Name, Product2.Name, Product2.Id
+        FROM PricebookEntries WHERE IsActive=true AND (Product2.RecordType.Name = 'Book' OR Product2.RecordType.Name = 'Movie')), Id, Name, Start_date__c, End_date__c, Ongoing_promotion__c
+        FROM Pricebook2 WHERE Ongoing_promotion__c = false];
+    }
+
+    @AuraEnabled
     public static List<Object> getPromoProducts(){
-        String searchquery = 'Select Product2.RecordType.Name, Product2.Release_date__c, Product2.Director__c, Product2.Book_author__c, Product2.Description, Pricebook2.Name, Pricebook2.Id, Product2.Name, UnitPrice, ProductCode, Discount_percentage__c From PricebookEntry WHERE Product2.RecordType.Name = \''+System.Label.Book_record_type+'\' OR Product2.RecordType.Name = \''+System.Label.Movie_record_type+'\'';
-        List<PricebookEntry> pricebookEntryList = new List<PricebookEntry>();
-        pricebookEntryList = Database.query(searchquery);
-        List<Object> serializedProducts = new List<Object>();
-        for(Integer i=0; i<pricebookEntryList.size(); i++){
-            if(pricebookEntryList.get(i).Pricebook2.Name == System.Label.Standard_pricebook_name){
-                for(Integer j=0; j<pricebookEntryList.size(); j++){
-                    if(pricebookEntryList.get(i).Product2.Id == pricebookEntryList.get(j).Product2.Id && pricebookEntryList.get(j).Pricebook2.Name == System.Label.Regular_discount_pricebook_name){
-                        Map<String, Object> jsonItem = BM_ProductUtils.addJsonKey(pricebookEntryList.get(j));
-                        jsonItem.put('discountPrice', pricebookEntryList.get(j).UnitPrice);
-                        jsonItem.put('discountPercentage', pricebookEntryList.get(j).Discount_percentage__c);
-                        jsonItem.put('productPrice', pricebookEntryList.get(i).UnitPrice);
-                        serializedProducts.add(jsonItem);
-                    }
-                }
-            }
-        }
-        return serializedProducts;
+        String searchquery = 'Select (Select Pricebook2.Name, Pricebook2.Id, Standard_price__c, ProductCode, Discount_percentage__c, UnitPrice FROM PricebookEntries WHERE Discount_percentage__c != null), RecordType.Name, Release_date__c, Director__c, Book_author__c, Description, Name From Product2 WHERE RecordType.Name = \''+System.Label.Book_record_type+'\' OR RecordType.Name = \''+System.Label.Movie_record_type+'\'';
+        List<Product2> productList = new List<Product2>();
+        productList = Database.query(searchquery);
+        return BM_ProductUtils.parseObj(productList);
     }
 
     @AuraEnabled
     public static List<Object> searchForProducts(String searchObj) {
-        List<String> queryParams = BM_SearchUtils.parseQuery(searchObj);
-        String searchquery = 'Select Product2.RecordType.Name, Product2.Release_date__c, Product2.Director__c, Product2.Book_author__c, Product2.Description, Pricebook2.Name, Pricebook2.Id, Product2.Name, UnitPrice, ProductCode, Discount_percentage__c From PricebookEntry WHERE ';
-
-        for(String param: queryParams){
-            searchquery += param;
-        }
-
-        List<PricebookEntry> results = new List<PricebookEntry>();
-        if(!queryParams.isEmpty()){
-            results = Database.query(searchquery);
-        }
-
-        return BM_ProductSearchController.parseObj(results);
+        return BM_ProductUtils.searchAction(searchObj);
     }
 
     @AuraEnabled
@@ -168,6 +158,28 @@ public class BM_ProductManagement {
     }
 
     @AuraEnabled
+    public static void changeStartDate(String priceBookId, Date newDate){
+        List<Pricebook2> pricebookToUpdate = [SELECT Id FROM Pricebook2 WHERE Id =: priceBookId];
+        pricebookToUpdate.get(0).Start_date__c = newDate;
+        try{
+            update pricebookToUpdate;
+        }catch (DmlException e){
+            system.debug(e);
+        }
+    }
+
+    @AuraEnabled
+    public static void changeEndDate(String priceBookId, Date newDate){
+        List<Pricebook2> pricebookToUpdate = [SELECT Id FROM Pricebook2 WHERE Id =: priceBookId];
+        pricebookToUpdate.get(0).End_date__c = newDate;
+        try{
+            update pricebookToUpdate;
+        }catch (DmlException e){
+            system.debug(e);
+        }
+    }
+
+    @AuraEnabled
     public static Boolean removeSinglePromotion(String promoProductId){
         List<PricebookEntry> discountProduct = [
                 SELECT  Product2.RecordType.Name,
@@ -180,10 +192,14 @@ public class BM_ProductManagement {
                         Product2.Name,
                         UnitPrice,
                         ProductCode,
-                        Discount_percentage__c
+                        Discount_percentage__c,
+                        Standard_price__c
                 From PricebookEntry
                 WHERE Id =: promoProductId] ;
-        delete discountProduct;
+        discountProduct.get(0).IsActive=false;
+        discountProduct.get(0).Discount_percentage__c=null;
+        discountProduct.get(0).UnitPrice=discountProduct.get(0).Standard_price__c;
+        update discountProduct;
         return true;
     }
 
@@ -207,34 +223,66 @@ public class BM_ProductManagement {
     }
 
     @AuraEnabled
-    public static Boolean addDiscountToProducts(List<String> ids, Decimal discount){
-        List<PricebookEntry> productsToDiscount = [
-                SELECT  Product2.RecordType.Name,
-                Product2.Release_date__c,
-                Product2.Director__c,
-                Product2.Book_author__c,
-                Product2.Description,
-                Pricebook2.Name,
-                Pricebook2.Id,
-                Product2.Name,
-                UnitPrice,
-                ProductCode,
-                Discount_percentage__c
-        From PricebookEntry WHERE Product2.Id in :ids];
-        List<PricebookEntry> newProductsWithDiscount = new List<PricebookEntry>();
-        for(PricebookEntry product: productsToDiscount){
-            if(product.Pricebook2Id == System.Label.Regular_discount_pricebook_id){
-                delete product;
-            }else{
-                PricebookEntry newProductEntry = product.clone();
-                newProductEntry.Pricebook2Id = System.Label.Regular_discount_pricebook_id;
-                newProductEntry.Discount_percentage__c = discount;
-                newProductEntry.UnitPrice = product.UnitPrice - (product.UnitPrice * discount);
-                newProductEntry.IsActive = true;
-                newProductsWithDiscount.add(newProductEntry);
+    public static Boolean addDiscountToProducts(String pricebookId, List<String> ids, Decimal discount){
+        List<Product2> productsToDiscount = [
+                SELECT RecordType.Name,
+                Release_date__c,
+                Director__c,
+                Book_author__c,
+                Name,
+                Description,
+                (SELECT Pricebook2.Name,
+                        Pricebook2.Id,
+                        Pricebook2Id,
+                        Product2.Name,
+                        UnitPrice,
+                        ProductCode,
+                        IsActive,
+                        Discount_percentage__c,
+                        Standard_price__c
+                FROM PricebookEntries)
+        From Product2 WHERE Id in :ids];
+
+        List<PricebookEntry> newPricebookEntryList = new List<PricebookEntry>();
+        List<PricebookEntry> entriesToUpdate = new List<PricebookEntry>();
+        for(Product2 product: productsToDiscount){
+            Boolean productIsInPricebook = false;
+            for(PricebookEntry entry: product.PricebookEntries){
+                if(entry.Pricebook2Id==pricebookId && entry.Pricebook2.Name!=System.Label.Standard_pricebook_name){
+                    productIsInPricebook = true;
+                    entry.Discount_percentage__c=discount;
+                    entry.isActive = true;
+                    entry.UnitPrice =  entry.Standard_price__c - (entry.Standard_price__c * discount);
+                    entriesToUpdate.add(entry);
+                }
             }
+            if(!productIsInPricebook){
+                PricebookEntry newPricebookEntry = new PricebookEntry();
+                newPricebookEntry.Standard_price__c = product.PricebookEntries.get(0).Standard_price__c;
+                newPricebookEntry.UnitPrice = product.PricebookEntries.get(0).Standard_price__c - (product.PricebookEntries.get(0).Standard_price__c * discount);
+                newPricebookEntry.Product2Id = product.Id;
+                newPricebookEntry.Pricebook2Id = pricebookId;
+                newPricebookEntry.IsActive = true;
+                newPricebookEntry.Discount_percentage__c=discount;
+                newPricebookEntryList.add(newPricebookEntry);
+            }
+
         }
-        upsert newProductsWithDiscount;
+        if(entriesToUpdate.size()!=0){
+            update entriesToUpdate;
+        }
+        if(newPricebookEntryList.size()!=0){
+            insert newPricebookEntryList;
+        }
         return true;
+    }
+
+    @AuraEnabled
+    public static void createNewPricebook(Pricebook2 newPricebook){
+       try{
+           insert newPricebook;
+       }catch (DmlException e){
+           system.debug(e);
+       }
     }
 }

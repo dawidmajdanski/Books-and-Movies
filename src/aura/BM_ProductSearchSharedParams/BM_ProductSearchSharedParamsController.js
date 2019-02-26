@@ -6,9 +6,9 @@
         $A.enqueueAction(component.get("c.setYears"));
     },
     setYears: function(component, event, helper){
-        var currentYear = (new Date()).getFullYear();
-        var years = [];
-        for(var i = currentYear; i>=1900; i--){
+        let currentYear = (new Date()).getFullYear();
+        let years = [];
+        for(let i = currentYear; i>=1900; i--){
             years.push(i);
         }
         component.set("v.availableYears", years);

@@ -1,0 +1,43 @@
+/**
+ * Created by Majdan on 25.02.2019.
+ */
+.THIS .tileOuterDiv{
+    float:left;
+    width: 187px;
+    height: 224px;
+    position: relative;
+    margin: 2px;
+}
+
+.THIS .tileImg{
+    border: 1px solid rgb(193, 193, 193, 0.6);
+    width:100%;
+    height: 100%;
+    position:absolute;
+    object-fit: contain;
+}
+
+.THIS .delIcoContainer{
+    position: absolute;
+    padding-top: 2px;
+    padding-left: 2px;
+    cursor: pointer;
+}
+
+.THIS .delIco{
+    border: 1px solid rgb(193, 193, 193, 1);
+}
+
+.THIS .tileOuterDivBordered{
+    float:left;
+    width: 187px;
+    height: 224px;
+    position: relative;
+    margin: 2px;
+    border: 2px solid #7eaefc;
+}
+
+.THIS .delIcoContainerBordered{
+    position: absolute;
+    cursor: pointer;
+}
