@@ -51,6 +51,13 @@
                                     <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
                             </div>
                         </div>
+
+                        <aura:if isTrue="{!product.isFavourite==true}">
+                            <div class="heartPos">
+                                <img src="{!$Resource.favourites_symbol1}" title="You like this product"/>
+                            </div>
+                        </aura:if>
+
                         <aura:if isTrue="{!product.price!=product.standardPrice}">
                             <div class="discountRibbonContainer">
                                 <div class="discount-label green">
