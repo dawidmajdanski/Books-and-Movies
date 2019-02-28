@@ -3,6 +3,6 @@
  */
 ({
     handleProductClick: function(component, event, helper) {
-        helper.productClick(component, event);
+        helper.productClick(component);
     },
 })

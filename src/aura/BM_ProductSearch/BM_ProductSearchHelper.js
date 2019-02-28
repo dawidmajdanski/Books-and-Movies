@@ -20,7 +20,7 @@
 
       return queryObj;
     },
-    getCurrentUser: function(component, event){
+    getCurrentUser: function(component){
         if(!sessionStorage.getItem('user--info')){
             let action = component.get("c.getLoggedUser");
             action.setCallback(this, function(response) {
@@ -35,15 +35,15 @@
             $A.enqueueAction(action);
         }
     },
-    advancedSearchModalAppearance: function(component, event){
+    advancedSearchModalAppearance: function(component){
         let isAdvSearchDisplayed = component.get("v.isAdvSearchDisplayed");
         if(isAdvSearchDisplayed){
-            this.hideAdvancedSearchModal(component, event);
+            this.hideAdvancedSearchModal(component);
         }else{
-            this.showAdvancedSearchModal(component, event);
+            this.showAdvancedSearchModal(component);
         }
     },
-    showAdvancedSearchModal: function(component, event){
+    showAdvancedSearchModal: function(component){
         let modal = document.getElementById('advSearchModal');
         let arrowContainer = document.getElementById('arrowDiv');
         modal.classList.add('displayModal');
@@ -52,7 +52,7 @@
         arrowContainer.classList.remove('rotate0ArrowContainer');
         component.set("v.isAdvSearchDisplayed", true);
     },
-    hideAdvancedSearchModal: function(component, event){
+    hideAdvancedSearchModal: function(component){
         let modal = document.getElementById('advSearchModal');
         let arrowContainer = document.getElementById('arrowDiv');
         modal.classList.add('hideModal');
@@ -61,20 +61,18 @@
         arrowContainer.classList.remove('rotate90ArrowContainer');
         component.set("v.isAdvSearchDisplayed", false);
     },
-    checkIfMaxPriceLesserThanMin: function(component, event, helper){
+    checkIfMaxPriceLesserThanMin: function(component){
         if(Math.floor(component.get("v.maxPrice"))<Math.floor(component.get("v.minPrice"))){
             component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Price_error'), 'error');
             return false;
-        }else{
-            return true;
         }
+        return true;
     },
-    checkIfMaxYearLesserThanMin: function(component, event, helper){
+    checkIfMaxYearLesserThanMin: function(component){
         if(component.get("v.maxYear")<component.get("v.minYear")){
             component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Years_error'), 'error');
             return false;
-        }else{
-            return true;
         }
+        return true;
     },
 })

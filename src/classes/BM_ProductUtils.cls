@@ -77,6 +77,9 @@ public with sharing class BM_ProductUtils {
         return jsonItem;
     }
 
+
+
+
     public static List<Object> parseObj(List<Product2> productsList){
         List<String> productIds = BM_ProductUtils.getIds(productsList);
         List<Attachment> mainPics = BM_ProductUtils.getMainPictures(productIds);
@@ -88,10 +91,18 @@ public with sharing class BM_ProductUtils {
                 PricebookEntry lowestEntry = productsList.get(i).PricebookEntries.get(0);
                 String standardPricebookEntryId = null;
                 for(PricebookEntry pBookEntry: productsList.get(i).PricebookEntries){
+
+                    system.debug(pBookEntry);
+
                     standardPricebookEntryId = pBookEntry.Pricebook2.Name==System.Label.Standard_pricebook_name?pBookEntry.Id:standardPricebookEntryId;
                     if(pBookEntry.UnitPrice<lowestEntry.UnitPrice){
                         lowestEntry = pBookEntry;
                     }
+                }
+                if(productsList[i].Favourite_products__r.size()!=0){
+                    jsonItem.put('isFavourite', true);
+                }else{
+                    jsonItem.put('isFavourite', false);
                 }
                 jsonItem.put('standardPrice', lowestEntry.Standard_price__c);
                 jsonItem.put('pricebookId', lowestEntry.Pricebook2.Id);
@@ -110,6 +121,7 @@ public with sharing class BM_ProductUtils {
     public static List<Object> searchAction(String searchObj) {
         String productQuery='';
         String pricebookEntryQuery='';
+        String currentUser = UserInfo.getUserId();
         List<String> productSearchParams = BM_SearchUtils.parseQueryProductSearch(searchObj);
         List<String> pricebookEntryParams = BM_SearchUtils.parseQueryPricebookEntrySearch(searchObj);
         for(String param: productSearchParams){
@@ -119,7 +131,8 @@ public with sharing class BM_ProductUtils {
             pricebookEntryQuery += param;
         }
         String searchQuery = 'Select RecordType.Name, Release_date__c, Director__c, Book_author__c, Description, Name, ' +
-                '(SELECT IsActive, Pricebook2.Name, UnitPrice, ProductCode, Discount_percentage__c, Standard_price__c FROM PricebookEntries WHERE Pricebook2.Ongoing_promotion__c=true AND IsActive = true '+pricebookEntryQuery+') ' +
+                '(SELECT IsActive, Pricebook2.Name, UnitPrice, ProductCode, Discount_percentage__c, Standard_price__c FROM PricebookEntries WHERE Pricebook2.Ongoing_promotion__c=true AND IsActive = true '+pricebookEntryQuery+'), ' +
+                '(SELECT User__c, Product__c FROM Favourite_products__r WHERE User__c = \''+currentUser+'\') ' +
                 'FROM Product2 WHERE '+productQuery;
 
         system.debug(searchQuery);

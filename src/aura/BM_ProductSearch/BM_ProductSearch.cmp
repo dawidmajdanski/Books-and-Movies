@@ -5,6 +5,7 @@
 <aura:component description="BM_CustomProductSearch" implements="forceCommunity:searchInterface"
                 controller="BM_ProductSearchController">
     <ltng:require styles="/resource/dontDisplayLogo"/>
+    <ltng:require styles="/resource/navBar"/>
 
     <aura:attribute name="isAdvSearchDisplayed" type="Boolean" default="false"/>
     <aura:attribute name="searchText" type="String" default=""/>
@@ -55,9 +56,13 @@
                                                             maxPrice="{!v.maxPrice}"/>
                             <div id="book_genre_param" class="searchParamsGridStyle">
                                 <lightning:select aura:id="selectBookGenre" name="selectBookGenre" label="{!$Label.c.Genre}" onchange="{!c.handleBookGenreChange}">
-                                    <option value="">{!$Label.c.All_genres}</option>
                                     <aura:iteration items="{!v.bookGenres}" var="genre" >
-                                        <option>{!genre}</option>
+                                        <aura:if isTrue="{!genre==$Label.c.All_genres}">
+                                            <option value="">{!genre}</option>
+                                            <aura:set attribute="else">
+                                                <option>{!genre}</option>
+                                            </aura:set>
+                                        </aura:if>
                                     </aura:iteration>
                                 </lightning:select>
                             </div>
@@ -73,9 +78,13 @@
                                                             maxPrice="{!v.maxPrice}"/>
                             <div id="movie_genre_param" class="searchParamsGridStyle">
                                 <lightning:select aura:id="selectMovieGenre" name="selectMovieGenre" label="{!$Label.c.Genre}" onchange="{!c.handleMovieGenreChange}">
-                                    <option value="">{!$Label.c.All_genres}</option>
-                                    <aura:iteration items="{!v.movieGenres}" var="genre" >
-                                        <option>{!genre}</option>
+                                    <aura:iteration items="{!v.movieGenres}" var="genre">
+                                        <aura:if isTrue="{!genre==$Label.c.All_genres}">
+                                            <option value="">{!genre}</option>
+                                            <aura:set attribute="else">
+                                                <option>{!genre}</option>
+                                            </aura:set>
+                                        </aura:if>
                                     </aura:iteration>>
                                 </lightning:select>
                             </div>

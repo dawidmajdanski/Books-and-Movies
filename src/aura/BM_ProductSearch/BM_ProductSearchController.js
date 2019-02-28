@@ -5,11 +5,11 @@
     init: function(component, event, helper){
         $A.enqueueAction(component.get('c.getMovieGenresPicklistValues'));
         $A.enqueueAction(component.get('c.getBookGenresPicklistValues'));
-        helper.getCurrentUser(component, event);
+        helper.getCurrentUser(component);
     },
     handleClick : function(component, event, helper) {
-      let isPricingCorrect = helper.checkIfMaxPriceLesserThanMin(component, event, helper);
-      let isYearsCorrect = helper.checkIfMaxYearLesserThanMin(component, event, helper);
+      let isPricingCorrect = helper.checkIfMaxPriceLesserThanMin(component);
+      let isYearsCorrect = helper.checkIfMaxYearLesserThanMin(component);
       if(!isPricingCorrect || !isYearsCorrect){
           return false;
       }
@@ -32,12 +32,12 @@
           }
       });
       $A.enqueueAction(action);
-      helper.hideAdvancedSearchModal(component, event);
+      helper.hideAdvancedSearchModal(component);
     },
     handleChangeTabset: function(component, event, helper){
         $A.enqueueAction(component.get('c.handleClearParams'));
     },
-    handleClearParams: function(component, event, helper){
+    handleClearParams: function(component, event){
         component.set("v.minPrice", undefined);
         component.set("v.maxPrice", undefined);
         component.set("v.minRating", undefined);
@@ -48,11 +48,11 @@
         component.set("v.author", undefined);
         component.set("v.bookGenre", undefined);
         component.set("v.movieGenre", undefined);
-        component.set("v.searchText", '');
+        component.set("v.searchText", undefined);
         $A.enqueueAction(component.get('c.resetToDefaultAvailableYears'));
         $A.enqueueAction(component.get('c.resetToDefaultGenres'));
     },
-    resetToDefaultAvailableYears: function(component, event, helper){
+    resetToDefaultAvailableYears: function(component){
         let clearAvailYears = component.find("clearAvailableYears");
         clearAvailYears.resetYearsPicklist();
         let clearAvailYears1 = component.find("clearAvailableYears1");
@@ -60,19 +60,21 @@
         let clearAvailYears2 = component.find("clearAvailableYears2");
         clearAvailYears2.resetYearsPicklist();
     },
-    resetToDefaultGenres: function(component, event, helper){
+    resetToDefaultGenres: function(component){
         component.find("selectBookGenre").set("v.value", $A.get('$Label.c.All_genres'));
         component.find("selectMovieGenre").set("v.value", $A.get('$Label.c.All_genres'));
     },
     onAdvancedSearchModalAppearance: function(component, event, helper){
-        helper.advancedSearchModalAppearance(component, event);
+        helper.advancedSearchModalAppearance(component);
     },
-    getMovieGenresPicklistValues: function(component, event, helper){
+    getMovieGenresPicklistValues: function(component){
       let action = component.get('c.getMovieGenresEntries');
       action.setCallback(this, function(response) {
         let state = response.getState();
         if (state === 'SUCCESS') {
-            component.set("v.movieGenres", response.getReturnValue());
+            let movieGenres = response.getReturnValue();
+            movieGenres.unshift($A.get('$Label.c.All_genres'));
+            component.set("v.movieGenres", movieGenres);
         }else{
             console.error($A.get('$Label.c.Internal_error')+' '+state);
             component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Internal_error'), 'error');
@@ -80,12 +82,14 @@
       });
       $A.enqueueAction(action);
     },
-    getBookGenresPicklistValues: function(component, event, helper){
+    getBookGenresPicklistValues: function(component){
       let action = component.get('c.getBookGenresEntries');
       action.setCallback(this, function(response) {
         let state = response.getState();
         if (state === 'SUCCESS') {
-            component.set("v.bookGenres", response.getReturnValue());
+            let bookGenres = response.getReturnValue();
+            bookGenres.unshift($A.get('$Label.c.All_genres'));
+            component.set("v.bookGenres", bookGenres);
         }else{
             console.error($A.get('$Label.c.Internal_error')+' '+state);
             component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Internal_error'), 'error');
@@ -93,10 +97,10 @@
       });
       $A.enqueueAction(action);
     },
-    handleMovieGenreChange: function(component, event, helper){
+    handleMovieGenreChange: function(component, event){
         component.set("v.movieGenre", component.find('selectMovieGenre').get('v.value'));
     },
-    handleBookGenreChange: function(component, event, helper){
+    handleBookGenreChange: function(component, event){
         component.set("v.bookGenre", component.find('selectBookGenre').get('v.value'));
     },
 })

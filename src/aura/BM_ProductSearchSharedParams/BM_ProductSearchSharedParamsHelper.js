@@ -2,16 +2,16 @@
  * Created by Dawid Majdański on 05.02.2019.
  */
 ({
-    selectSpecificYear: function(component, event){
-        component.set("v.specificYear", this.selectYear(component, event, 'selectYearSpec1'));
+    selectSpecificYear: function(component){
+        component.set("v.specificYear", this.selectYear(component, 'selectYearSpec1'));
     },
-    selectMinYear: function(component, event){
-        component.set("v.minYear", this.selectYear(component, event, 'selectYearMin1'));
+    selectMinYear: function(component){
+        component.set("v.minYear", this.selectYear(component, 'selectYearMin1'));
     },
-    selectMaxYear: function(component, event){
-        component.set("v.maxYear", this.selectYear(component, event, 'selectYearMax1'));
+    selectMaxYear: function(component){
+        component.set("v.maxYear", this.selectYear(component, 'selectYearMax1'));
     },
-    selectYear: function(component, event, selectId){
+    selectYear: function(component, selectId){
         let selectYear = component.find(selectId).get('v.value');
         return selectYear;
     }

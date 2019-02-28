@@ -25,24 +25,36 @@
         </div>
         <div id="release_year_param1" class="searchParamsGridStyle">
             <lightning:select aura:id="selectYearSpec1" name="selectYear1" label="{!$Label.c.Specific_year}" onchange="{!c.onSelectSpecificYear}" disabled="{!(v.maxYear!=null &amp;&amp; v.maxYear!='') || (v.minYear!=null &amp;&amp; v.minYear!='')}">
-                <option value="">{!$Label.c.Default_option}</option>
                 <aura:iteration items="{!v.availableYears}" var="aYear">
-                    <option>{!aYear}</option>
+                    <aura:if isTrue="{!aYear==$Label.c.Default_option}">
+                        <option value="">{!aYear}</option>
+                        <aura:set attribute="else">
+                            <option>{!aYear}</option>
+                        </aura:set>
+                    </aura:if>
                 </aura:iteration>
             </lightning:select>
         </div>
         <div id="years_between_param1" class="searchParamsGridStyle">
             <lightning:select aura:id="selectYearMin1" name="selectYears1" label="{!$Label.c.From_year}" class="input_Param" onchange="{!c.onSelectMinYear}" disabled="{!(v.specificYear!=null &amp;&amp; v.specificYear!='')}">
-                <option value="">{!$Label.c.Default_option}</option>
                 <aura:iteration items="{!v.availableYears}" var="aYear">
-                    <option>{!aYear}</option>
+                    <aura:if isTrue="{!aYear==$Label.c.Default_option}">
+                        <option value="">{!aYear}</option>
+                        <aura:set attribute="else">
+                            <option>{!aYear}</option>
+                        </aura:set>
+                    </aura:if>
                 </aura:iteration>
             </lightning:select>
 
             <lightning:select aura:id="selectYearMax1" name="selectYears2" label="{!$Label.c.To_year}" class="maxYearPosition" onchange="{!c.onSelectMaxYear}" disabled="{!(v.specificYear!=null &amp;&amp; v.specificYear!='')}">
-                <option value="">{!$Label.c.Default_option}</option>
                 <aura:iteration items="{!v.availableYears}" var="aYear">
-                    <option>{!aYear}</option>
+                    <aura:if isTrue="{!aYear==$Label.c.Default_option}">
+                        <option value="">{!aYear}</option>
+                        <aura:set attribute="else">
+                            <option>{!aYear}</option>
+                        </aura:set>
+                    </aura:if>
                 </aura:iteration>
             </lightning:select>
         </div>

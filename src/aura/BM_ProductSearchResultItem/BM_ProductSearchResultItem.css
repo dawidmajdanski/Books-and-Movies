@@ -131,3 +131,10 @@
     right: 0;
     bottom: 0;
 }
+
+.THIS .heartPos {
+    width: 6%;
+    position: absolute;
+    bottom: 0.15rem;
+    right: 2.75rem;
+}

@@ -15,7 +15,7 @@ public class BM_ProductSearchController {
         for(AggregateResult ar: avgPopular){
             ids.add(String.valueOf(ar.get('pId')));
         }
-        List<Product2> popularProducts = [SELECT (SELECT Discount_percentage__c, Pricebook2.Name, Pricebook2.Id, UnitPrice, ProductCode, Standard_price__c FROM PricebookEntries WHERE IsActive=true AND Pricebook2.IsActive=true), RecordType.Name, Release_date__c, Director__c, Book_author__c, Description, Name From Product2 WHERE Id in :(ids)];
+        List<Product2> popularProducts = [SELECT (SELECT User__c, Product__c FROM Favourite_products__r WHERE User__c =: UserInfo.getUserId()) ,(SELECT Discount_percentage__c, Pricebook2.Name, Pricebook2.Id, UnitPrice, ProductCode, Standard_price__c FROM PricebookEntries WHERE IsActive=true AND Pricebook2.Ongoing_promotion__c=true), RecordType.Name, Release_date__c, Director__c, Book_author__c, Description, Name From Product2 WHERE Id in :(ids)];
         return BM_ProductUtils.parseObj(popularProducts);
     }
 
@@ -123,7 +123,6 @@ public class BM_ProductSearchController {
         }
         return null;
     }
-
 
     @AuraEnabled
     public static User getLoggedUser(){
