@@ -2,13 +2,13 @@
  * Created by Dawid Majdański on 26.02.2019.
  */
 ({
-    searchForOrders: function(component, event){
+    searchForOrders: function(component){
         let action = component.get('c.getMyOrders');
         action.setCallback(this, function(response) {
           let state = response.getState();
           if (state === 'SUCCESS') {
               let items =  response.getReturnValue();
-              let parsedItems = this.splitResults(component, event, items);
+              let parsedItems = this.splitResults(component, items);
               let resultsOnPageSize = component.get('v.resultsOnPageSize');
               component.set('v.maxPageNum', items.length%resultsOnPageSize==0?items.length/resultsOnPageSize:(Math.floor(items.length/resultsOnPageSize))+1);
               component.set('v.currentPageNum', 1);
@@ -21,7 +21,7 @@
         });
         $A.enqueueAction(action);
     },
-    splitResults: function(component, event, results){
+    splitResults: function(component, results){
         let currentPageResults = [];
         for(let i=component.get('v.offset'); i<component.get('v.offset')+component.get('v.resultsOnPageSize'); i++){
             if(i<=results.length-1 && i>=0){
@@ -30,7 +30,7 @@
         }
         return currentPageResults;
     },
-    handleRoll: function(component, event, objList, isRolledDown, divIdSuffix, arrowIdSuffix){
+    handleRoll: function(event, objList, isRolledDown, divIdSuffix, arrowIdSuffix){
         let selectedSection = event.currentTarget;
         let index = selectedSection.dataset.index;
 
@@ -52,7 +52,7 @@
         }
         return isRolledDown;
     },
-    getOrderItem: function(component, event, orderItemName){
+    getOrderItem: function(component, orderItemName){
         let action = component.get('c.getPricebookEntryProduct');
         action.setParams({'orderItemName' : orderItemName});
         action.setCallback(this, function(response) {
@@ -81,7 +81,7 @@
         }
         return null;
     },
-    getSelectedOrderItem: function(component, order, orderItemId){
+    getSelectedOrderItem: function(order, orderItemId){
         for(let i=0; i<order.OrderItems.length; i++){
             if(order.OrderItems[i].Id == orderItemId){
                 return order.OrderItems[i];

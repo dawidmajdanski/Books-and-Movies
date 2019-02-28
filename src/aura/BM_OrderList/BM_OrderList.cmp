@@ -67,12 +67,12 @@
                             </div>
                         </div>
                         <div class="slds-size_1-of-6 caseBanner" >
-                            <div class="slds-form-element" style="padding-right: 0;">
+                            <div class="slds-form-element" style="padding-right: 0; width: 120%">
                                 <label class="slds-form-element__label" style="padding-right: 0;">
-                                        {!$Label.c.Date_of_purchase}
+                                        {!$Label.c.Status}
                                 </label>
                                 <div class="slds-form-element__control">
-                                    <span>{!myOrder.EffectiveDate}</span>
+                                    <span>{!myOrder.Status}</span>
                                 </div>
                             </div>
                         </div>
@@ -89,10 +89,10 @@
                         <div class="slds-size_1-of-6 caseBanner" >
                             <div class="slds-form-element" style="padding-right: 0;">
                                 <label class="slds-form-element__label" style="padding-right: 0;">
-                                        {!$Label.c.Status}
+                                        {!$Label.c.Date_of_purchase}
                                 </label>
                                 <div class="slds-form-element__control">
-                                    <span>{!myOrder.Status}</span>
+                                    <span>{!myOrder.EffectiveDate}</span>
                                 </div>
                             </div>
                         </div>

@@ -16,6 +16,6 @@
                 navEvt.fire();
             }
         }
-        helper.bottomTitleAnimation(component, event);
+        helper.bottomTitleAnimation();
     },
 })

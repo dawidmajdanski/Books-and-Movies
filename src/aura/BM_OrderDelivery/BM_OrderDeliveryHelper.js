@@ -2,7 +2,20 @@
  * Created by Majdan on 10.02.2019.
  */
 ({
-    cacheAddress: function(component, event){
+    initPageVisibility: function(component){
+        if(sessionStorage.getItem('itemsInCartAccepted')){
+            component.set("v.showPage", true);
+            component.set("v.user", JSON.parse(sessionStorage.getItem('user--info')));
+        }else{
+            component.set("v.showPage", false);
+            let navEvt = $A.get('e.force:navigateToURL');
+            if(navEvt){
+                navEvt.setParams({url: '/'});
+                navEvt.fire();
+            }
+        }
+    },
+    cacheAddress: function(component){
         let shippingCity = component.get("v.shippingCity");
         let shippingStreet = component.get("v.shippingStreet");
         let shippingCountry = component.get("v.shippingCountry");

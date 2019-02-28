@@ -105,4 +105,20 @@ public without sharing class BM_OrderController {
         return userCases.size()!=0?JSON.serialize(userCases):null;
     }
 
+    @AuraEnabled
+    public static List<String> getCaseReasonValues(){
+        Schema.DescribeFieldResult F = Case.Reason.getDescribe();
+        Schema.sObjectField T = F.getSObjectField();
+        return getGlobalPicklistValues(T);
+    }
+
+    private static List<String> getGlobalPicklistValues(Schema.sObjectField objField){
+        List<PicklistEntry> entries = objField.getDescribe().getPicklistValues();
+        List<String> results = new List<String>();
+        for(PicklistEntry entry: entries){
+            results.add(entry.getLabel());
+        }
+        return results;
+    }
+
 }

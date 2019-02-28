@@ -3,27 +3,7 @@
  */
 ({
     init: function(component, event, helper){
-        if(sessionStorage.getItem('deliverySelectionDone')){
-            component.set("v.showPage", true);
-            component.set("v.shippingAddress", JSON.parse(sessionStorage.getItem('user--shipping')));
-            $A.enqueueAction(component.get("c.getTotalOrderPrice"));
-        }else{
-            component.set("v.showPage", false);
-            let navEvt = $A.get('e.force:navigateToURL');
-            if(navEvt){
-                navEvt.setParams({url: '/'});
-                navEvt.fire();
-            }
-        }
-    },
-    getTotalOrderPrice: function(component, event, helper){
-        component.set("v.productsToOrder", JSON.parse(localStorage.getItem('cartItems')));
-        let productsToOrder = component.get("v.productsToOrder");
-        let totalOrderPrice = 0;
-        for(let i=0; i<productsToOrder.length; i++){
-            totalOrderPrice += productsToOrder[i].price * productsToOrder[i].quantity;
-        }
-        component.set("v.totalOrderPrice", totalOrderPrice);
+        helper.initPageVisibility(component);
     },
     handleFinalizeOrder: function(component, event, helper){
         let loading = component.find("loadingSpinner");
@@ -37,7 +17,7 @@
         action.setCallback(this, function(response) {
           let state = response.getState();
           if (state === 'SUCCESS') {
-               helper.clearCart(component, event);
+               helper.clearCart();
                sessionStorage.removeItem('user--shipping');
                sessionStorage.removeItem('itemsInCartAccepted');
                sessionStorage.removeItem('deliverySelectionDone');

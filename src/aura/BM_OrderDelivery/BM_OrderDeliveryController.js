@@ -3,17 +3,7 @@
  */
 ({
     init: function(component, event, helper){
-        if(sessionStorage.getItem('itemsInCartAccepted')){
-            component.set("v.showPage", true);
-            component.set("v.user", JSON.parse(sessionStorage.getItem('user--info')));
-        }else{
-            component.set("v.showPage", false);
-            let navEvt = $A.get('e.force:navigateToURL');
-            if(navEvt){
-                navEvt.setParams({url: '/'});
-                navEvt.fire();
-            }
-        }
+        helper.initPageVisibility(component);
     },
     handleSetShippingAddress: function(component, event, helper){
         component.set("v.isBillingSameAsShipping", !component.get("v.isBillingSameAsShipping"));
@@ -35,7 +25,7 @@
         }
     },
     handleGoToOrderSummary: function(component, event, helper){
-       helper.cacheAddress(component, event);
+       helper.cacheAddress(component);
     },
     setShippingState: function(component, event, helper){
         component.set("v.shippingState", document.getElementById("shipping-state").value);
