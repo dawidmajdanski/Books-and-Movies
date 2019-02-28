@@ -1,0 +1,31 @@
+/**
+ * Created by Majdan on 26.02.2019.
+ */
+.THIS.mainContainer {
+    width: 100%;
+    position: relative;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.THIS .titleMyFavourites{
+    font-weight: bold;
+    font-size: 200%;
+    padding-left: 5px;
+    border-bottom: 1px solid #dbdbdb;
+    width: 100%;
+}
+
+.THIS .favouriteItemsContainer{
+    width: 66%;
+    padding-top: 1rem;
+    margin-left: 13%;
+}
+
+.THIS .noProductsInFavourites{
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 155%;
+    font-style: italic;
+}

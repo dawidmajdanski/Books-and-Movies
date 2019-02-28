@@ -1,0 +1,22 @@
+<!--
+ - Created by Dawid Majdański on 26.02.2019.
+ -->
+
+<aura:component description="BM_FavouritesButton" controller="BM_FavouritesController">
+    <aura:attribute name="product" type="Object" />
+
+    <c:BM_Toast aura:id="toastMsg"/>
+
+    <aura:if isTrue="{!v.product.isFavourite==false}">
+        <div class="heartPos" onclick="{!c.addToFavourites}">
+            <img src="{!$Resource.favourites_symbol1_grayed}" title="Add to favourites"/>
+        </div>
+    </aura:if>
+
+    <aura:if isTrue="{!v.product.isFavourite==true}">
+        <div class="heartPos" onclick="{!c.removeFromFavourites}">
+            <img src="{!$Resource.favourites_symbol1}" title="You like this product"/>
+        </div>
+    </aura:if>
+
+</aura:component>

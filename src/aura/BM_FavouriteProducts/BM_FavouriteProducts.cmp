@@ -1,0 +1,29 @@
+<!--
+ - Created by Dawid Majdański on 26.02.2019.
+ -->
+
+<aura:component description="BM_FavouriteProducts" controller="BM_FavouritesController" implements="forceCommunity:availableForAllPageTypes">
+    <aura:attribute name="products" type="Object[]" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+
+    <c:BM_Toast aura:id="toastMsg"/>
+
+    <div class="mainContainer">
+        <div class="titleMyFavourites">
+            My favourites
+        </div>
+
+        <aura:if isTrue="{!v.products==null}">
+            <h1 class="noProductsInFavourites">You have no favourite products</h1>
+        </aura:if>
+
+        <div class="favouriteItemsContainer">
+            <aura:iteration items="{!v.products}" var="item">
+                <c:BM_ProductSearchResultItem product="{!item}"/>
+            </aura:iteration>
+        </div>
+    </div>
+
+
+</aura:component>
