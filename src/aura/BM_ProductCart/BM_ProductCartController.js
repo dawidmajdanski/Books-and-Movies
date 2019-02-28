@@ -57,7 +57,7 @@
             localStorage.setItem('cartItems', JSON.stringify(cartProducts));
         }
     },
-    handleGoToDeliveryPage: function(component, event, helper){
+    handleGoToDeliveryPage: function(component, event){
         let user = JSON.parse(sessionStorage.getItem('user--info'));
         if(user.Id==$A.get('$Label.c.Guest_user')){
             component.find("toastMsg").showToast('', $A.get('$Label.c.User_not_logged_msg'), "info");
@@ -72,7 +72,7 @@
             }
         }
     },
-    handleCartProductClick: function(component, event, helper){
+    handleCartProductClick: function(component, event){
         let selectedSection = event.currentTarget;
         let index = selectedSection.dataset.index;
         for(let i=0; i<component.get("v.cartProducts").length; i++){
