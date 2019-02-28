@@ -41,4 +41,17 @@
         });
         $A.enqueueAction(action);
     },
+    getCaseReasonPicklistValues: function(component){
+      let action = component.get('c.getCaseReasonValues');
+      action.setCallback(this, function(response) {
+        let state = response.getState();
+        if (state === 'SUCCESS') {
+            component.set("v.caseReason", response.getReturnValue());
+        }else{
+            console.error($A.get('$Label.c.Internal_error')+' '+state);
+            component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Internal_error'), 'error');
+        }
+      });
+      $A.enqueueAction(action);
+    },
 })

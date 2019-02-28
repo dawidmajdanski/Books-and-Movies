@@ -3,10 +3,10 @@
  */
 ({
     init: function(component, event, helper){
-        helper.searchForUserComplaints(component, event);
+        helper.searchForUserComplaints(component);
     },
     handleRollCase: function(component, event, helper){
-        component.set("v.isCaseRolledDown", helper.handleRoll(component, event, component.get("v.complaints"), component.get("v.isCaseRolledDown"), 'CaseItem', 'CaseArrow'));
+        component.set("v.isCaseRolledDown", helper.handleRoll(event, component.get("v.complaints"), component.get("v.isCaseRolledDown"), 'CaseItem', 'CaseArrow'));
     },
     handleCaseItemClick: function(component, event, helper){
         let selectedSection = event.currentTarget;
@@ -17,6 +17,6 @@
                  orderItemName = component.get('v.complaints')[j].Order_Product__r.Product2.Name;
              }
         }
-        helper.getOrderItem(component, event, orderItemName);
+        helper.getOrderItem(orderItemName);
     },
 })

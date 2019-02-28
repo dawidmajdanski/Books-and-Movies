@@ -8,6 +8,7 @@
     <aura:attribute name="user" type="User"/>
     <aura:attribute name="caseSubject" type="String" />
     <aura:attribute name="caseDescription" type="String" />
+    <aura:attribute name="caseReason" type="String[]"/>
     <aura:method name="openCaseModal" action="{!c.onOpenModal}" access="PUBLIC">
         <aura:attribute name="receivedOrder" type="Order"/>
         <aura:attribute name="receivedOrderItem" type="OrderItem"/>
@@ -78,11 +79,9 @@
                                         <div class="slds-form-element">
                                             <div class="slds-form-element__control">
                                                 <lightning:select aura:id="selectedReason" name="selectComplaintReason" label="{!$Label.c.Complaint_reason}">
-                                                    <option value="{!$Label.c.Order}">{!$Label.c.Order}</option>
-                                                    <option value="{!$Label.c.Damaged_product}">{!$Label.c.Damaged_product}</option>
-                                                    <option value="{!$Label.c.Shipping_delay}">{!$Label.c.Shipping_delay}</option>
-                                                    <option value="{!$Label.c.Other}">{!$Label.c.Other}</option>
-                                                    <option value="{!$Label.c.Feedback}">{!$Label.c.Feedback}</option>
+                                                    <aura:iteration items="{!v.caseReason}" var="reason">
+                                                        <option value="{!reason}">{!reason}</option>
+                                                    </aura:iteration>
                                                 </lightning:select>
                                             </div>
                                         </div>

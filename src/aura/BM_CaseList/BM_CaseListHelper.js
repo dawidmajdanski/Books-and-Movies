@@ -2,13 +2,13 @@
  * Created by Dawid Majdański on 26.02.2019.
  */
 ({
-    searchForUserComplaints: function(component, event){
+    searchForUserComplaints: function(component){
         let action = component.get('c.getMyComplaints');
         action.setCallback(this, function(response) {
           let state = response.getState();
           if (state === 'SUCCESS') {
               let results = JSON.parse(response.getReturnValue());
-              component.set("v.complaints", this.parseDates(component, results));
+              component.set("v.complaints", this.parseDates(results));
           }else{
               console.error($A.get('$Label.c.Internal_error')+' '+state);
               component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Internal_error'), 'error');
@@ -16,7 +16,7 @@
         });
         $A.enqueueAction(action);
     },
-    parseDates: function(component, results){
+    parseDates: function(results){
         for(let i=0; i<results.length; i++){
             let date = new Date(results[i].CreatedDate.split(' ')[0]);
             results[i].CreatedDate = date.toLocaleDateString("en-GB");
@@ -37,7 +37,7 @@
         }
         return results;
     },
-    handleRoll: function(component, event, objList, isRolledDown, divIdSuffix, arrowIdSuffix){
+    handleRoll: function(event, objList, isRolledDown, divIdSuffix, arrowIdSuffix){
         let selectedSection = event.currentTarget;
         let index = selectedSection.dataset.index;
 
@@ -59,7 +59,7 @@
         }
         return isRolledDown;
     },
-    getOrderItem: function(component, event, orderItemName){
+    getOrderItem: function(orderItemName){
         let orderItemNameEvt = $A.get("e.c:BM_GetOrderItemEvent");
         if(orderItemNameEvt){
             orderItemNameEvt.setParams({"orderItemName" : orderItemName});
