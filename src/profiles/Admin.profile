@@ -5,6 +5,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>BM_FavouritesController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>BM_LocationsRecordCrud</apexClass>
         <enabled>true</enabled>
     </classAccesses>
