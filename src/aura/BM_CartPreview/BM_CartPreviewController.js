@@ -3,9 +3,9 @@
  */
 ({
     init: function(component, event, helper){
-        helper.getCartItemsQuantity(component, event);
+        helper.getCartItemsQuantity(component);
     },
-    handleProductsInCart: function(component, event, helper){
+    handleProductsInCart: function(component){
         $A.enqueueAction(component.get('c.handleCartRollUp'));
         let navEvt = $A.get('e.force:navigateToURL');
         if(navEvt){
@@ -14,7 +14,7 @@
         }
     },
     handleUpdateCartProductsQuantity: function(component, event, helper){
-        helper.getCartItemsQuantity(component, event);
+        helper.getCartItemsQuantity(component);
     },
     handleCartRollDown: function(component, event, helper){
         helper.getCartItems(component, event);
@@ -26,7 +26,7 @@
             document.getElementById('cartPreview').style = 'height: 409px;';
         }, 350);
     },
-    handleCartRollUp: function(component, event, helper){
+    handleCartRollUp: function(){
         document.getElementById('cartPreview').style = 'height: 0';
         setTimeout(function(){
              document.getElementById('cartItemsTotalPrice').style = 'width: 0';
@@ -36,7 +36,7 @@
     handleRemoveProductFromCart: function(component, event, helper){
         helper.removeProductFromCart(component, event);
     },
-    handleAddProductToCart: function(component, event, helper){
+    handleAddProductToCart: function(component, event){
        let cartItem = event.getParam("productToCart");
        let quantity = event.getParam("quantity");
        let parsedCartItemsToAdd = [];

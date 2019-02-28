@@ -2,11 +2,11 @@
  * Created by Dawid Majdański on 21.02.2019.
  */
 ({
-    getCartItemsQuantity: function(component, event){
+    getCartItemsQuantity: function(component){
         if(localStorage.getItem('cartItems')){
             let cartItems = JSON.parse(localStorage.getItem('cartItems'));
             component.set("v.cartItemsQuantity", cartItems.length);
-            this.getCartItems(component, event);
+            this.getCartItems(component);
         }else{
             component.set("v.cartItemsQuantity", 0);
             component.set("v.cartProducts", []);
@@ -17,15 +17,15 @@
         let cartProducts = component.get("v.cartProducts");
         let totalCartPrice = 0;
         for(let i=0; i<cartProducts.length; i++){
-            totalCartPrice += this.calcTotalPrice(component, event, cartProducts[i], 'add');
+            totalCartPrice += this.calcTotalPrice(cartProducts[i], 'add');
         }
         component.set("v.totalCartPrice", totalCartPrice);
     },
-    getCartItems: function(component, event){
+    getCartItems: function(component){
         if(localStorage.getItem('cartItems')){
             let cartProducts = JSON.parse(localStorage.getItem('cartItems'));
             component.set("v.cartProducts", cartProducts);
-            this.getTotalCartPrice(component, event);
+            this.getTotalCartPrice(component);
         }
     },
     removeProductFromCart: function(component, event){
@@ -35,7 +35,7 @@
         let totalCartPrice = component.get("v.totalCartPrice");
         for(let i=0; i<cartProducts.length; i++){
             if(i == index){
-                totalCartPrice += this.calcTotalPrice(component, event, cartProducts[i], 'subtract');
+                totalCartPrice += this.calcTotalPrice(cartProducts[i], 'subtract');
                 cartProducts.splice(i, 1);
                 break;
             }
@@ -45,7 +45,7 @@
         component.set("v.cartItemsQuantity", cartProducts.length);
         localStorage.setItem('cartItems', JSON.stringify(cartProducts));
     },
-    calcTotalPrice: function(component, event, cartProduct, operation){
+    calcTotalPrice: function(cartProduct, operation){
         let totalCartPrice = 0;
         if(operation=='subtract'){
             totalCartPrice -= cartProduct.quantity * cartProduct.price;
