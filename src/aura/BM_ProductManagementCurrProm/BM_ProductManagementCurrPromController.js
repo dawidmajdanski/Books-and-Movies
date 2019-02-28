@@ -3,7 +3,7 @@
  */
 ({
   init : function(component, event, helper){
-     helper.getCurrentPriceBooks(component, event);
+     helper.getCurrentPriceBooks(component);
   },
   handleChangeStartDate: function(component, event, helper){
       let action = component.get('c.changeStartDate');
@@ -17,6 +17,6 @@
       helper.removeSinglePromotionAction(component, event);
   },
   handleGetCurrentPriceBooks: function(component, event, helper){
-      helper.getCurrentPriceBooks(component, event);
+      helper.getCurrentPriceBooks(component);
   },
 })

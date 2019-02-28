@@ -2,7 +2,7 @@
  * Created by Majdan on 26.02.2019.
  */
 ({
-    removeSinglePromotionAction: function(component, event, helper){
+    removeSinglePromotionAction: function(component, event){
       let selectedSection = event.currentTarget;
       let record = selectedSection.dataset.record;
       let action = component.get('c.removeSinglePromotion');
@@ -23,7 +23,7 @@
       });
       $A.enqueueAction(action);
     },
-    getInactivePriceBooks: function(component, event){
+    getInactivePriceBooks: function(component){
         let action = component.get('c.getInactivePriceBooks');
         action.setCallback(this, function(response) {
              let state = response.getState();
@@ -43,16 +43,16 @@
       action.setParams({priceBookId: record, newDate: document.getElementById(index).value});
       action.setCallback(this, function(response) {
             if(dateOption=='start_date'){
-                this.startDateChange(component, event, response);
+                this.startDateChange(component, response);
             }else{
                 if(dateOption=='end_date'){
-                    this.endDateChange(component, event, response);
+                    this.endDateChange(component, response);
                 }
             }
       });
       $A.enqueueAction(action);
     },
-    startDateChange: function(component, event, response){
+    startDateChange: function(component, response){
         let state = response.getState();
         if (state === 'SUCCESS') {
            component.find("toastMsg").showToast($A.get('$Label.c.Success_toast_title'), $A.get('$Label.c.Start_date_changed'), 'success');
@@ -67,7 +67,7 @@
            component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Pick_a_start_date'), 'info');
         }
     },
-    endDateChange: function(component, event, response){
+    endDateChange: function(component, response){
         let state = response.getState();
         if (state === 'SUCCESS') {
            component.find("toastMsg").showToast($A.get('$Label.c.Success_toast_title'), $A.get('$Label.c.End_date_changed'), 'success');

@@ -3,7 +3,7 @@
  */
 ({
   init : function(component, event, helper){
-      helper.getInactivePriceBooks(component, event);
+      helper.getInactivePriceBooks(component);
   },
   handleRemoveSinglePromotionAction: function(component, event, helper){
       helper.removeSinglePromotionAction(component, event);
@@ -17,6 +17,6 @@
       helper.changeDate(component, event, action, 'end_date');
   },
   handleGetLastPriceBooks: function(component, event, helper){
-      helper.getInactivePriceBooks(component, event);
+      helper.getInactivePriceBooks(component);
   },
 })

@@ -12,9 +12,6 @@
 
     <c:BM_Toast aura:id="toastMsg"/>
 
-    <aura:if isTrue="{!v.activePricebooks.length==0}">
-        {!$Label.c.No_results}
-    </aura:if>
     <aura:iteration items="{!v.activePricebooks}" var="pricebook" indexVar="ind">
         <aura:if isTrue="{!pricebook.Name!=$Label.c.Standard_pricebook_name}">
             <h1 style="font-size: 128%; font-style: italic; font-weight: bold;">{!pricebook.Name}</h1>

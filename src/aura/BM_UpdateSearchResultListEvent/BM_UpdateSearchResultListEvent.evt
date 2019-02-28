@@ -1,0 +1,6 @@
+<!--
+ - Created by Dawid Majdański on 28.02.2019.
+ -->
+
+<aura:event type="COMPONENT" description="BM_UpdateSearchResultListEvent">
+</aura:event>

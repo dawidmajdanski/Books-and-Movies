@@ -2,7 +2,7 @@
  * Created by Majdan on 26.02.2019.
  */
 ({
-    searchForProducts: function(component, event){
+    searchForProducts: function(component){
       let action = component.get('c.searchForProducts');
       let products;
       action.setParams({searchObj : JSON.stringify(this.getQueryObject(component))});
@@ -18,49 +18,14 @@
       });
       $A.enqueueAction(action);
     },
-    singleProductDiscountChange: function(component, event){
-      let selectedSection = event.currentTarget;
-      let record = selectedSection.dataset.record;
-      let pricebookId = selectedSection.dataset.index;
-      let productId = [];
-      productId.push(record);
-      this.discountAction(component, event, productId, record, pricebookId);
-    },
-    addDiscountToAllProducts: function(component, event){
-      let productIds = [];
-      let productsToDiscount = component.get("v.productsToDiscount");
-      for(let i=0; i<productsToDiscount.length; i++){
-          productIds.push(productsToDiscount[i].productId);
-      }
-      this.discountAction(component, event, productIds, 'discountInput', component.get('v.selectedPricebook'));
-    },
-    discountAction: function(component, event, productIds, inputId, selectedPricebook){
-      let action = component.get('c.addDiscountToProducts');
-      action.setParams({pricebookId: selectedPricebook, ids: productIds, discount: document.getElementById(inputId).value});
-      action.setCallback(this, function(response) {
-        let state = response.getState();
-        if (state === 'SUCCESS') {
-            this.searchForProducts(component, event);
-            let priceBooksEvt = $A.get("e.c:BM_GetPricebooksEvent");
-            if(priceBooksEvt){
-                priceBooksEvt.fire();
-            }else {
-                console.error('No such event: BM_GetPricebooksEvent');
-            }
-            component.set('v.selectedPricebook', null);
-        }else{
-            console.error($A.get('$Label.c.Internal_error')+' '+state);
-            component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Internal_error'), 'error');
-        }
-      });
-      $A.enqueueAction(action);
-    },
-    getMovieGenresPicklistValues: function(component, event, helper){
+    getMovieGenresPicklistValues: function(component){
       let action = component.get('c.getMovieGenresEntries');
       action.setCallback(this, function(response) {
         let state = response.getState();
         if (state === 'SUCCESS') {
-            component.set("v.movieGenres", response.getReturnValue());
+            let movieGenres = response.getReturnValue();
+            movieGenres.unshift($A.get('$Label.c.All_genres'));
+            component.set("v.movieGenres", movieGenres);
         }else{
             console.error($A.get('$Label.c.Internal_error')+' '+state);
             component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Internal_error'), 'error');
@@ -68,12 +33,14 @@
       });
       $A.enqueueAction(action);
     },
-    getBookGenresPicklistValues: function(component, event, helper){
+    getBookGenresPicklistValues: function(component){
       let action = component.get('c.getBookGenresEntries');
       action.setCallback(this, function(response) {
         let state = response.getState();
         if (state === 'SUCCESS') {
-            component.set("v.bookGenres", response.getReturnValue());
+            let bookGenres = response.getReturnValue();
+            bookGenres.unshift($A.get('$Label.c.All_genres'));
+            component.set("v.bookGenres", bookGenres);
         }else{
             console.error($A.get('$Label.c.Internal_error')+' '+state);
             component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Internal_error'), 'error');
@@ -81,19 +48,24 @@
       });
       $A.enqueueAction(action);
     },
-    getCurrentPriceBooks: function(component, event){
+    getCurrentPriceBooks: function(component){
         let action = component.get('c.getPriceBooks');
         action.setCallback(this, function(response) {
              let state = response.getState();
              if (state === 'SUCCESS') {
                 component.set("v.activePricebooks", response.getReturnValue());
-                component.set('v.selectedPricebook', component.get('v.activePricebooks')[0].Id);
+                this.setActivePricebooksPicklist(component, response.getReturnValue());
              }else{
                 console.error($A.get('$Label.c.Internal_error')+' '+state);
                 component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), $A.get('$Label.c.Internal_error'), 'error');
              }
         });
         $A.enqueueAction(action);
+    },
+    setActivePricebooksPicklist: function(component, currentPricebooks){
+        let activePricebooksPicklistValues = currentPricebooks;
+        activePricebooksPicklistValues.unshift({'Name': $A.get('$Label.c.Pick_one_option')});
+        component.set('v.activePricebooksPicklist', activePricebooksPicklistValues);
     },
     getQueryObject: function(component){
       let queryObj = {

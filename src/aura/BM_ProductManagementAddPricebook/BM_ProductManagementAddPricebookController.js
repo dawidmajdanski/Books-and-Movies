@@ -2,7 +2,7 @@
  * Created by Majdan on 26.02.2019.
  */
 ({
-  addNewPricebook: function(component, event, helper){
+  addNewPricebook: function(component, event){
       let action = component.get('c.createNewPricebook');
       action.setParams({newPricebook: component.get('v.newPricebook')});
       action.setCallback(this, function(response) {

@@ -11,10 +11,7 @@
     <aura:registerEvent name = "getPricebooks" type = "c:BM_GetPricebooksEvent" />
 
     <c:BM_Toast aura:id="toastMsg"/>
-
-    <aura:if isTrue="{!v.inactivePricebooks.length==0}">
-        {!$Label.c.No_results}
-    </aura:if>
+ 
     <aura:iteration items="{!v.inactivePricebooks}" var="pricebook" indexVar="ind">
         <h1 style="font-size: 128%; font-style: italic; font-weight: bold;">{!pricebook.Name}</h1>
         <div class="datesContainer">

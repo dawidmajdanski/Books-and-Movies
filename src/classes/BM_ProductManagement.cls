@@ -279,6 +279,7 @@ public class BM_ProductManagement {
 
     @AuraEnabled
     public static void createNewPricebook(Pricebook2 newPricebook){
+        newPricebook.isActive=true;
        try{
            insert newPricebook;
        }catch (DmlException e){
