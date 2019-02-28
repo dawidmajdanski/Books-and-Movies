@@ -2,7 +2,7 @@
  * Created by Majdan on 03.02.2019.
  */
 ({
-    init: function(component, event, helper) {
+    init: function(component, event) {
         let jsonItem = sessionStorage.getItem('customSearch--record');
         let item = JSON.parse(jsonItem);
         component.set("v.product", item);
@@ -22,7 +22,7 @@
         component.set("v.pictures", pics);
     },
     handleAddToCart: function(component, event, helper){
-        if(helper.validateQuantity(component, event)!=false){
+        if(helper.validateQuantity(component)!=false){
             let cartItem = component.get('v.product');
             let addToCartEvt = $A.get("e.c:BM_AddToCartEvent");
             if(addToCartEvt){
@@ -33,7 +33,7 @@
             }
         }
     },
-    getPicturesForProduct: function(component, event){
+    getPicturesForProduct: function(component){
         let product = component.get("v.product");
         let action = component.get('c.getPicturesForSingleProduct');
         action.setParams({productId: product.productId});

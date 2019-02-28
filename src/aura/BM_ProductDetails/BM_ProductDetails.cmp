@@ -32,12 +32,7 @@
                 </div>
                 <div class="slds-col slds-size_1-of-3" style="width: 55%">
                     <p style="font-weight: bold; font-size: 150%">{!v.product.productName}</p>
-                    <aura:if isTrue="{!v.product.productRecordType == $Label.c.Book}">
-                        <img title="{!$Label.c.Book}" class="productTypeImg" src="{!$Resource.BookSymbol}" />
-                    </aura:if>
-                    <aura:if isTrue="{!v.product.productRecordType == $Label.c.Movie}">
-                        <img title="{!$Label.c.Movie}" class="productTypeImg" src="{!$Resource.MovieSymbol}" />
-                    </aura:if>
+
                     <aura:if isTrue="{!v.product.price==v.product.standardPrice}">
                         <p style="padding-bottom: 10px; padding-top: 10px; font-size: 125%">
                             {!$Label.c.Price}&nbsp;
@@ -75,6 +70,15 @@
                             <div class="star-ratings-css bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
                         </div>
                     </div>
+
+                    <aura:if isTrue="{!v.product.productRecordType == $Label.c.Book}">
+                        <img title="{!$Label.c.Book}" class="productTypeImg" src="{!$Resource.BookSymbol}" />
+                    </aura:if>
+                    <aura:if isTrue="{!v.product.productRecordType == $Label.c.Movie}">
+                        <img title="{!$Label.c.Movie}" class="productTypeImg" src="{!$Resource.MovieSymbol}" />
+                    </aura:if>
+
+                    <c:BM_FavouritesButton product="{!v.product}"/>
 
                     <div style="font-size: 125%; position: absolute; top: 311px; width: 200px;">
                         <lightning:input messageWhenRangeUnderflow="{!$Label.c.Quantity_error}" type="number"
