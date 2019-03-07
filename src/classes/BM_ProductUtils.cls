@@ -16,28 +16,16 @@ public with sharing class BM_ProductUtils {
         return null;
     }
 
-    public static List<Attachment> getMainPictures(List<String> productIds){
-        if(productIds.size()!=0){
-            String query = 'Select ParentId, Id, Name FROM Attachment WHERE Name like \'%'+System.Label.Main_picture_name+'%\' AND (';
-            for(Integer i=0; i<productIds.size(); i++){
-                query +='ParentId=\''+productIds.get(i)+'\'';
-                if(i!=productIds.size()-1){
-                    query +=' OR ';
+    public static String getMainPicture(Product2 resultItem){
+        if(UserInfo.getUserId()!=System.Label.Guest_user){
+            for(ContentDocumentLink cd: resultItem.ContentDocumentLinks){
+                if(cd.ContentDocument.Title==System.Label.Main_picture_name){
+                    return [SELECT ContentDownloadUrl FROM ContentDistribution WHERE ContentDocumentId =: cd.ContentDocument.Id].get(0).ContentDownloadUrl;
                 }
             }
-            query += ')';
-            return Database.query(query);
+            return System.Label.Product_placeholder_url_prefix+PageReference.forResource('ProductPlaceholder').getUrl();
         }
         return null;
-    }
-
-    public static String findAttachmentIdForResult(List<Attachment> attList, Product2 resultItem){
-        for(Attachment a: attList){
-            if(a.ParentId==resultItem.Id){
-                return System.Label.Picture_url_prefix+a.Id;
-            }
-        }
-        return System.Label.Product_placeholder_url_prefix+PageReference.forResource('ProductPlaceholder').getUrl();
     }
 
     public static List<String> getIds(List<Product2> objectList){
@@ -56,12 +44,12 @@ public with sharing class BM_ProductUtils {
         return null;
     }
 
-    public static Map<String, Object> getParsedJSON(Product2 productItem, List<AggregateResult> productsRating, List<Attachment> mainPics){
+    public static Map<String, Object> getParsedJSON(Product2 productItem, List<AggregateResult> productsRating){
         Map<String, Object> productsRatingMap = BM_ProductUtils.getProductRatingIdForProduct(productsRating, productItem.Id);
         Map<String, Object> jsonItem = addJsonKey(productItem);
         jsonItem.put('averageRating', productsRatingMap!=null?productsRatingMap.get('averageRating'):0);
         jsonItem.put('countRating', productsRatingMap!=null?productsRatingMap.get('countRating'):0);
-        jsonItem.put('productMainPic', ''+BM_ProductUtils.findAttachmentIdForResult(mainPics, productItem));
+        jsonItem.put('productMainPic', ''+BM_ProductUtils.getMainPicture(productItem));
         return jsonItem;
     }
 
@@ -77,23 +65,16 @@ public with sharing class BM_ProductUtils {
         return jsonItem;
     }
 
-
-
-
     public static List<Object> parseObj(List<Product2> productsList){
         List<String> productIds = BM_ProductUtils.getIds(productsList);
-        List<Attachment> mainPics = BM_ProductUtils.getMainPictures(productIds);
         List<AggregateResult> productsRating = BM_ProductUtils.getRatingForProducts(productIds);
         List<Object> serializedProducts = new List<Object>();
         for(Integer i = 0; i < productsList.size(); i++){
             if(productsList.get(i).PricebookEntries.size()!=0) {
-                Map<String, Object> jsonItem = BM_ProductUtils.getParsedJSON(productsList.get(i), productsRating, mainPics);
+                Map<String, Object> jsonItem = BM_ProductUtils.getParsedJSON(productsList.get(i), productsRating);
                 PricebookEntry lowestEntry = productsList.get(i).PricebookEntries.get(0);
                 String standardPricebookEntryId = null;
                 for(PricebookEntry pBookEntry: productsList.get(i).PricebookEntries){
-
-                    system.debug(pBookEntry);
-
                     standardPricebookEntryId = pBookEntry.Pricebook2.Name==System.Label.Standard_pricebook_name?pBookEntry.Id:standardPricebookEntryId;
                     if(pBookEntry.UnitPrice<lowestEntry.UnitPrice){
                         lowestEntry = pBookEntry;
@@ -122,8 +103,10 @@ public with sharing class BM_ProductUtils {
         String productQuery='';
         String pricebookEntryQuery='';
         String currentUser = UserInfo.getUserId();
-        List<String> productSearchParams = BM_SearchUtils.parseQueryProductSearch(searchObj);
-        List<String> pricebookEntryParams = BM_SearchUtils.parseQueryPricebookEntrySearch(searchObj);
+        Map<String, Object> searchParams = (Map<String, Object>) JSON.deserializeUntyped(searchObj);
+        List<String> productSearchParams = BM_SearchUtils.parseQueryProductSearch(searchParams);
+        List<String> pricebookEntryParams = BM_SearchUtils.parseQueryPricebookEntrySearch(searchParams);
+        Integer avgRating = BM_SearchUtils.parseQueryAvgRating(searchParams);
         for(String param: productSearchParams){
             productQuery += param;
         }
@@ -132,15 +115,21 @@ public with sharing class BM_ProductUtils {
         }
         String searchQuery = 'Select RecordType.Name, Release_date__c, Director__c, Book_author__c, Description, Name, ' +
                 '(SELECT IsActive, Pricebook2.Name, UnitPrice, ProductCode, Discount_percentage__c, Standard_price__c FROM PricebookEntries WHERE Pricebook2.Ongoing_promotion__c=true AND IsActive = true '+pricebookEntryQuery+'), ' +
-                '(SELECT User__c, Product__c FROM Favourite_products__r WHERE User__c = \''+currentUser+'\') ' +
+                '(SELECT User__c, Product__c FROM Favourite_products__r WHERE User__c = \''+currentUser+'\'),' +
+                '(SELECT ContentDocument.Title, ContentDocument.Id, Visibility FROM ContentDocumentLinks), ' +
+                '(SELECT Rating__c, Product__c FROM Product_rating__r) ' +
                 'FROM Product2 WHERE '+productQuery;
-
-        system.debug(searchQuery);
 
         List<Product2> results = new List<Product2>();
         if(productQuery!='' || pricebookEntryQuery!=''){
             results = Database.query(searchQuery);
         }
+
+        if(avgRating>0){
+            results = BM_SearchUtils.searchByAvgRating(results, avgRating);
+        }
+
+        system.debug(searchQuery);
 
         return BM_ProductUtils.parseObj(results);
     }

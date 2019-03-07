@@ -1,0 +1,7 @@
+<!--
+ - Created by Dawid Majdański on 05.03.2019.
+ -->
+
+<aura:component description="BM_LoginPageSupport" implements="forceCommunity:availableForAllPageTypes">
+    <ltng:require styles="{!$Resource.loginPageCustomStyle}"/>
+</aura:component>

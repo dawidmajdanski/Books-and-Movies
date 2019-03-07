@@ -57,7 +57,7 @@
                 component.set("v.shop", shopUpdated);
                 this.sendUpdatedShop(component, event);
                 this.handleToast($A.get('$Label.c.Success_toast_title'), $A.get('$Label.c.Toast_success_update_shop'), "success");
-                $A.enqueueAction(this.loadingIco(component));
+                //$A.enqueueAction(this.loadingIco(component));
             }
             else{
                 var errors = response.getError();
@@ -82,7 +82,7 @@
                 appEvent.fire();
             });
             $A.enqueueAction(action);
-        }), 500);
+        }), 180);
     },
     loadingIco: function(component){
         var loading = component.find("loadingSpinner");

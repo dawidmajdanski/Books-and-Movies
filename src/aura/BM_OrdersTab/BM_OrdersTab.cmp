@@ -3,7 +3,7 @@
  -->
 
 <aura:component description="BM_OrdersTab" implements="forceCommunity:availableForAllPageTypes">
-    <div class="myOrdersContainer" onclick="{!c.handleMyOrders}">
-        <span>{!$Label.c.My_orders}</span>
-    </div>
+    <!--<div class="myOrdersContainer" onclick="{!c.handleMyOrders}">-->
+        <!--<span>{!$Label.c.My_orders}</span>-->
+    <!--</div>-->
 </aura:component>

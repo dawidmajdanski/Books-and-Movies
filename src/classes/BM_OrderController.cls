@@ -62,7 +62,7 @@ public without sharing class BM_OrderController {
     @AuraEnabled
     public static List<Object> getPricebookEntryProduct(String orderItemName) {
         List<Product2> productItem = [
-                SELECT (SELECT Discount_percentage__c, Pricebook2.Name, Pricebook2.Id, UnitPrice, ProductCode, Name, Standard_price__c FROM PricebookEntries where IsActive=true AND Pricebook2.Ongoing_promotion__c = true), RecordType.Name, Release_date__c, Director__c, Book_author__c, Description, Name
+                SELECT (SELECT User__c, Product__c FROM Favourite_products__r WHERE User__c =: UserInfo.getUserId()), (SELECT Discount_percentage__c, Pricebook2.Name, Pricebook2.Id, UnitPrice, ProductCode, Name, Standard_price__c FROM PricebookEntries where IsActive=true AND Pricebook2.Ongoing_promotion__c = true), RecordType.Name, Release_date__c, Director__c, Book_author__c, Description, Name
                 FROM Product2
                 WHERE Name =: orderItemName
         ];

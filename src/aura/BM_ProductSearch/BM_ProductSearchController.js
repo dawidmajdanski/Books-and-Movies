@@ -37,10 +37,13 @@
     handleChangeTabset: function(component, event, helper){
         $A.enqueueAction(component.get('c.handleClearParams'));
     },
+    clearAllParams: function(component, event, helper){
+        component.set("v.productType", 'All');
+        $A.enqueueAction(component.get('c.handleClearParams'));
+    },
     handleClearParams: function(component, event){
         component.set("v.minPrice", undefined);
         component.set("v.maxPrice", undefined);
-        component.set("v.minRating", undefined);
         component.set("v.specificYear", undefined);
         component.set("v.minYear", undefined);
         component.set("v.maxYear", undefined);
@@ -49,6 +52,7 @@
         component.set("v.bookGenre", undefined);
         component.set("v.movieGenre", undefined);
         component.set("v.searchText", undefined);
+        component.set("v.minRating", 0);
         $A.enqueueAction(component.get('c.resetToDefaultAvailableYears'));
         $A.enqueueAction(component.get('c.resetToDefaultGenres'));
     },

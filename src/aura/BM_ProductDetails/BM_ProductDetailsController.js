@@ -2,11 +2,10 @@
  * Created by Majdan on 03.02.2019.
  */
 ({
-    init: function(component, event) {
-        let jsonItem = sessionStorage.getItem('customSearch--record');
-        let item = JSON.parse(jsonItem);
-        component.set("v.product", item);
-        $A.enqueueAction(component.get('c.getPicturesForProduct'));
+    init: function(component, event, helper) {
+        if(!helper.getProductById(component)){
+            helper.getPicturesForProduct(component);
+        }
     },
     sortPictures: function(component){
         let pics = component.get("v.pictures");
@@ -33,20 +32,5 @@
             }
         }
     },
-    getPicturesForProduct: function(component){
-        let product = component.get("v.product");
-        let action = component.get('c.getPicturesForSingleProduct');
-        action.setParams({productId: product.productId});
-        action.setCallback(this, function(response) {
-          let state = response.getState();
-          if (state === 'SUCCESS') {
-              component.set("v.pictures", response.getReturnValue());
-              $A.enqueueAction(component.get('c.sortPictures'));
-          }else{
-              console.error(response);
-              component.find("toastMsg").showToast($A.get('$Label.c.Error_toast_title'), state, 'error');
-          }
-        });
-        $A.enqueueAction(action);
-    },
+
 })

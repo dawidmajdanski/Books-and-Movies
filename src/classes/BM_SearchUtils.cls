@@ -4,9 +4,8 @@
 
 public with sharing class BM_SearchUtils {
 
-    public static List<String> parseQueryPricebookEntrySearch(String searchObj){
+    public static List<String> parseQueryPricebookEntrySearch(Map<String, Object> searchParams){
         List<String> queryList = new List<String>();
-        Map<String, Object> searchParams = (Map<String, Object>) JSON.deserializeUntyped(searchObj);
 
         for(String paramKey: searchParams.keySet()){
             if(String.isNotBlank(String.valueOf(searchParams.get(paramKey)))) {
@@ -26,9 +25,8 @@ public with sharing class BM_SearchUtils {
         return queryList;
     }
 
-    public static List<String> parseQueryProductSearch(String searchObj){
+    public static List<String> parseQueryProductSearch(Map<String, Object> searchParams){
         List<String> queryList = new List<String>();
-        Map<String, Object> searchParams = (Map<String, Object>) JSON.deserializeUntyped(searchObj);
 
         for(String paramKey: searchParams.keySet()){
             if(String.isNotBlank(String.valueOf(searchParams.get(paramKey)))) {
@@ -62,6 +60,9 @@ public with sharing class BM_SearchUtils {
                     when 'movieGenre'{
                         queryList.add('AND Movie_genres__c includes (\'' + String.valueOf(searchParams.get(paramKey)) + '\') ');
                     }
+                    when 'productId'{
+                        queryList.add('AND Id =\'' + String.valueOf(searchParams.get(paramKey)) + '\' ');
+                    }
                 }
             }
         }
@@ -81,6 +82,38 @@ public with sharing class BM_SearchUtils {
             }
         }
         return null;
+    }
+
+    public static Integer parseQueryAvgRating(Map<String, Object> searchParams){
+        List<String> queryList = new List<String>();
+
+        for(String paramKey: searchParams.keySet()){
+            if(String.isNotBlank(String.valueOf(searchParams.get(paramKey)))) {
+                switch on paramKey {
+                    when 'minRating' {
+                        return Integer.valueOf(String.valueOf(searchParams.get(paramKey)));
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public static List<Product2> searchByAvgRating(List<Product2> productsList, Integer averageRating){
+        List<Product2> newList = new List<Product2>();
+        for(Product2 p: productsList){
+            Decimal avgProdRat = 0;
+            if(p.Product_rating__r.size()>0){
+                for(Product_rating__c pr: p.Product_rating__r){
+                    avgProdRat+=pr.Rating__c;
+                }
+                avgProdRat=avgProdRat/p.Product_rating__r.size();
+            }
+            if(avgProdRat>=averageRating){
+                newList.add(p);
+            }
+        }
+        return newList;
     }
 
 }

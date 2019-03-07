@@ -104,19 +104,15 @@
                 <h4 style="padding-top: 10px">{!$Label.c.Ordered_title}</h4>
                 <aura:iteration items="{!myOrder.OrderItems}" var="item">
                     <div class="childContainer">
-                                    <span style="padding-right: 5px">
-                                        <a data-record="{!item.PricebookEntry.Name}" data-index="{!ind}"
-                                           onclick="{!c.handleOrderItemClick}">{!item.PricebookEntry.Name}&nbsp;
-                                        </a>
-                                    </span>
+                        <span style="padding-right: 5px">
+                            <a data-record="{!item.PricebookEntry.Name}" data-index="{!ind}" onclick="{!c.handleOrderItemClick}">{!item.PricebookEntry.Name}&nbsp;</a>
+                        </span>
                         <span>
-                                        {!item.Quantity}{!$Label.c.Multiply_sign} &nbsp;<ui:outputCurrency aura:id="curr" value="{!item.UnitPrice}"/>
-                                    </span><br/>
-                        <span class="complaintBtn" onclick="{!c.onOpenCaseForm}" data-record="{!myOrder.Id}"
-                              data-index="{!item.Id}">
-                                        <lightning:icon iconName="utility:questions_and_answers" size="small"
-                                                        title="Submit complaint"/>
-                                    </span>
+                            {!item.Quantity}{!$Label.c.Multiply_sign} &nbsp;<ui:outputCurrency aura:id="curr" value="{!item.UnitPrice}"/>
+                        </span><br/>
+                        <span class="complaintBtn" onclick="{!c.onOpenCaseForm}" data-record="{!myOrder.Id}" data-index="{!item.Id}">
+                            <lightning:icon iconName="utility:questions_and_answers" size="small" title="{!$Label.c.Submit_complaint}"/>
+                        </span>
                     </div>
                 </aura:iteration>
             </div>

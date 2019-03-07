@@ -16,7 +16,7 @@
     <div style="overflow-y: scroll; max-height:42vh; height: auto">
         <div class="slds-feed">
             <ul class="slds-feed__list">
-                <aura:if isTrue="{!v.reviews.length==0}" >
+                <aura:if isTrue="{!v.reviews==null}" >
                     <div style="text-align: center; font-style:italic; font-size: 130%">
                         {!$Label.c.No_reviews}
                     </div>

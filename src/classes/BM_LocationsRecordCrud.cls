@@ -7,7 +7,7 @@ public with sharing class BM_LocationsRecordCrud {
     @AuraEnabled
     public static List<Account> getShops(String shopCountry, String shopCity, String shopStreet){
 
-        String searchquery = 'Select Name, BillingCountry, BillingCity, BillingStreet, BillingLatitude, BillingLongitude, Id From Account Where RecordType.name like \'Shop\'';
+        String searchquery = 'Select Name, Website, Phone, BillingCountry, BillingCity, BillingStreet, BillingLatitude, BillingLongitude, Id From Account Where RecordType.name like \'Shop\'';
         if (String.isNotBlank(shopCountry) || String.isNotBlank(shopCity) || String.isNotBlank(shopStreet)) {
             searchquery += searchquery.contains('like') && String.isNotBlank(shopCountry) ? ' and' : '';
             searchquery += String.isNotBlank(shopCountry) ? ' BillingCountry like \'' + shopCountry + '%\'' : '';
@@ -18,6 +18,12 @@ public with sharing class BM_LocationsRecordCrud {
         }
         searchquery += ' ORDER BY Name';
 
+        return  Database.query(searchquery);
+    }
+
+    @AuraEnabled
+    public static List<Account> getAllShops(){
+        String searchquery = 'Select Name, Website, Phone, BillingCountry, BillingCity, BillingStreet, BillingLatitude, BillingLongitude, Id From Account Where RecordType.name like \'Shop\'';
         return  Database.query(searchquery);
     }
 

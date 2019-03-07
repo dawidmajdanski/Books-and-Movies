@@ -15,20 +15,18 @@ public class BM_ProductSearchController {
         for(AggregateResult ar: avgPopular){
             ids.add(String.valueOf(ar.get('pId')));
         }
-        List<Product2> popularProducts = [SELECT (SELECT User__c, Product__c FROM Favourite_products__r WHERE User__c =: UserInfo.getUserId()) ,(SELECT Discount_percentage__c, Pricebook2.Name, Pricebook2.Id, UnitPrice, ProductCode, Standard_price__c FROM PricebookEntries WHERE IsActive=true AND Pricebook2.Ongoing_promotion__c=true), RecordType.Name, Release_date__c, Director__c, Book_author__c, Description, Name From Product2 WHERE Id in :(ids)];
+        List<Product2> popularProducts = [SELECT (SELECT ContentDocument.Title, ContentDocument.Id FROM ContentDocumentLinks), (SELECT User__c, Product__c FROM Favourite_products__r WHERE User__c =: UserInfo.getUserId()) ,(SELECT Discount_percentage__c, Pricebook2.Name, Pricebook2.Id, UnitPrice, ProductCode, Standard_price__c FROM PricebookEntries WHERE IsActive=true AND Pricebook2.Ongoing_promotion__c=true), RecordType.Name, Release_date__c, Director__c, Book_author__c, Description, Name From Product2 WHERE Id in :(ids)];
         return BM_ProductUtils.parseObj(popularProducts);
     }
 
     @AuraEnabled
     public static List<Object> getPicturesForSingleProduct(String productId){
-        String query = 'Select ParentId, Id, Name FROM Attachment WHERE ParentId = \''+productId+'\'';
-        List<Attachment> results = Database.query(query);
-
+        List<Product2> product = [SELECT Id, (SELECT ContentDocument.Title, ContentDocument.Id FROM ContentDocumentLinks) FROM Product2 WHERE Id =: productId];
         List<Object> serializedPics = new List<Object>();
-        for(Integer i=0; i<results.size(); i++) {
+        for(ContentDocumentLink cd: product.get(0).ContentDocumentLinks){
             Map<String, Object> jsonItem = new Map<String, Object>();
-            jsonItem.put('pictureName', results.get(i).Name);
-            jsonItem.put('pictureURL', System.Label.Picture_url_prefix+results.get(i).Id);
+            jsonItem.put('pictureName', cd.ContentDocument.Title);
+            jsonItem.put('pictureURL', [SELECT ContentDownloadUrl FROM ContentDistribution WHERE ContentDocumentId =: cd.ContentDocument.Id].get(0).ContentDownloadUrl);
             serializedPics.add(jsonItem);
         }
         return serializedPics;
@@ -129,4 +127,8 @@ public class BM_ProductSearchController {
         return [SELECT id, name, country, city, postalcode, street, state, email FROM USER WHERE Id =: UserInfo.getUserId()];
     }
 
+    @AuraEnabled
+    public static List<Object> searchProductById(String searchObj) {
+        return BM_ProductUtils.searchAction(searchObj);
+    }
 }

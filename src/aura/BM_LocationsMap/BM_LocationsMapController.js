@@ -29,7 +29,7 @@
         for (var i=0; i<shops.length; i++) {
             var shop = shops[i];
             var latLng = [shop.BillingLatitude, shop.BillingLongitude];
-            var geolocation = new L.marker(latLng).bindPopup(shop.Name+", "+shop.BillingCity+", "+shop.BillingStreet);
+            var geolocation = new L.marker(latLng).bindPopup(shop.BillingStreet+", Phone: "+shop.Phone);
 
             markersList.push(geolocation);
             map.addLayer(markersList[i]);

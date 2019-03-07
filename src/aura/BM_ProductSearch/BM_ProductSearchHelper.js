@@ -3,6 +3,8 @@
  */
 ({
     getQueryObject: function(component){
+      this.checkBookGenreDefaultValue(component);
+      this.checkMovieGenreDefaultValue(component);
       let queryObj = {
           "productType" : component.get("v.productType"),
           "searchText" : component.get('v.searchText'),
@@ -15,10 +17,21 @@
           "director" : component.get("v.director"),
           "bookGenre" : component.get("v.bookGenre"),
           "movieGenre" : component.get("v.movieGenre"),
+          "minRating" : component.get("v.minRating")
           };
       sessionStorage.setItem('searchParams', JSON.stringify(queryObj));
 
       return queryObj;
+    },
+    checkBookGenreDefaultValue: function(component){
+        if(component.get('v.bookGenre')==$A.get('$Label.c.All_genres')){
+            component.set('v.bookGenre', '');
+        }
+    },
+    checkMovieGenreDefaultValue: function(component){
+        if(component.get('v.movieGenre')==$A.get('$Label.c.All_genres'))    {
+            component.set('v.movieGenre', '');
+        }
     },
     getCurrentUser: function(component){
         if(!sessionStorage.getItem('user--info')){

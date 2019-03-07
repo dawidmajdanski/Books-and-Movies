@@ -47,62 +47,57 @@ public class BM_ProductManagement {
 
     @AuraEnabled
     public static List<Object> getPicturesForProduct(String productId){
-        List<Attachment> results = [SELECT ParentId, Name, Id FROM Attachment WHERE ParentId =: productId];
-        String picturePrefix = System.Label.Picture_url_prefix;
-
-        List<Object> serializedPictures = new List<Object>();
-        for(Integer i=0; i<results.size(); i++){
+        List<Product2> product = [SELECT Id, (SELECT ContentDocument.Title, ContentDocument.Id FROM ContentDocumentLinks) FROM Product2 WHERE Id =: productId];
+        List<Object> serializedPics = new List<Object>();
+        for(ContentDocumentLink cd: product.get(0).ContentDocumentLinks){
             Map<String, Object> jsonItem = new Map<String, Object>();
-            String picName = results.get(i).Name.replaceAll('^[^.]+$|\\.(?!(js|exe)$)([^.]+$)','');
-            jsonItem.put('pictureId',results.get(i).Id);
-            jsonItem.put('pictureName', picName);
-            jsonItem.put('pictureURL', ''+picturePrefix+results.get(i).Id);
-            serializedPictures.add(jsonItem);
+            List<ContentDistribution> contentDistr = [SELECT ContentDownloadUrl FROM ContentDistribution WHERE ContentDocumentId =: cd.ContentDocument.Id];
+            jsonItem.put('pictureId', cd.ContentDocument.Id);
+            jsonItem.put('pictureName', cd.ContentDocument.Title);
+            jsonItem.put('pictureURL', contentDistr.get(0).ContentDownloadUrl);
+            serializedPics.add(jsonItem);
         }
-        return serializedPictures;
+        return serializedPics;
     }
 
     @AuraEnabled
     public static Boolean updatePicturesNames(String newMainPic, String productId){
-        List<Attachment> results = [SELECT ParentId, Name, Id FROM Attachment WHERE ParentId =: productId];
-        String picturePrefix = System.Label.Picture_url_prefix;
-        Attachment picture = getAttachment(results, newMainPic);
+        List<ContentDocument> picToUpdate = [SELECT Id, Title From ContentDocument WHERE Id =: newMainPic];
+        List<ContentDocumentLink> pics = [SELECT Id, ContentDocument.Title From ContentDocumentLink WHERE LinkedEntityId =: productId];
         String tempPicName;
-        for(Attachment item: results){
-            if(item.Name.contains(System.Label.Main_picture_name)){
-                tempPicName = picture.Name;
-                item.Name = tempPicName;
+
+        for(ContentDocumentLink item: pics){
+            if(item.ContentDocument.Title.contains(System.Label.Main_picture_name)){
+                tempPicName = picToUpdate.get(0).Title;
+                item.ContentDocument.Title = tempPicName;
+                try{
+                    update item.ContentDocument;
+                }catch (DmlException e){
+                    system.debug(e);
+                }
                 break;
             }
         }
         try{
-            picture.Name = System.Label.Default_main_pic_name;
-            update picture;
-            update results;
+            picToUpdate.get(0).Title = System.Label.Main_picture_name;
+            update picToUpdate;
+            return true;
         }catch (DmlException e){
             return false;
         }
-        return true;
     }
 
     @AuraEnabled
     public static Boolean pictureDeletion(String picToDel, String productId){
-        List<Attachment> results = [SELECT ParentId, Name, Id FROM Attachment WHERE ParentId =: productId AND Id =: picToDel];
+        List<ContentDocumentLink> pics = [SELECT ContentDocument.Id, ContentDocument.Title From ContentDocumentLink WHERE LinkedEntityId =: productId AND ContentDocument.Id =: picToDel];
+        List<ContentDistribution> contentD = [SELECT Id FROM ContentDistribution WHERE ContentDocumentId =: pics.get(0).ContentDocument.Id];
         try{
-            delete results;
+            delete contentD;
+            delete pics;
         }catch (DmlException e){
             return false;
         }
         return true;
-    }
-
-    public static Attachment getAttachment(List<Attachment> attList, String attId){
-        for(Attachment a: attList){
-            if(a.Id == attId){
-                return a;
-            }
-        }
-        return null;
     }
 
     @AuraEnabled

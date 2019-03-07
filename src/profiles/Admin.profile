@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Profile xmlns="http://soap.sforce.com/2006/04/metadata">
     <classAccesses>
+        <apexClass>BM_EmailUtils</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>BM_EmployeesManagement</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -10,6 +14,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>BM_LocationsRecordCrud</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>BM_Newsletter</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>

@@ -34,9 +34,8 @@ public without sharing class BM_FavouritesController {
         List<Product2> userFavouriteProducts = [
                 SELECT Name, Description, Book_author__c, Director__c, Movie_genres__c, Book_genres__c, Release_date__c, RecordType.Name,
                     (SELECT UnitPrice, Standard_price__c, Pricebook2.Name, Discount_percentage__c, IsActive, ProductCode FROM PricebookEntries WHERE Pricebook2.Ongoing_promotion__c = true AND IsActive = true),
-                    (SELECT User__c, Product__c
-                    FROM Favourite_products__r
-                    WHERE User__c =: currentUser)
+                    (SELECT User__c, Product__c FROM Favourite_products__r WHERE User__c =: currentUser),
+                    (SELECT ContentDocument.Title, ContentDocument.Id FROM ContentDocumentLinks)
                 FROM Product2];
         List<Product2> productListToParse = new List<Product2>();
         for(Product2 product: userFavouriteProducts){
