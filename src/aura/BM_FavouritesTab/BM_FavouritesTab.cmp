@@ -3,7 +3,7 @@
  -->
 
 <aura:component description="BM_FavouritesTab" implements="forceCommunity:availableForAllPageTypes">
-    <div class="myOrdersContainer" onclick="{!c.handleMyOrders}">
-        <span>MY FAVOURITES</span>
-    </div>
+    <!--<div class="myOrdersContainer" onclick="{!c.handleMyOrders}">-->
+        <!--<span>MY FAVOURITES</span>-->
+    <!--</div>-->
 </aura:component>

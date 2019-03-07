@@ -11,11 +11,11 @@
 
     <div class="mainContainer">
         <div class="titleMyFavourites">
-            My favourites
+            {!$Label.c.My_favourites_title}
         </div>
 
         <aura:if isTrue="{!v.products==null}">
-            <h1 class="noProductsInFavourites">You have no favourite products</h1>
+            <h1 class="noProductsInFavourites">{!$Label.c.No_favourite_products}</h1>
         </aura:if>
 
         <div class="favouriteItemsContainer">
@@ -24,6 +24,5 @@
             </aura:iteration>
         </div>
     </div>
-
 
 </aura:component>
