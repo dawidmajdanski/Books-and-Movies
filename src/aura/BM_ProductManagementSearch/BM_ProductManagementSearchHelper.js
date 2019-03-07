@@ -80,7 +80,8 @@
           "director" : component.get("v.director"),
           "bookGenre" : component.get("v.bookGenre"),
           "pricebookName" : component.get("v.pricebookName"),
-          "movieGenre" : component.get("v.movieGenre")
+          "movieGenre" : component.get("v.movieGenre"),
+          "minRating" : component.get("v.minRating")
           };
       return queryObj;
     },

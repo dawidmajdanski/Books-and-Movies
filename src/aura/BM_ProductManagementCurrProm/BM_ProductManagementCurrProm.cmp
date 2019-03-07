@@ -77,42 +77,42 @@
                             </tr>
                         </thead>
                         <tbody>
-                        <aura:iteration items="{!pricebook.PricebookEntries}" var="pricebookEntry"
-                                        indexVar="ind">
-                            <tr class="slds-hint-parent" id="{!ind}">
-                                <td data-label="{!pricebookEntry.productName}" scope="row">
-                                    <div class="slds-truncate"
-                                         title="{!pricebookEntry.productName}">
-                                            {!pricebookEntry.Product2.Name}
-                                    </div>
-                                </td>
-                                <td data-label="{!pricebookEntry.Standard_price__c}">
-                                    <div class="slds-truncate"
-                                         title="{!pricebookEntry.Standard_price__c}">
-                                            {!pricebookEntry.Standard_price__c}
-                                    </div>
-                                </td>
-                                <td data-label="{!pricebookEntry.UnitPrice}">
-                                    <div class="slds-truncate"
-                                         title="{!pricebookEntry.UnitPrice}">
-                                            {!pricebookEntry.UnitPrice}
-                                    </div>
-                                </td>
-                                <td data-label="{!pricebookEntry.Discount_percentage__c}">
-                                    <div class="slds-truncate"
-                                         title="{!pricebookEntry.Discount_percentage__c}">
-                                            {!pricebookEntry.Discount_percentage__c}
-                                    </div>
-                                </td>
-                                <td data-label="{!$Label.c.Remove_promotion}"
-                                    onclick="{!c.handleRemoveSinglePromotionAction}"
-                                    data-record="{!pricebookEntry.Id}">
-                                    <div class="slds-truncate"
-                                         title="{!$Label.c.Remove_promotion}">
-                                        <a>{!$Label.c.Remove_promotion}</a></div>
-                                </td>
-                            </tr>
-                        </aura:iteration>
+                            <aura:iteration items="{!pricebook.PricebookEntries}" var="pricebookEntry"
+                                            indexVar="ind">
+                                <tr class="slds-hint-parent" id="{!ind}">
+                                    <td data-label="{!pricebookEntry.productName}" scope="row">
+                                        <div class="slds-truncate"
+                                             title="{!pricebookEntry.productName}">
+                                                {!pricebookEntry.Product2.Name}
+                                        </div>
+                                    </td>
+                                    <td data-label="{!pricebookEntry.Standard_price__c}">
+                                        <div class="slds-truncate"
+                                             title="{!pricebookEntry.Standard_price__c}">
+                                                {!pricebookEntry.Standard_price__c}
+                                        </div>
+                                    </td>
+                                    <td data-label="{!pricebookEntry.UnitPrice}">
+                                        <div class="slds-truncate"
+                                             title="{!pricebookEntry.UnitPrice}">
+                                                {!pricebookEntry.UnitPrice}
+                                        </div>
+                                    </td>
+                                    <td data-label="{!pricebookEntry.Discount_percentage__c}">
+                                        <div class="slds-truncate"
+                                             title="{!pricebookEntry.Discount_percentage__c}">
+                                                {!pricebookEntry.Discount_percentage__c}
+                                        </div>
+                                    </td>
+                                    <td data-label="{!$Label.c.Remove_promotion}"
+                                        onclick="{!c.handleRemoveSinglePromotionAction}"
+                                        data-record="{!pricebookEntry.Id}">
+                                        <div class="slds-truncate"
+                                             title="{!$Label.c.Remove_promotion}">
+                                            <a>{!$Label.c.Remove_promotion}</a></div>
+                                    </td>
+                                </tr>
+                            </aura:iteration>
                         </tbody>
                     </table>
                 </aura:if>

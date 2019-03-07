@@ -7,8 +7,6 @@
     <aura:attribute name="productSelected" type="Boolean"/>
     <aura:attribute name="productPictures" type="Object[]"/>
     <aura:attribute name="parentId" type="Id"/>
-    <aura:attribute name="fileName" type="String" default="No File Selected.."/>
-    <aura:attribute name="disabled" type="Boolean" default="false"/>
 
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
 
@@ -50,16 +48,5 @@
             </aura:if>
         </aura:iteration>
     </div>
-
-    <aura:if isTrue="{!v.productSelected}">
-        <div style="padding: 1rem">
-            <lightning:input aura:id="fileId" onchange="{!c.handleFilesChange}" type="file" name="file"
-                             label="{!$Label.c.Upload_picture}" multiple="true" disabled="{!v.disabled}"/>
-            <div class="slds-text-body_small slds-text-color_error">{!v.fileName} </div>
-            <button class="slds-button slds-button_brand" style="margin-top:10px" onclick="{!c.doSave}">
-                    {!$Label.c.Save}
-            </button>
-        </div>
-    </aura:if>
 
 </aura:component>

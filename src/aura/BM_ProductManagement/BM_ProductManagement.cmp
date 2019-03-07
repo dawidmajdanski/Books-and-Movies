@@ -33,19 +33,19 @@
                         </div>
                     </div>
                     <div class="slds-col slds-size_2-of-3" style="width: 83.3%;">
-                        <aura:if isTrue="{!v.sideTabsetOption=='currProm'}">
+                        <aura:if isTrue="{!v.sideTabsetOption==$Label.c.Current_promotions_option}">
                             <c:BM_ProductManagementCurrProm />
                         </aura:if>
 
-                        <aura:if isTrue="{!v.sideTabsetOption=='lastPromo'}">
+                        <aura:if isTrue="{!v.sideTabsetOption==$Label.c.Last_promotions_option}">
                             <c:BM_ProductManagementLastPromo />
                         </aura:if>
 
-                        <aura:if isTrue="{!v.sideTabsetOption=='addProm'}">
+                        <aura:if isTrue="{!v.sideTabsetOption==$Label.c.Add_promotion_option}">
                             <c:BM_ProductManagementSearch />
                         </aura:if>
 
-                        <aura:if isTrue="{!v.sideTabsetOption=='addPricebook'}">
+                        <aura:if isTrue="{!v.sideTabsetOption==$Label.c.Add_pricebook_option}">
                             <c:BM_ProductManagementAddPricebook />
                         </aura:if>
                     </div>
