@@ -1,0 +1,23 @@
+<!--
+ - Created by Dawid Majdański on 27.02.2019.
+ -->
+
+<aura:component description="BM_CustomHeader" implements="forceCommunity:availableForAllPageTypes">
+    <ltng:require styles="{!$Resource.customHeaderSlider}"/>
+    <ltng:require scripts="{!$Resource.customSliderJS}"/>
+
+    <div class="logoContainer">
+        <img src="{!$Label.c.BM_logo_url}" />
+    </div>
+
+    <div class="sliderContainer"></div>
+    <ul id="slides">
+        <li class="slide showing"><img class="pictureStyle" src="/resource/SliderPics/sliderPicture1.jpg"/></li>
+        <li class="slide"><img class="pictureStyle" src="/resource/SliderPics/sliderPicture2.jpg"/></li>
+        <li class="slide"><img class="pictureStyle" src="/resource/SliderPics/sliderPicture3.jpg"/></li>
+        <li class="slide"><img class="pictureStyle" src="/resource/SliderPics/sliderPicture4.jpg"/></li>
+        <li class="slide"><img class="pictureStyle" src="/resource/SliderPics/sliderPicture5.jpg"/></li>
+        <li class="slide"><img class="pictureStyle" src="/resource/SliderPics/sliderPicture6.jpg"/></li>
+    </ul>
+
+</aura:component>
