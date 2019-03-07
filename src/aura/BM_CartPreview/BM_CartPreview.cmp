@@ -2,8 +2,7 @@
  - Created by Dawid Majdański on 21.02.2019.
  -->
 
-<aura:component description="BM_CartPreview" implements="forceCommunity:availableForAllPageTypes"
-                controller="BM_ProductSearchController">
+<aura:component description="BM_CartPreview" implements="forceCommunity:availableForAllPageTypes">
     <aura:attribute name="cartItemsQuantity" type="Integer" default="0"/>
     <aura:attribute name="cartProducts" type="Object[]"/>
     <aura:attribute name="totalCartPrice" type="Decimal" default="0"/>

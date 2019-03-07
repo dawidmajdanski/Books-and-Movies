@@ -30,7 +30,7 @@
         document.getElementById('cartPreview').style = 'height: 0';
         setTimeout(function(){
              document.getElementById('cartItemsTotalPrice').style = 'width: 0';
-             document.getElementById('cart').style = 'width: 5%; background-color: none';
+             document.getElementById('cart').style = 'width: 4.1%; background-color: none';
         }, 350);
     },
     handleRemoveProductFromCart: function(component, event, helper){
