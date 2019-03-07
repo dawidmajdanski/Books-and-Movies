@@ -1,0 +1,22 @@
+<!--
+ - Created by Dawid Majdański on 01.03.2019.
+ -->
+
+<aura:component controller="BM_UserNewsletter" description="BM_UserNewsletter" implements="forceCommunity:availableForAllPageTypes">
+    <aura:attribute name="userSubscribe" type="Boolean" />
+
+    <c:BM_Toast aura:id="toastMsg"/>
+
+    <div class="mainContainer">
+        <h1 class="newsletterInfo">{!$Label.c.Newsletter_text}</h1>
+        <div class="switchContainer">
+            <div class="switch" onclick="{!c.toggleSubscription}">
+                <span class="unSubLabel">{!$Label.c.Subscribe}</span>
+                <div id="switchBtn" class="switchButton"></div>
+                <div id="subscribedInfo" class="subscribed">
+                    <span class="subLabel">{!$Label.c.Subscribed}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</aura:component>
