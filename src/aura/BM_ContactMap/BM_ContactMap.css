@@ -1,0 +1,37 @@
+/**
+ * Created by Dawid Majdański on 07.03.2019.
+ */
+.THIS.contactContainer{
+    width: 100%;
+    position: relative;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 5px;
+    min-height: 599px;
+}
+
+.THIS .titleContact{
+    font-weight: bold;
+    font-size: 200%;
+    padding-left: 5px;
+    border-bottom: 1px solid #dbdbdb;
+    width: 100%;
+}
+
+.THIS .mapContainer{
+    width: 99vh;
+    height: 65vh;
+    margin: auto;
+}
+
+.THIS .slds-text-heading_small{
+    display: none;
+}
+
+.THIS .slds-card{
+    padding-bottom: 0.65rem;
+}
+
+.THIS .cBM_LocationsMap .map{
+    z-index: 4;
+}
