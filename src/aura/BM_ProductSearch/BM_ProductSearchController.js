@@ -51,7 +51,7 @@
         component.set("v.author", undefined);
         component.set("v.bookGenre", undefined);
         component.set("v.movieGenre", undefined);
-        component.set("v.searchText", undefined);
+        component.set("v.searchText", '');
         component.set("v.minRating", 0);
         $A.enqueueAction(component.get('c.resetToDefaultAvailableYears'));
         $A.enqueueAction(component.get('c.resetToDefaultGenres'));
