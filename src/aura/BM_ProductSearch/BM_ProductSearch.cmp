@@ -37,7 +37,7 @@
             </div>
             <div id="arrowDiv" class="arrowContainer" title="{!$Label.c.Advanced_search}"
                  onclick="{!c.onAdvancedSearchModalAppearance}">
-                <lightning:icon iconName="utility:chevronleft" class="iconPosition"/>
+                <lightning:icon iconName="utility:chevronleft" class="iconPosition" variant="inverse"/>
             </div>
 
             <div id="advSearchModal" class="advancedSearchDiv hideModal">

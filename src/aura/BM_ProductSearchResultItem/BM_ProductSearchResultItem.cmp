@@ -49,7 +49,7 @@
             <aura:if isTrue="{!v.product.price!=v.product.standardPrice}">
                 <div class="discountRibbonContainer">
                     <div class="discount-label green">
-                        <span><lightning:formattedNumber value="{!v.product.discountPercentage*100}" maximumFractionDigits="0"/>%</span>
+                        <span>-<lightning:formattedNumber value="{!v.product.discountPercentage*100}" maximumFractionDigits="0"/>%</span>
                     </div>
                 </div>
             </aura:if>

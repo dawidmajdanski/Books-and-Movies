@@ -15,6 +15,7 @@
 .THIS .iconPosition{
     padding-top: 1px;
     padding-left: 1px;
+    opacity: 0.9;
 }
 
 .THIS .siteforceServiceBody{
@@ -43,7 +44,7 @@
 .THIS .arrowContainer{
     height:35px;
     width:35px;
-    background-color:#eaeaea;
+    background-color: rgba(101, 101, 101, 0.7);
     position:absolute;
     top: 0;
     left:-38px;
