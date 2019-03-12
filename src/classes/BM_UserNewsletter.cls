@@ -8,6 +8,7 @@ public with sharing class BM_UserNewsletter {
         return [SELECT User__r.Email, User__c FROM Newsletter_member__c WHERE User__c =: UserInfo.getUserId()].size()!=0?true:false;
     }
 
+    
     @AuraEnabled
     public static Boolean userSubscriptionChange(){
         String currentUser = UserInfo.getUserId();

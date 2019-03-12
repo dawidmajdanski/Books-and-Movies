@@ -16,4 +16,3 @@
     $A.enqueueAction(action);
   },
 })
-
