@@ -2,7 +2,7 @@
  * Created by Dawid Majdański on 26.02.2019.
  */
 ({
-    init: function(component, event, helper){
+    getUserCases: function(component, event, helper){
         helper.searchForUserComplaints(component);
     },
     handleRollCase: function(component, event, helper){

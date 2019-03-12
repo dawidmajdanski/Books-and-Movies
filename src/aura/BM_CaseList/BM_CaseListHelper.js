@@ -3,6 +3,7 @@
  */
 ({
     searchForUserComplaints: function(component){
+        console.log('test');
         let action = component.get('c.getMyComplaints');
         action.setCallback(this, function(response) {
           let state = response.getState();
