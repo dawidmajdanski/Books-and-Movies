@@ -1,0 +1,31 @@
+<!--
+ - Created by Dawid Majdański on 07.03.2019.
+ -->
+
+<aura:component description="BM_ContactMap" implements="forceCommunity:availableForAllPageTypes" controller="BM_LocationsRecordCrud">
+    <aura:registerEvent name = "passShopsLocations" type = "c:BM_LocationsSearchEvent" />
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+
+    <c:BM_Toast aura:id="toastMsg"/>
+
+    <div class="contactContainer">
+        <div class="titleContact">
+            {!$Label.c.Contact_title}
+        </div>
+        <h2 class="checkShopsTitle">{!$Label.c.Check_shops}</h2>
+
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_1-of-3" style="position: relative; min-height: 517px;">
+                <div>
+                    <c:BM_ContactShopsList />
+                </div>
+                <img class="planetGraphic" src="{!$Resource.PlanetGraphic}" />
+            </div>
+            <div class="slds-col slds-size_2-of-3" style="min-height: 517px;">
+                <div class="mapContainer">
+                    <c:BM_LocationsMap />
+                </div>
+            </div>
+        </div>
+    </div>
+</aura:component>

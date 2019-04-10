@@ -1,0 +1,53 @@
+<!--
+ - Created by Dawid Majdański on 21.02.2019.
+ -->
+
+<aura:component description="BM_CartPreview" implements="forceCommunity:availableForAllPageTypes">
+    <aura:attribute name="cartItemsQuantity" type="Integer" default="0"/>
+    <aura:attribute name="cartProducts" type="Object[]"/>
+    <aura:attribute name="totalCartPrice" type="Decimal" default="0"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <aura:handler event="c:BM_ProductsCartQuantityEvent" action="{!c.handleUpdateCartProductsQuantity}"/>
+    <aura:handler event="c:BM_AddToCartEvent" action="{!c.handleAddProductToCart}"/>
+
+    <div id="cart" class="cartContainer" onclick="{!c.handleCartRollDown}">
+        <img class="cartIco" src="{!$Resource.CartIcon}" />
+        <span class="cartItemsQuantity">{!v.cartItemsQuantity}</span>
+        <span id="cartItemsTotalPrice" class="cartItemsTotalPrice">{!$Label.c.Total_price}&nbsp;<ui:outputCurrency aura:id="curr" value="{!v.totalCartPrice}"/></span>
+    </div>
+
+    <div id="cartPreview" class="cartPreview">
+        <aura:if isTrue="{!v.cartProducts==null || v.cartProducts.length==0}">
+            <p class="cartEmptyInfo">{!$Label.c.Empty_cart}</p>
+        </aura:if>
+        <table style="width:91.5%; margin-left: 0.85rem; margin-right: 0.5rem; color: white; font-family: 'Lucida Sans Unicode'; margin-top: 0.25rem;">
+            <aura:iteration items="{!v.cartProducts}" var="cartProduct" indexVar="ind">
+                <tr>
+                    <td style="padding-top: 0.25rem; width: 100%">
+                        {!cartProduct.productName}&nbsp;
+                    </td>
+                    <td style="text-align: right; padding-top: 0.25rem; padding-right: 0.25rem;">
+                        <aura:if isTrue="{!cartProduct.price!=cartProduct.standardPrice}">
+                            {!cartProduct.quantity}x&nbsp;<ui:outputCurrency aura:id="curr" value="{!cartProduct.price}"/><br/>
+                        </aura:if>
+                        <aura:if isTrue="{!cartProduct.price==cartProduct.standardPrice}">
+                            {!cartProduct.quantity}x&nbsp;<ui:outputCurrency aura:id="curr" value="{!cartProduct.standardPrice}"/><br/>
+                        </aura:if>
+                    </td>
+                    <td style="text-align: right; padding-top: 0.25rem; padding-left: 7px; cursor: pointer" onclick="{!c.handleRemoveProductFromCart}" data-index="{!ind}">
+                        <lightning:icon iconName="utility:clear" size="xx-small" variant="inverse"/>
+                    </td>
+                </tr>
+            </aura:iteration>
+        </table>
+        <button onclick="{!c.handleProductsInCart}"
+                class="slds-button slds-button_success productsInCartBtn">
+                {!$Label.c.Show_cart}
+        </button>
+        <div onclick="{!c.handleCartRollUp}">
+            <lightning:icon iconName="utility:chevronup" class="iconScrollUp" variant="bare" size="small"/>
+        </div>
+    </div>
+
+</aura:component>

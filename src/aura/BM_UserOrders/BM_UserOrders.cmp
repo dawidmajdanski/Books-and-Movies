@@ -1,0 +1,21 @@
+<!--
+ - Created by Dawid Majdański on 12.02.2019.
+ -->
+
+<aura:component description="BM_UserOrders" controller="BM_OrderController"
+                implements="forceCommunity:availableForAllPageTypes">
+    <div class="myOrdersContainer">
+        <div class="titleMyOrders">
+            {!$Label.c.My_orders_title}
+        </div>
+
+        <lightning:tabset selectedTabId="orders">
+            <lightning:tab label="{!$Label.c.Orders_tab}" id="orders">
+                <c:BM_OrderList />
+            </lightning:tab>
+            <lightning:tab label="{!$Label.c.Complaints_tab}" id="complaints" onactive="{!c.handleCases}">
+                <c:BM_CaseList aura:id="caseList"/>
+            </lightning:tab>
+        </lightning:tabset>
+    </div>
+</aura:component>

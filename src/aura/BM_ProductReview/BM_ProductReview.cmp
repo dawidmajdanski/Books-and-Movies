@@ -1,0 +1,108 @@
+<!--
+ - Created by Majdan on 21.02.2019.
+ -->
+
+<aura:component description="BM_ProductReview" controller="BM_ProductSearchController">
+    <ltng:require styles="{!$Resource.staticStarsRating}"/>
+
+    <aura:attribute name="product" type="Object" />
+    <aura:attribute name="user" type="User" />
+    <aura:attribute name="newVote" type="Integer" />
+    <aura:attribute name="newComment" type="String" />
+    <aura:attribute name="userRating" type="Product_rating__c" />
+    <aura:attribute name="editReviewMode" type="Boolean"  default="false"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+
+    <c:BM_Toast aura:id="toastMsg"/>
+
+    <aura:if isTrue="{!v.user.Id==$Label.c.Guest_user}">
+        <div style="text-align: center; font-style:italic; font-size: 130%">
+                {!$Label.c.Priviledge_error}
+        </div>
+    </aura:if>
+    <aura:if isTrue="{!v.user.Id!=$Label.c.Guest_user}">
+        <aura:if isTrue="{!v.userRating==null}">
+            <div style="text-align: center; font-style:italic; font-size: 130%">
+                    {!$Label.c.No_review_yet}
+            </div>
+            <div style="width: 100%; position: relative">
+                <div class="starsRatingPos">
+                    <c:BM_StarsRating value="{!v.newVote}"/>
+                </div>
+                <lightning:layoutItem size="12">
+                    <label class="slds-form-element__label"></label>
+                    <lightning:inputRichText value="{!v.newComment}"
+                                             disabledCategories="FORMAT_FONT"/>
+                </lightning:layoutItem>
+
+                <lightning:layoutItem size="12" class="slds-align--absolute-center">
+                    <lightning:button iconName="utility:save" label="{!$Label.c.Add_review}"
+                                      onclick="{!c.handleSaveReview}"/>
+                </lightning:layoutItem>
+            </div>
+        </aura:if>
+        <aura:if isTrue="{!v.userRating!=null}">
+            <aura:if isTrue="{!v.editReviewMode==false}">
+                <div class="userCommentBox">
+                    <div class="commentDateContainer">
+                        <lightning:formattedDateTime value="{!v.userRating.CreatedDate}"
+                                                     year="numeric"
+                                                     month="numeric"
+                                                     day="numeric" hour="2-digit"
+                                                     minute="2-digit" timeZoneName="short"
+                                                     hour12="true"/>
+                    </div>
+                    <div class="editButtonContainer" title="{!$Label.c.Edit_review}"
+                         onclick="{!c.handleEditReview}">
+                        <lightning:icon iconName="utility:edit" size="small"/>
+                    </div>
+                    <div class="deleteButtonContainer" title="{!$Label.c.Delete_review}"
+                         onclick="{!c.handleDeleteReview}">
+                        <lightning:icon iconName="utility:delete" size="small"/>
+                    </div>
+
+                    <div class="ratingContainer">
+                        <div class="star-ratings-css" title="{!$Label.c.Your_rating}" style="cursor: default">
+                            <div class="star-ratings-css top"
+                                 style="{!'width: '+v.userRating.Rating__c*10*2+'%;'}">
+                                <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                            </div>
+                            <div class="star-ratings-css bottom">
+                                <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="upperSeparator"></div>
+
+                    <div class="commentContainer">
+                        <ui:outputRichText value="{!v.userRating.Review__c}"/>
+                    </div>
+                </div>
+            </aura:if>
+        </aura:if>
+    </aura:if>
+    <aura:if isTrue="{!v.editReviewMode}">
+        <div style="width: 100%; position: relative">
+            <div class="starsRatingPos">
+                <c:BM_StarsRating value="{!v.userRating.Rating__c}"/>
+            </div>
+            <lightning:layoutItem size="12">
+                <label class="slds-form-element__label"></label>
+                <lightning:inputRichText value="{!v.userRating.Review__c}"
+                                         disabledCategories="FORMAT_FONT"/>
+            </lightning:layoutItem>
+
+            <lightning:layoutItem size="12" class="slds-align--absolute-center">
+                <div class="slds-button-group" role="group">
+                    <lightning:button iconName="utility:save" label="{!$Label.c.Save}"
+                                      onclick="{!c.handleUpdateReview}"/>
+                    <lightning:button iconName="utility:close" label="{!$Label.c.Cancel}"
+                                      onclick="{!c.handleCancelEdit}"/>
+                </div>
+            </lightning:layoutItem>
+        </div>
+    </aura:if>
+
+</aura:component>

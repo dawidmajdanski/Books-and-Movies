@@ -1,0 +1,7 @@
+<!--
+ - Created by Dawid Majdański on 21.12.2018.
+ -->
+
+<aura:event type="APPLICATION" description="BM_LocationsSearchEvent">
+    <aura:attribute name = "shopsResultList" type="Account[]"/>
+</aura:event>

@@ -1,0 +1,26 @@
+<aura:component controller="BM_LocationsRecordCrud" implements="flexipage:availableForAllPageTypes"
+                access="global"
+                description="BM_SearchForm">
+    <aura:registerEvent name = "passShopsLocations" type = "c:BM_LocationsSearchEvent" />
+    <aura:registerEvent name = "clearDetails" type = "c:BM_LocationsClearDetailsEvent" />
+    <aura:attribute name="shopCountry" type="String" />
+    <aura:attribute name="shopCity" type="String" />
+    <aura:attribute name="shopStreet" type="String" />
+
+    <c:BM_LoadingSpinner aura:id="loadingSpinner"/>
+
+    <lightning:card title="{!$Label.c.Search_form_title}">
+        <div class="bm-padding">
+            <lightning:input value="{!v.shopCountry}" aura:Id="shopCountry" label="{!$Label.c.Country}"/>
+            <lightning:input value="{!v.shopCity}" aura:Id="shopCity" label="{!$Label.c.City}" />
+            <lightning:input value="{!v.shopStreet}" aura:Id="shopStreet" label="{!$Label.c.Street}"/>
+        </div>
+        <div class="slds-text-align--right">
+            <lightning:buttonGroup class="bm-padding">
+                <lightning:button label="{!$Label.c.Clear_button}" onclick="{!c.onClear}"/>
+                <lightning:button label="{!$Label.c.Search_button}" variant="brand" onclick="{!c.onSearch}"/>
+            </lightning:buttonGroup>
+        </div>
+
+    </lightning:card>
+</aura:component>

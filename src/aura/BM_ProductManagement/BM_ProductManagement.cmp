@@ -1,0 +1,56 @@
+<!--
+ - Created by Majdan on 03.02.2019.
+ -->
+
+<aura:component controller="BM_ProductManagement" description="BM_ProductUploadPicture"
+                implements="flexipage:availableForAllPageTypes" access="global">
+    <aura:attribute name="sideTabsetOption" type="String" default="currProm"/>
+
+    <lightning:card class="mainContainer">
+        <lightning:tabset class="tabsetStyle">
+            <lightning:tab label="{!$Label.c.Product_pictures}" id="productPictures">
+                <c:BM_ProductManagementPictures />
+            </lightning:tab>
+            <lightning:tab label="{!$Label.c.Promotions}" id="promotions">
+                <div class="slds-grid slds-gutters" style="height: auto;">
+                    <div class="slds-col slds-size_1-of-3" style="border-right: 1px solid gainsboro; width: 17%">
+                        <div class="sideTabset">
+                            <ul class="ulSideTabset">
+                                <li id="currentPromo" class="liElem" onclick="{!c.handleCurrentPromo}"
+                                    style="background-color: rgba(27, 82, 151, 1); color: white;">
+                                        {!$Label.c.Current_promotions}
+                                </li>
+                                <li id="lastPromo" class="liElem" onclick="{!c.handleLastPromo}">
+                                        {!$Label.c.Inactive_promotions}
+                                </li>
+                                <li id="addPromo" class="liElem" onclick="{!c.handleAddPromo}">
+                                        {!$Label.c.Add_promotions}
+                                </li>
+                                <li id="addPricebook" class="liElem" onclick="{!c.handleAddPricebook}">
+                                        {!$Label.c.Add_pricebook}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_2-of-3" style="width: 83.3%;">
+                        <aura:if isTrue="{!v.sideTabsetOption==$Label.c.Current_promotions_option}">
+                            <c:BM_ProductManagementCurrProm />
+                        </aura:if>
+
+                        <aura:if isTrue="{!v.sideTabsetOption==$Label.c.Last_promotions_option}">
+                            <c:BM_ProductManagementLastPromo />
+                        </aura:if>
+
+                        <aura:if isTrue="{!v.sideTabsetOption==$Label.c.Add_promotion_option}">
+                            <c:BM_ProductManagementSearch />
+                        </aura:if>
+
+                        <aura:if isTrue="{!v.sideTabsetOption==$Label.c.Add_pricebook_option}">
+                            <c:BM_ProductManagementAddPricebook />
+                        </aura:if>
+                    </div>
+                </div>
+            </lightning:tab>
+        </lightning:tabset>
+    </lightning:card>
+</aura:component>

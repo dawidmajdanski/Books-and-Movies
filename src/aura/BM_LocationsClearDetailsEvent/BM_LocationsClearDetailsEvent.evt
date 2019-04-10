@@ -1,0 +1,7 @@
+<!--
+ - Created by Dawid Majdański on 27.12.2018.
+ -->
+
+<aura:event type="APPLICATION" description="BM_LocationsClearDetailsEvent">
+    <aura:attribute name = "shopToClear" type="Account"/>
+</aura:event>

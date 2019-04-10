@@ -1,0 +1,124 @@
+<!--
+ - Created by Dawid Majdański on 20.02.2019.
+ -->
+
+<aura:component description="BM_CaseForm" controller="BM_OrderController">
+    <aura:attribute name="order" type="Order"/>
+    <aura:attribute name="orderItem" type="OrderItem"/>
+    <aura:attribute name="user" type="User"/>
+    <aura:attribute name="caseSubject" type="String" />
+    <aura:attribute name="caseDescription" type="String" />
+    <aura:attribute name="caseReason" type="String[]"/>
+    <aura:method name="openCaseModal" action="{!c.onOpenModal}" access="PUBLIC">
+        <aura:attribute name="receivedOrder" type="Order"/>
+        <aura:attribute name="receivedOrderItem" type="OrderItem"/>
+    </aura:method>
+
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+
+    <c:BM_Toast aura:id="toastMsg"/>
+
+    <!-- case modal -->
+    <div role="dialog" tabindex="-1" aura:id="CaseModalBox" class="slds-modal">
+        <div class="slds-modal__container">
+            <div class="slds-modal__header">
+                <button class="slds-button slds-modal__close slds-button--icon-inverse" title="{!$Label.c.Close_window}"
+                        onclick="{!c.onCloseModal}">
+                    <span class="textSize">{!$Label.c.Close_sign}</span>
+                </button>
+                <h2 id="header43" class="slds-text-heading--medium">{!$Label.c.Complaint}</h2>
+            </div>
+            <div class="slds-modal__content slds-p-around--medium">
+                <div class="slds-p-bottom_large slds-p-left_large" style="padding-right: 0; padding-left: 0;">
+                    <div class="caseFormContainer">
+                        <fieldset class="slds-form-element slds-form-element_compound slds-form-element_address fieldset1" >
+                            <div class="slds-form-element__row ">
+                                <div class="slds-size_4-of-6" >
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label">
+                                            {!$Label.c.Product_name}
+                                        </label>
+                                        <div class="slds-form-element__control">
+                                            <span>{!v.orderItem.Product2.Name}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-size_1-of-6">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label">
+                                            {!$Label.c.Product_code}
+                                        </label>
+                                        <div class="slds-form-element__control">
+                                            <span>{!v.orderItem.Product2.ProductCode}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-size_1-of-6">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label">
+                                            {!$Label.c.Order_number}
+                                        </label>
+                                        <div class="slds-form-element__control">
+                                            <span>{!v.order.OrderNumber}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="slds-form-element slds-form-element_compound slds-form-element_address">
+                            <div class="slds-form-element__control">
+                                <div class="slds-form-element__row">
+                                    <div class="slds-size_4-of-6">
+                                        <div class="slds-form-element">
+                                            <div class="slds-form-element__control">
+                                                <lightning:input required="true" label="{!$Label.c.Subject}" type="text" value="{!v.caseSubject}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_2-of-6">
+                                        <div class="slds-form-element">
+                                            <div class="slds-form-element__control">
+                                                <lightning:select aura:id="selectedReason" name="selectComplaintReason" label="{!$Label.c.Complaint_reason}">
+                                                    <aura:iteration items="{!v.caseReason}" var="reason">
+                                                        <option value="{!reason}">{!reason}</option>
+                                                    </aura:iteration>
+                                                </lightning:select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-form-element__row">
+                                    <div class="slds-size_1-of-1">
+                                        <div class="slds-form-element">
+                                            <div class="slds-form-element__control">
+                                                <lightning:textarea required="true" label="{!$Label.c.Description}" value="{!v.caseDescription}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-form-element__row">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element">
+                                            <div class="slds-form-element__control">
+                                                <lightning:input required="true" label="{!$Label.c.Contact_email}" type="text" value="{!v.user.Email}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-modal__footer">
+                <lightning:button label="{!$Label.c.Submit_case}"
+                                  variant="brand"
+                                  class="slds-m-top_medium"
+                                  onclick="{!c.onSubmitComplaint}">
+                </lightning:button>
+            </div>
+        </div>
+    </div>
+    <div class="slds-backdrop " aura:id="CaseModalBackdrop"></div>
+
+</aura:component>

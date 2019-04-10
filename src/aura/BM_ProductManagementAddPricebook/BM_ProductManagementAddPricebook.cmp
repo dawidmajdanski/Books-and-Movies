@@ -1,0 +1,21 @@
+<!--
+ - Created by Majdan on 26.02.2019.
+ -->
+
+<aura:component description="BM_ProductManagementAddPricebook" controller="BM_ProductManagement">
+    <aura:attribute name="newPricebook" type="Pricebook2" default="{'sobjectType': 'Pricebook2'}"/>
+    <aura:registerEvent name = "getPricebooks" type = "c:BM_GetPricebooksEvent" />
+
+    <c:BM_Toast aura:id="toastMsg"/>
+
+    <lightning:input required="true" aura:id="newPricebookName" type="text" value="{!v.newPricebook.Name}" label="{!$Label.c.Pricebook_name}"/>
+    <div style="margin-bottom: 100px">
+        <lightning:input required="true" class="newPricebookSD" aura:id="newPricebookSD" type="date" value="{!v.newPricebook.Start_date__c}" label="{!$Label.c.Start_date}"/>
+        <lightning:input required="true" class="newPricebookED" aura:id="newPricebookED" type="date" value="{!v.newPricebook.End_date__c}" label="{!$Label.c.End_date}"/>
+    </div>
+
+    <button class="slds-button slds-button_brand addPricebookBtn" style="margin-left: 43.5%;"
+            onclick="{!c.addNewPricebook}" disabled="{!v.newPricebook.Name==null || v.newPricebook.Start_date__c==null || v.newPricebook.End_date__c==null}">
+            {!$Label.c.Add_new_price_book}
+    </button>
+</aura:component>

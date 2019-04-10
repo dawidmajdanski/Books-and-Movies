@@ -1,0 +1,9 @@
+<!--
+ - Created by Dawid Majdański on 04.03.2019.
+ -->
+
+<aura:component description="BM_NewsletterInit" controller="BM_UserNewsletter" implements="forceCommunity:availableForAllPageTypes">
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+
+    <c:BM_Toast aura:id="toastMsg"/>
+</aura:component>

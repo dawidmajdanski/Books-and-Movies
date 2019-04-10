@@ -1,0 +1,77 @@
+<!--
+ - Created by Majdan on 31.01.2019.
+ -->
+
+<aura:component description="customSearchResultItem" implements="force:hasRecordId" access="global" controller="BM_FavouritesController">
+    <ltng:require styles="{!$Resource.staticStarsRating}"/>
+    <ltng:require styles="{!$Resource.ribbonBadge}"/>
+
+    <aura:attribute name="product" type="Object"/>
+
+    <c:BM_Toast aura:id="toastMsg"/>
+
+    <div class="tileContainer">
+        <div class="imageContainer">
+            <aura:if isTrue="{!v.product.price!=v.product.standardPrice}">
+                <div class="discountTriangle">
+                    <h1 class="saleTitle">
+                        {!$Label.c.Sale}
+                    </h1>
+                </div>
+            </aura:if>
+            <img onclick="{!c.handleProductClick}"
+                 class="image"
+                 src="{!v.product.productMainPic}"/>
+        </div>
+        <div class="tileContent">
+            <h2 class="productTitle">
+                {!v.product.productName}
+                <aura:if isTrue="{!v.product.productRecordType == $Label.c.Book}">
+                    <img title="{!$Label.c.Book}" class="productTypeImg" src="{!$Resource.BookSymbol}" />
+                </aura:if>
+                <aura:if isTrue="{!v.product.productRecordType == $Label.c.Movie}">
+                    <img title="{!$Label.c.Movie}" style="bottom: 6px !important; width: 5.7% !important" class="productTypeImg" src="{!$Resource.MovieSymbol}" />
+                </aura:if>
+            </h2>
+            <div class="starsContainer">
+                <div class="star-ratings-css">
+                    <div class="star-ratings-css top" style="{!'width: '+v.product.averageRating*10*2+'%;'}"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                    <div class="star-ratings-css bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                </div>
+            </div>
+
+            <aura:if isTrue="{!v.product.isFavourite==true}">
+                <div class="heartPos">
+                    <img src="{!$Resource.favourites_symbol1}" title="You like this product"/>
+                </div>
+            </aura:if>
+
+            <aura:if isTrue="{!v.product.price!=v.product.standardPrice}">
+                <div class="discountRibbonContainer">
+                    <div class="discount-label green">
+                        <span>-<lightning:formattedNumber value="{!v.product.discountPercentage*100}" maximumFractionDigits="0"/>%</span>
+                    </div>
+                </div>
+            </aura:if>
+            <div class="priceContainer">
+                <aura:if isTrue="{!v.product.price==v.product.standardPrice}">
+                    <p style="padding-top: 10px;">
+                        <ui:outputCurrency aura:id="curr" value="{!v.product.price}"/>
+                    </p>
+                </aura:if>
+                <aura:if isTrue="{!v.product.price!=v.product.standardPrice}">
+                    <p style="padding-top: 10px;">
+                        <span class="strikethrough" style="color: red;">
+                            <ui:outputCurrency aura:id="curr" value="{!v.product.standardPrice}"/>
+                        </span>
+                        &nbsp;
+                        <span style="color: green;">
+                            <ui:outputCurrency aura:id="curr" value="{!v.product.price}"/>
+                        </span>
+                    </p>
+                </aura:if>
+            </div>
+        </div>
+    </div>
+
+</aura:component>

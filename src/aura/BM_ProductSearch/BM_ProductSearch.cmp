@@ -1,0 +1,93 @@
+<!--
+ - Created by Dawid Majdański on 31.01.2019.
+ -->
+
+<aura:component description="BM_CustomProductSearch" implements="forceCommunity:searchInterface"
+                controller="BM_ProductSearchController">
+    <ltng:require styles="/resource/dontDisplayLogo"/>
+    <ltng:require styles="/resource/navBar"/>
+
+    <aura:attribute name="isAdvSearchDisplayed" type="Boolean" default="false"/>
+    <aura:attribute name="searchText" type="String" default=""/>
+    <aura:attribute name="minPrice" type="Decimal"/>
+    <aura:attribute name="maxPrice" type="Decimal"/>
+    <aura:attribute name="minRating" type="Integer" default="0"/>
+    <aura:attribute name="specificYear" type="Integer"/>
+    <aura:attribute name="minYear" type="Integer"/>
+    <aura:attribute name="maxYear" type="Integer"/>
+    <aura:attribute name="bookGenre" type="String"/>
+    <aura:attribute name="movieGenre" type="String"/>
+    <aura:attribute name="bookGenres" type="String[]"/>
+    <aura:attribute name="movieGenres" type="String[]"/>
+    <aura:attribute name="author" type="String"/>
+    <aura:attribute name="director" type="String"/>
+    <aura:attribute name="productType" type="String" default="All"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+
+    <c:BM_Toast aura:id="toastMsg"/>
+
+    <div class="slds-form-element slds-lookup" data-select="single">
+        <div class="slds-form-element__control">
+            <div class="slds-input-has-icon slds-input-has-icon--right">
+                <lightning:buttonIcon iconName="utility:search" variant="bare" onclick="{! c.handleClick }"
+                                      alternativeText="Search" class="slds-input__icon"/>
+                <ui:inputText value="{!v.searchText}" class="slds-lookup__search-input slds-input"
+                              placeholder="{!$Label.c.Search_placeholder}"/>
+            </div>
+            <div id="arrowDiv" class="arrowContainer" title="{!$Label.c.Advanced_search}"
+                 onclick="{!c.onAdvancedSearchModalAppearance}">
+                <lightning:icon iconName="utility:chevronleft" class="iconPosition" variant="inverse"/>
+            </div>
+
+            <div id="advSearchModal" class="advancedSearchDiv hideModal">
+                <lightning:tabset class="advSearchModalTabset" selectedTabId="{!v.productType}" onselect="{!c.handleChangeTabset}">
+                    <lightning:tab label="{!$Label.c.All_tab}" id="All">
+                        <div class="slds-form-element tabsetPadding">
+                            <c:BM_ProductSearchSharedParams aura:id="clearAvailableYears" specificYear="{!v.specificYear}" minYear="{!v.minYear}" minRating="{!v.minRating}"
+                                                            maxYear="{!v.maxYear}" minPrice="{!v.minPrice}"
+                                                            maxPrice="{!v.maxPrice}"/>
+                        </div>
+                    </lightning:tab>
+                    <lightning:tab label="{!$Label.c.Books_tab}" id="Books">
+                        <div class="slds-form-element tabsetPadding">
+                            <c:BM_ProductSearchSharedParams aura:id="clearAvailableYears1" specificYear="{!v.specificYear}" minYear="{!v.minYear}" minRating="{!v.minRating}"
+                                                            maxYear="{!v.maxYear}" minPrice="{!v.minPrice}"
+                                                            maxPrice="{!v.maxPrice}"/>
+                            <div id="book_genre_param" class="searchParamsGridStyle">
+                                <lightning:select aura:id="selectBookGenre" name="selectBookGenre" label="{!$Label.c.Genre}" onchange="{!c.handleBookGenreChange}">
+                                    <aura:iteration items="{!v.bookGenres}" var="genre" >
+                                        <option>{!genre}</option>
+                                    </aura:iteration>
+                                </lightning:select>
+                            </div>
+                            <div id="book_author_param" class="searchParamsGridStyle">
+                                <lightning:input label="{!$Label.c.Author}" class="input_Param" type="text" value="{!v.author}" />
+                            </div>
+                        </div>
+                    </lightning:tab>
+                    <lightning:tab label="{!$Label.c.Movies_tab}" id="Movies">
+                        <div class="slds-form-element tabsetPadding">
+                            <c:BM_ProductSearchSharedParams aura:id="clearAvailableYears2" specificYear="{!v.specificYear}" minYear="{!v.minYear}" minRating="{!v.minRating}"
+                                                            maxYear="{!v.maxYear}" minPrice="{!v.minPrice}"
+                                                            maxPrice="{!v.maxPrice}"/>
+                            <div id="movie_genre_param" class="searchParamsGridStyle">
+                                <lightning:select aura:id="selectMovieGenre" name="selectMovieGenre" label="{!$Label.c.Genre}" onchange="{!c.handleMovieGenreChange}">
+                                    <aura:iteration items="{!v.movieGenres}" var="genre">
+                                        <option>{!genre}</option>
+                                    </aura:iteration>>
+                                </lightning:select>
+                            </div>
+                            <div id="director_param" class="searchParamsGridStyle">
+                                <lightning:input label="{!$Label.c.Director}" class="input_Param" type="text" value="{!v.director}" />
+                            </div>
+                        </div>
+                    </lightning:tab>
+                </lightning:tabset>
+
+                <lightning:button label="{!$Label.c.Clear}" onclick="{!c.clearAllParams}" class="custom-slds-icon-clear"/>
+                <lightning:button variant="brand" label="{!$Label.c.Search}" onclick="{!c.handleClick}" class="custom-slds-icon-search"/>
+            </div>
+        </div>
+    </div>
+</aura:component>

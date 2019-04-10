@@ -1,0 +1,39 @@
+/**
+ * Created by Dawid Majdański on 04.02.2019.
+ */
+
+.THIS .tabsetStyle{
+    padding: 1rem;
+}
+
+.THIS .sideTabset{
+    text-align: center;
+    font-size: 125%;
+    cursor: pointer;
+}
+
+.THIS .liElem{
+    padding-bottom: 5px;
+    border-radius: 4px;
+}
+
+.THIS .liElem:hover{
+    background-color: #e8faff;
+}
+
+.THIS.mainContainer{
+    height:auto;
+}
+
+.THIS .cBM_ProductSearchSharedParams .separatorStyle{
+    top: 40px;
+    position: absolute;
+    left: 278px;
+}
+
+.THIS .saveDatesBtnContainer{
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid gainsboro;
+    padding-bottom: 9px;
+}

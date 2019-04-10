@@ -1,0 +1,6 @@
+<!--
+ - Created by Dawid Majdański on 07.02.2019.
+ -->
+
+<aura:event type="APPLICATION" description="BM_ProductRatingEvent">
+</aura:event>

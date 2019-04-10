@@ -1,0 +1,9 @@
+<!--
+ - Created by Majdan on 22.02.2019.
+ -->
+
+<aura:component description="BM_OrdersTab" implements="forceCommunity:availableForAllPageTypes">
+    <!--<div class="myOrdersContainer" onclick="{!c.handleMyOrders}">-->
+        <!--<span>{!$Label.c.My_orders}</span>-->
+    <!--</div>-->
+</aura:component>

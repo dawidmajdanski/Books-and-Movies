@@ -1,0 +1,110 @@
+<!--
+ - Created by Majdan on 03.02.2019.
+ -->
+
+<aura:component controller="BM_ProductSearchController" description="BM_ProductDetails"
+                implements="forceCommunity:availableForAllPageTypes" access="global">
+    <ltng:require styles="{!$Resource.staticStarsRating}"/>
+
+    <aura:attribute name="product" type="Object" />
+    <aura:attribute name="pictures" type="Object" />
+    <aura:attribute name="quantity" type="Integer" default="1"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <aura:registerEvent name="getProductReviews" type="c:BM_ProductRatingEvent"/>
+    <aura:registerEvent name="addItemToCart" type="c:BM_AddToCartEvent"/>
+
+    <c:BM_Toast aura:id="toastMsg"/>
+
+    <aura:if isTrue="{!v.product!=null}">
+        <div class="mainContainer">
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col slds-size_2-of-3" style="width: 320px !important">
+                    <div class="carouselContainer">
+                        <lightning:carousel disableAutoRefresh="false" disableAutoScroll="false">
+                            <aura:iteration items="{!v.pictures}" var="pic">
+                                <lightning:carouselImage
+                                        src="{!pic.pictureURL}">
+                                </lightning:carouselImage>
+                            </aura:iteration>
+                        </lightning:carousel>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_1-of-3" style="width: 55%">
+                    <p style="font-weight: bold; font-size: 150%">{!v.product.productName}</p>
+
+                    <aura:if isTrue="{!v.product.price==v.product.standardPrice}">
+                        <p style="padding-bottom: 10px; padding-top: 10px; font-size: 125%">
+                            {!$Label.c.Price}&nbsp;
+                            <ui:outputCurrency aura:id="curr" value="{!v.product.price}"/>
+                        </p>
+                    </aura:if>
+                    <aura:if isTrue="{!v.product.price!=v.product.standardPrice}">
+                        <p style="padding-bottom: 10px; padding-top: 10px; font-size: 125%">
+                            {!$Label.c.Price}&nbsp;
+                            <span style="text-decoration: line-through; color: red;">
+                                <ui:outputCurrency aura:id="curr" value="{!v.product.standardPrice}"/>
+                            </span>
+                            &nbsp;
+                            <span style="color: green;">
+                                <ui:outputCurrency aura:id="curr" value="{!v.product.price}"/>
+                            </span>
+                        </p>
+                    </aura:if>
+
+                    <p style="padding-bottom: 10px; padding-top: 10px; font-size: 125%">
+                        {!$Label.c.Release_date}&nbsp; {!v.product.releaseDate}</p>
+                    <aura:if isTrue="{!v.product.author!=null}">
+                        <p style="padding-bottom: 10px; padding-top: 10px; font-size: 125%">
+                        {!$Label.c.Author}&nbsp; {!v.product.author}</p>
+                    </aura:if>
+                    <aura:if isTrue="{!v.product.director!=null}">
+                        <p style="padding-bottom: 10px; padding-top: 10px; font-size: 125%">
+                        {!$Label.c.Director}&nbsp; {!v.product.director}</p>
+                    </aura:if>
+
+                    <p style="font-size: 120%; padding-top: 34px; padding-left: 5px;">{!v.product.countRating}&nbsp;{!$Label.c.Votes}</p>
+                    <div class="starsContainer" style="top: 180px;" title="{!$Label.c.Average_rating}">
+                        <div class="star-ratings-css">
+                            <div class="star-ratings-css top" style="{!'width: '+v.product.averageRating*10*2+'%;'}"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                            <div class="star-ratings-css bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                        </div>
+                    </div>
+
+                    <aura:if isTrue="{!v.product.productRecordType == $Label.c.Book}">
+                        <img title="{!$Label.c.Book}" class="productTypeImg" src="{!$Resource.BookSymbol}" />
+                    </aura:if>
+                    <aura:if isTrue="{!v.product.productRecordType == $Label.c.Movie}">
+                        <img title="{!$Label.c.Movie}" class="productTypeImg" src="{!$Resource.MovieSymbol}" />
+                    </aura:if>
+
+                    <c:BM_FavouritesButton product="{!v.product}"/>
+
+                    <div style="font-size: 125%; position: absolute; top: 311px; width: 200px;">
+                        <lightning:input messageWhenRangeUnderflow="{!$Label.c.Quantity_error}" type="number"
+                                         value="{!v.quantity}" label="{!$Label.c.Quantity}" min="1"/>
+                    </div>
+
+                    <button onclick="{!c.handleAddToCart}"
+                            class="slds-button slds-button_success addToCartButton">
+                        {!$Label.c.Add_to_cart}
+                    </button>
+                </div>
+
+            </div>
+            <div class="tabsetContainer">
+                <lightning:tabset variant="scoped">
+                    <lightning:tab label="{!$Label.c.Description}">
+                        <p style="text-align: justify; font-size: 120%; padding-right: 1rem; padding-left: 1rem; padding-bottom: 1rem">{!v.product.description}</p>
+                    </lightning:tab>
+                    <lightning:tab label="{!$Label.c.Comments_and_Reviews}">
+                        <c:BM_ProductReviews productId="{!v.product.productId}"/>
+                    </lightning:tab>
+                    <lightning:tab label="{!$Label.c.Your_review}">
+                        <c:BM_ProductReview product="{!v.product}"/>
+                    </lightning:tab>
+                </lightning:tabset>
+            </div>
+        </div>
+    </aura:if>
+</aura:component>

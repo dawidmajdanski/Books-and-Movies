@@ -1,0 +1,91 @@
+<!--
+ - Created by Dawid Majdański on 11.02.2019.
+ -->
+
+<aura:component description="BM_HomePage" implements="forceCommunity:availableForAllPageTypes"
+                controller="BM_ProductSearchController">
+    <ltng:require styles="{!$Resource.staticStarsRating}"/>
+    <ltng:require styles="{!$Resource.ribbonBadge}"/>
+
+    <aura:attribute name="products" type="Object[]"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+
+    <c:BM_Toast aura:id="toastMsg"/>
+
+    <!--most popular -->
+    <h1 class="pageTitle">
+        {!$Label.c.Popular_books_and_movies}
+    </h1>
+    <div class="content">
+        <div style="display: inline-block; width: 100%; float: right; padding-left: 1rem;">
+            <aura:iteration items="{!v.products}" var="product">
+                <div class="tileContainer">
+                    <div class="imageContainer">
+                        <aura:if isTrue="{!product.price!=product.standardPrice}">
+                            <div class="discountTriangle">
+                                <h1 class="saleTitle">
+                                    {!$Label.c.Sale_ribbon_title}
+                                </h1>
+                            </div>
+                        </aura:if>
+                        <img onclick="{!c.handleProductClick}" data-record="{!product.productId}"
+                             class="image"
+                             src="{!product.productMainPic}"/>
+                    </div>
+                    <div class="tileContent">
+                        <h2 class="productTitle">
+                            {!product.productName}
+                            <aura:if isTrue="{!product.productRecordType == $Label.c.Book}">
+                                <img title="{!$Label.c.Book}" class="productTypeImg" src="{!$Resource.BookSymbol}" />
+                            </aura:if>
+                            <aura:if isTrue="{!product.productRecordType == $Label.c.Movie}">
+                                <img title="{!$Label.c.Movie}" style="bottom: -174px !important; width: 7% !important" class="productTypeImg" src="{!$Resource.MovieSymbol}" />
+                            </aura:if>
+                        </h2>
+                        <div class="starsContainer">
+                            <div class="star-ratings-css">
+                                <div class="star-ratings-css top" style="{!'width: '+product.averageRating*10*2+'%;'}">
+                                    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                                <div class="star-ratings-css bottom">
+                                    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                            </div>
+                        </div>
+
+                        <aura:if isTrue="{!product.isFavourite==true}">
+                            <div class="heartPos">
+                                <img src="{!$Resource.favourites_symbol1}" title="You like this product"/>
+                            </div>
+                        </aura:if>
+
+                        <aura:if isTrue="{!product.price!=product.standardPrice}">
+                            <div class="discountRibbonContainer">
+                                <div class="discount-label green">
+                                    <span>-<lightning:formattedNumber value="{!product.discountPercentage*100}" maximumFractionDigits="0"/>%</span>
+                                </div>
+                            </div>
+                        </aura:if>
+                        <div class="priceContainer">
+                            <aura:if isTrue="{!product.price==product.standardPrice}">
+                                <p style="padding-top: 10px;">
+                                    <ui:outputCurrency aura:id="curr" value="{!product.price}"/>
+                                </p>
+                            </aura:if>
+                            <aura:if isTrue="{!product.price!=product.standardPrice}">
+                                <p style="padding-top: 10px;">
+                                    <span class="strikethrough" style="color: red;">
+                                        <ui:outputCurrency aura:id="curr" value="{!product.standardPrice}"/>
+                                    </span>
+                                    &nbsp;
+                                    <span style="color: green;">
+                                        <ui:outputCurrency aura:id="curr" value="{!product.price}"/>
+                                    </span>
+                                </p>
+                            </aura:if>
+                        </div>
+                    </div>
+                </div>
+            </aura:iteration>
+        </div>
+    </div>
+</aura:component>

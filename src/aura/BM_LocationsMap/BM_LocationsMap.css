@@ -1,0 +1,10 @@
+/**
+ * Created by Dawid Majdański on 21.12.2018.
+ */
+.THIS .map{
+      width: 97vh;
+      height: 65vh;
+      margin: auto;
+      max-width: 100%;
+      z-index:99;
+}

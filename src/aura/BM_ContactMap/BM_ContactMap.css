@@ -1,0 +1,57 @@
+/**
+ * Created by Dawid Majdański on 07.03.2019.
+ */
+.THIS.contactContainer{
+    width: 100%;
+    position: relative;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 5px;
+    padding-bottom: 0 !important;
+}
+
+.THIS .titleContact{
+    font-weight: bold;
+    font-size: 200%;
+    padding-left: 5px;
+    border-bottom: 1px solid #dbdbdb;
+    width: 100%;
+}
+
+.THIS .mapContainer{
+    width: 99vh;
+    height: 65vh;
+    margin: auto;
+}
+
+.THIS .slds-text-heading_small{
+    display: none;
+}
+
+.THIS .slds-card{
+    padding-bottom: 0.65rem;
+}
+
+.THIS .cBM_LocationsMap .map{
+    z-index: 4;
+}
+
+.THIS .planetGraphic{
+    position: absolute;
+    bottom: -2%;
+    max-width: 300%;
+    width: 164%;
+    left: -127px;
+    opacity: 0.85;
+}
+
+.THIS .slds-table_bordered{
+    border-top: none;
+}
+
+.THIS .checkShopsTitle{
+    text-align: center;
+    font-size: 161%;
+    padding: 1rem;
+    text-shadow: 0px 2px rgba(199, 188, 188, 0.48);
+}

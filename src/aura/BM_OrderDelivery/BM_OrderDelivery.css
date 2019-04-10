@@ -1,0 +1,52 @@
+/**
+ * Created by Majdan on 10.02.2019.
+ */
+.THIS.deliveryInfoContainer{
+    height: auto;
+    width: 100%;
+    padding: 1rem;
+    position: relative;
+    display: inline-block;
+    border-radius: 4px;
+    -webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+}
+
+.THIS .billingAddressContainer{
+    width: 45%;
+    position: relative;
+    float: left;
+}
+
+.THIS .shippingAddressContainer{
+    margin-left: 55%;
+}
+
+.THIS .shippingCheckboxTop{
+    margin-top: 15px;
+    border-top: 1px solid #dbdbdb;
+}
+
+.THIS .shippingCheckboxInner{
+    padding-top: 4px;
+    text-align: right;
+    padding-bottom: 4px;
+    background-color: #fbfbfb;
+}
+
+.THIS .shippingCheckboxBottom{
+    border-top: 1px solid #dbdbdb;
+}
+
+.THIS .summaryButtonContainer{
+    text-align: right;
+    margin-top: 7px;
+}
+
+.THIS .slds-input-customError{
+    background-color: rgb(255, 255, 255);
+    box-shadow: red 0px 0px 3px;
+    outline: 0px;
+    border-color: red;
+}

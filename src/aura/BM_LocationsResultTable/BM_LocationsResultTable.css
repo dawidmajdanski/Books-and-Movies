@@ -1,0 +1,15 @@
+/**
+ * Created by Dawid Majdański on 25.12.2018.
+ */
+.THIS .highlight{
+    background-color: #b0ffa8;
+}
+.THIS table.slds-table tr:hover td{
+    background-color: transparent;
+    cursor: pointer;
+}
+.THIS .bm-padding{
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 1rem;
+}

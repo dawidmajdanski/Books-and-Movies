@@ -1,0 +1,40 @@
+/**
+ * Created by Dawid Majdański on 05.02.2019.
+ */
+.THIS .slds-input{
+    padding-right: 2px !important;
+}
+
+.THIS .maxYearPosition{
+    top: 77.5%;
+    left: 143px;
+    width: 47%;
+    position: absolute;
+}
+
+.THIS .searchParamsGridStyle{
+    padding-top: 0.6rem;
+    width: 100%;
+}
+
+.THIS .input_Param{
+    width: 47%;
+    top: 0;
+}
+
+.THIS .input_Param__rightSide{
+    width: 47%;
+    position: absolute;
+    top: 10px;
+    left: 143px;
+}
+
+.THIS .separatorStyle{
+    top: 40px;
+    position: absolute;
+    left: 133px;
+}
+
+.THIS .slds-slider-label__range{
+    display: none;
+}

@@ -1,0 +1,104 @@
+/**
+ * Created by Majdan on 03.02.2019.
+ */
+.THIS .slds-carousel__content{
+    display: none;
+}
+
+.THIS .slds-button_icon-x-small {
+    display: none;
+}
+
+.THIS .slds-carousel__image{
+    cursor: default;
+    object-fit: contain;
+    max-height: 400px;
+    max-width: 400px;
+}
+
+.THIS.productDetailsMainCard{
+    height: 500px;
+}
+
+.THIS .slds-carousel__image>img{
+    width: 100%;
+    height: 350px;
+    object-fit: contain;
+    padding-bottom: 3px;
+    padding-top: 3px;    
+}
+
+.THIS.cBM_ProductDetails{
+    height: 400px;
+}
+
+.THIS .carouselContainer{
+    max-width: 300px;
+    max-height: 300px;
+
+    padding-bottom: 1rem;
+}
+
+.THIS .container {
+    width: 200px;
+    background-color: #ddd;
+}
+
+.THIS .avgRating {
+    text-align: right;
+    padding: 5px;
+    color: white;
+}
+
+.THIS .avgRatingInner {
+    width: 0px;
+    background-color: #2196F3;
+}
+
+.THIS .slds-input{
+    line-height: 1.874rem;
+    padding-right: 0.20rem !important;
+}
+
+.THIS .tabsetContainer{
+    margin-top: 89px;
+    height: auto;
+    min-height: 200px;
+}
+
+.THIS.mainContainer{
+    width: 80%;
+    margin: auto;
+    -webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    padding: 1rem;
+    border-radius: 5px;
+    height: auto;
+    background-color: #fdfffb;
+    transition: 0.8s;
+    position: relative;
+}
+
+.THIS .addToCartButton{
+    transition: .8s;
+    position: absolute;
+    top: 336px;
+    right: 16px;
+    border-radius: 0px;
+    width: 295px;
+}
+
+.THIS .starsContainer{
+    position: absolute;
+}
+
+.THIS .productTypeImg{
+    width: 7.5%;
+    margin-top: 25px;
+    margin-left: 7px;
+}
+
+.THIS .star-ratings-css {
+    width: auto;
+}

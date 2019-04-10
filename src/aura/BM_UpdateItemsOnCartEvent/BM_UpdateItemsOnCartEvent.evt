@@ -1,0 +1,7 @@
+<!--
+ - Created by Dawid Majdański on 08.02.2019.
+ -->
+
+<aura:event type="APPLICATION" description="BM_UpdateItemsOnCartEvent">
+    <aura:attribute name="newQuantity" type="Integer" />
+</aura:event>

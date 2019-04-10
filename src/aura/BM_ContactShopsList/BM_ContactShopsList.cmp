@@ -1,0 +1,28 @@
+<!--
+ - Created by Dawid Majdański on 07.03.2019.
+ -->
+
+<aura:component description="BM_ContactShopsList">
+    <aura:attribute name="shopsResult" type="Account[]"/>
+    <aura:handler event="c:BM_LocationsSearchEvent" action="{!c.handleReceiveShopsList}"/>
+    <aura:registerEvent name = "passRecordLocation" type = "c:BM_LocationsRecordClickedEvent" />
+
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered" id="dataTable" >
+        <tbody>
+            <aura:iteration items="{!v.shopsResult}" var="shop" indexVar="ind">
+                <tr class="slds-hint-parent" id="{!ind}" onclick="{!c.onZoomMarkerOnMapAndHighlightRecord}" data-record="{!shop}" data-index="{!ind}" style="cursor: pointer">
+                    <td data-label="{!shop.Country__c}">
+                        <div class="slds-truncate" title="{!shop.Country__c}">{!shop.BillingCountry}</div>
+                    </td>
+                    <td data-label="{!shop.City__c}">
+                        <div class="slds-truncate" title="{!shop.City__c}">{!shop.BillingCity}</div>
+                    </td>
+                    <td data-label="{!shop.Street__c}">
+                        <div class="slds-truncate" title="{!shop.Street__c}">{!shop.BillingStreet}</div>
+                    </td>
+                </tr>
+            </aura:iteration>
+        </tbody>
+    </table>
+
+</aura:component>

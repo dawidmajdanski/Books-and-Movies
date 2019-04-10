@@ -1,0 +1,140 @@
+/**
+ * Created by Majdan on 01.02.2019.
+ */
+.THIS .productInfo{
+    display:none;
+}
+
+.THIS .strikethrough {
+  position: relative;
+}
+
+.THIS .strikethrough:before {
+  position: absolute;
+  content: "";
+  left: 0;
+  top: 53%;
+  right: 0;
+  border-top: 1px solid;
+  border-color: inherit;
+
+  -webkit-transform:rotate(-20deg);
+  -moz-transform:rotate(-20deg);
+  -ms-transform:rotate(-20deg);
+  -o-transform:rotate(-20deg);
+  transform:rotate(-14deg);
+}
+
+.THIS.tileContainer{
+    overflow:hidden;
+    display: inline-block;
+    margin: 2px;
+    height: 230px;
+    width: 112%;
+    position: relative;
+    border: 1px solid rgb(193, 193, 193, 0.6);
+    float:left;
+    border-radius: 4px;
+
+    -webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    margin-bottom: 10px !important;
+    background-color: #fafff8;
+    transition: 0.8s;
+}
+
+.THIS.tileContainer:hover{
+    background-color: #e8ffdc;
+}
+
+.THIS .imageContainer{
+   width: 174px;
+   height: 210px;
+   position: absolute;
+   margin: 10px;
+   margin-top: 7px;
+}
+
+.THIS .image{
+   cursor: pointer;
+   border-radius: 5px;
+   width:100%;
+   height: 100%;
+   position:absolute;
+   object-fit: contain;
+   border: 1px solid rgb(193, 193, 193, 0.30);
+   -webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+   -moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+   box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+}
+
+.THIS .tileContent{
+    left: 204px;
+    top: 10px;
+    position: absolute;
+    font-weight: bold;
+    right: 10px;
+}
+
+.THIS .productTitle{
+    font-size: 145%;
+}
+
+.THIS .productInfo{
+    font-size: 120%;
+    padding-top: 10px;
+}
+
+.THIS .starsContainer{
+    position: absolute;
+}
+
+.THIS .star-ratings-css {
+    width: auto;
+    font-size: 30px;
+}
+
+.THIS .priceContainer{
+    margin-top: 144px;
+    border-bottom: 1px solid #e6e6e6;
+    font-size: 17px;
+}
+
+.THIS .discountTriangle{
+    position: absolute;
+    z-index: 2;
+    width: 0;
+    height: 0;
+    border-top: 65px solid rgb(65,208,47,0.94);
+    border-right: 80px solid transparent;
+}
+
+.THIS .saleTitle{
+    position: absolute;
+    color: white;
+    top: -56px;
+    left: 7px;
+    font-size: 125%;
+    transform: rotate(-38deg);
+}
+
+.THIS .discountRibbonContainer{
+    position: absolute;
+    top: 100px;
+    left: 3px;
+}
+
+.THIS .productTypeImg{
+    width: 6.6%;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.THIS .heartPos {
+    width: 6%;
+    position: absolute;
+    bottom: 0.15rem;
+    right: 2.75rem;
+}

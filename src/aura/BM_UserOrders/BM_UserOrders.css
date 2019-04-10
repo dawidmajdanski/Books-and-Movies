@@ -1,0 +1,32 @@
+/**
+ * Created by Dawid Majdański on 12.02.2019.
+ */
+.THIS.myOrdersContainer{
+    width: 100%;
+    position: relative;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.THIS .titleMyOrders{
+    font-weight: bold;
+    font-size: 200%;
+    padding-left: 5px;
+    border-bottom: 1px solid #dbdbdb;
+    width: 100%;
+}
+
+.THIS .spanInfoContainer{
+    font-size: 120%;
+    font-family: 'Lucida Sans Unicode'
+}
+
+.THIS .childContainer{
+    position: relative;
+    padding-bottom: 0.65rem;
+}
+.THIS .commentsContainer{
+    float: left;
+    width: 100%;
+}

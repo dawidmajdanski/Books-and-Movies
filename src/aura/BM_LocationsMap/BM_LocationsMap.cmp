@@ -1,0 +1,21 @@
+<!--
+ - Created by Dawid Majdański on 21.12.2018.
+ -->
+
+<aura:component description="BM_LocationsMap" implements="flexipage:availableForAllPageTypes">
+    <aura:attribute name="map" type="Object"/>
+    <aura:attribute name="markers" type="Array" />
+    <aura:attribute name="shopCurrentLocation" type="Account"/>
+    <aura:handler event="c:BM_LocationsSearchEvent" action="{!c.handleReceiveShopsList}"/>
+    <aura:handler event="c:BM_LocationsRecordClickedEvent" action="{!c.handleRecordClicked}"/>
+    <aura:handler event="c:BM_LocationsRecordSavedEvent" action="{!c.handleRecordSaved}"/>
+    <aura:handler event="c:BM_LocationsClearDetailsEvent" action="{!c.handleRecordDeleted}"/>
+
+    <ltng:require styles="/resource/LeafletBundle/leaflet.css"
+                  scripts="/resource/LeafletBundle/leaflet.js"
+                  afterScriptsLoaded="{!c.init}"/>
+    <lightning:card title="{!$Label.c.Map_title}">
+        <div id="map" class="map"></div>
+    </lightning:card>
+
+</aura:component>

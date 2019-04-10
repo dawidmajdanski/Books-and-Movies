@@ -1,0 +1,52 @@
+<!--
+ - Created by Majdan on 25.02.2019.
+ -->
+
+<aura:component description="BM_ProductManagementPictures" controller="BM_ProductManagement">
+    <aura:attribute name="products" type="Product2[]"/>
+    <aura:attribute name="productSelected" type="Boolean"/>
+    <aura:attribute name="productPictures" type="Object[]"/>
+    <aura:attribute name="parentId" type="Id"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+
+    <c:BM_Toast aura:id="toastMsg"/>
+
+    <div style="padding: 1rem">
+        <lightning:select aura:id="productsList" label="{!$Label.c.Products}" name="selectType"
+                          onchange="{!c.handleSelectProduct}">
+            <option value="">{!$Label.c.Select_product_option}</option>
+            <aura:iteration items="{!v.products}" var="product">
+                <option value="{!product.Id}">{!product.Name}</option>
+            </aura:iteration>
+        </lightning:select>
+    </div>
+
+    <div style="padding: 1rem; display: inline-block; width: 100%;">
+        <aura:iteration items="{!v.productPictures}" var="pic">
+            <aura:if isTrue="{!pic.pictureName!=$Label.c.Main_picture_name}">
+                <div class="tileOuterDiv" title="{!$Label.c.Set_main_pic_hint}">
+                    <img class="tileImg"
+                         src="{!pic.pictureURL}" onclick="{!c.onSetMainPicture}"
+                         data-record="{!pic.pictureId}"/>
+                    <div class="delIcoContainer" title="{!$Label.c.Delete}" onclick="{!c.onDeletePicture}"
+                         data-record="{!pic.pictureId}">
+                        <lightning:icon iconName="action:delete" class="delIco" size="xx-small"/>
+                    </div>
+                </div>
+            </aura:if>
+            <aura:if isTrue="{!pic.pictureName==$Label.c.Main_picture_name}">
+                <div class="tileOuterDivBordered" title="{!$Label.c.Main_picture}">
+                    <img class="tileImg"
+                         src="{!pic.pictureURL}"/>
+                    <div class="delIcoContainerBordered" title="{!$Label.c.Delete}"
+                         onclick="{!c.onDeletePicture}"
+                         data-record="{!pic.pictureId}">
+                        <lightning:icon iconName="action:delete" class="delIco" size="xx-small"/>
+                    </div>
+                </div>
+            </aura:if>
+        </aura:iteration>
+    </div>
+
+</aura:component>

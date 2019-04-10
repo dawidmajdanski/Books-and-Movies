@@ -1,0 +1,12 @@
+/**
+ * Created by Majdan on 26.12.2018.
+ */
+
+.THIS .btnStyle{
+    top: 0.75rem;
+    right: 1rem;
+    position:absolute;
+}
+.THIS .paddingAll{
+    padding: 0 1rem;
+}

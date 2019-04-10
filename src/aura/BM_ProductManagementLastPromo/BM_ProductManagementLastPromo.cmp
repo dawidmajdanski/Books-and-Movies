@@ -1,0 +1,114 @@
+<!--
+ - Created by Majdan on 26.02.2019.
+ -->
+
+<aura:component description="BM_ProductManagementLastPromo" controller="BM_ProductManagement">
+    <aura:attribute name="inactivePricebooks" type="Pricebook2[]"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <aura:handler event="c:BM_GetPricebooksEvent" action="{!c.handleGetLastPriceBooks}"/>
+
+    <aura:registerEvent name = "getPricebooks" type = "c:BM_GetPricebooksEvent" />
+
+    <c:BM_Toast aura:id="toastMsg"/>
+ 
+    <aura:iteration items="{!v.inactivePricebooks}" var="pricebook" indexVar="ind">
+        <h1 style="font-size: 128%; font-style: italic; font-weight: bold;">{!pricebook.Name}</h1>
+        <div class="datesContainer">
+            <div class="datesPosition">
+                <div class="slds-form-element">
+                    <label class="slds-form-element__label" for="text-input-id-1">
+                        {!$Label.c.Start_date}
+                    </label>
+                    <div class="slds-form-element__control">
+                        <input onblur="{!c.handleChangeStartDate}" class="slds-input"
+                               type="date" value="{!pricebook.Start_date__c}"
+                               data-record="{!pricebook.Id}" data-index="{!ind+'SDI'}"
+                               id="{!ind+'SDI'}"/>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-left: 2%; margin-bottom: 15px" class="datesPosition">
+                <div class="slds-form-element">
+                    <label class="slds-form-element__label" for="text-input-id-1">
+                        {!$Label.c.End_date}
+                    </label>
+                    <div class="slds-form-element__control">
+                        <input onblur="{!c.handleChangeEndDate}" class="slds-input" type="date"
+                               value="{!pricebook.End_date__c}" data-record="{!pricebook.Id}"
+                               data-index="{!ind+'EDI'}" id="{!ind+'EDI'}"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <aura:if isTrue="{!pricebook.PricebookEntries==null}">
+            <div style="width:100%; text-align:center">
+                <span style="font-style:italic">{!$Label.c.No_products_in_pricebook}</span>
+            </div>
+        </aura:if>
+        <div class="currentPromoContainer">
+            <aura:if isTrue="{!pricebook.PricebookEntries!=null}">
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered"
+                       id="dataTable">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate"
+                                     title="{!$Label.c.Product_name_col}">{!$Label.c.Product_name_col}</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate"
+                                     title="{!$Label.c.Standard_price_col}">{!$Label.c.Standard_price_col}</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate"
+                                     title="{!$Label.c.Discount_price}">{!$Label.c.Discount_price}</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate"
+                                     title="{!$Label.c.Discount_percentage}">{!$Label.c.Discount_percentage}</div>
+                            </th>
+                            <th class="slds-text-title_caps" scope="col">
+                                <div class="slds-truncate"
+                                     title="{!$Label.c.Action}">{!$Label.c.Action}</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <aura:iteration items="{!pricebook.PricebookEntries}" var="pricebookEntry"
+                                        indexVar="ind">
+                            <tr class="slds-hint-parent" id="{!ind}">
+                                <td data-label="{!pricebookEntry.productName}" scope="row">
+                                    <div class="slds-truncate"
+                                         title="{!pricebookEntry.productName}">
+                                            {!pricebookEntry.Product2.Name}
+                                    </div>
+                                </td>
+                                <td data-label="{!pricebookEntry.Standard_price__c}">
+                                    <div class="slds-truncate"
+                                         title="{!pricebookEntry.Standard_price__c}">{!pricebookEntry.Standard_price__c}</div>
+                                </td>
+                                <td data-label="{!pricebookEntry.UnitPrice}">
+                                    <div class="slds-truncate"
+                                         title="{!pricebookEntry.UnitPrice}">{!pricebookEntry.UnitPrice}</div>
+                                </td>
+                                <td data-label="{!pricebookEntry.Discount_percentage__c}">
+                                    <div class="slds-truncate"
+                                         title="{!pricebookEntry.Discount_percentage__c}">{!pricebookEntry.Discount_percentage__c}</div>
+                                </td>
+                                <td data-label="{!$Label.c.Remove_promotion}"
+                                    onclick="{!c.handleRemoveSinglePromotionAction}"
+                                    data-record="{!pricebookEntry.Id}">
+                                    <div class="slds-truncate"
+                                         title="{!$Label.c.Remove_promotion}">
+                                        <a>{!$Label.c.Remove_promotion}</a></div>
+                                </td>
+                            </tr>
+                        </aura:iteration>
+                    </tbody>
+                </table>
+            </aura:if>
+            <br/>
+        </div>
+    </aura:iteration>
+</aura:component>

@@ -1,0 +1,17 @@
+/**
+ * Created by Majdan on 26.02.2019.
+ */
+.THIS .newPricebookSD{
+    float: left;
+    width: 49%;
+}
+
+.THIS .newPricebookED{
+    float: left;
+    width: 49%;
+    margin-left: 2%;
+}
+
+.THIS .addPricebookBtn{
+
+}

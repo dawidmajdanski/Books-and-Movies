@@ -1,0 +1,9 @@
+<!--
+ - Created by Dawid Majdański on 31.01.2019.
+ -->
+
+<aura:component controller="BM_ProductSearchController" description="BM_CustomSearchResultsList"
+                implements="forceCommunity:availableForAllPageTypes"
+                access="global">
+        <c:BM_ProductSearchResultListFilters />
+</aura:component>

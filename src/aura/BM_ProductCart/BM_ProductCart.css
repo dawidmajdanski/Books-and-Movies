@@ -1,0 +1,108 @@
+/**
+ * Created by Dawid Majdański on 08.02.2019.
+ */
+.THIS.cartContainer{
+    width: 100%;
+    position: relative;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.THIS .cartProductTile{
+    position: relative;
+    height: 170px;
+    width: 100%;
+    display: inline-block;
+    background-color: white;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    margin-bottom: 10px;
+    transition: 0.8s;
+}
+
+.THIS .cartProductTile:hover{
+    background-color: #e8ffdc;
+}
+
+.THIS .cartProductTileImgContainer{
+    width: 124px;
+    height: 160px;
+    position: absolute;
+    padding-left: 6px;
+    padding-top: 4px;
+
+}
+
+.THIS .cartProductTileImg{
+    cursor: pointer;
+    position: absolute;
+    object-fit: contain;
+    height: 100%;
+    border-radius: 5px;
+    border: 1px solid #eaeaea;
+    background-color: #ffffff;
+    width: 100%;
+    -webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+    box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.5);
+}
+
+.THIS .titleCart{
+    font-weight: bold;
+    font-size: 200%;
+    padding-left: 5px;
+    border-bottom: 1px solid #dbdbdb;
+    margin-bottom: 15px;
+}
+
+.THIS .cartProductInfo{
+    position: absolute;
+    left: 15%;
+    bottom: 18%;
+}
+
+.THIS .removeProduct{
+    position: absolute;
+    bottom: 45%;
+    cursor: pointer;
+    right: 3%;
+}
+
+.THIS .quantityInput{
+    width: 200px;
+}
+
+.THIS .slds-input{
+    line-height: 1.874rem;
+    padding-right: 0.10rem !important;
+}
+
+.THIS .slds-input-customError{
+    background-color: rgb(255, 255, 255);
+    box-shadow: red 0px 0px 3px;
+    outline: 0px;
+    border-color: red;
+    line-height: 1.874rem;
+    padding-right: 0.10rem !important;
+}
+
+.THIS .proceedBtn{
+    transition: 0.7s;
+}
+
+.THIS .bottomCartInfo{
+    text-align: right;
+    margin-top: 5px;
+    border-top: 1px solid #dbdbdb;
+}
+
+.THIS .totalPriceInfo{
+    text-align: right;
+    margin-top: 5px;
+    background-color: #fbfbfb;
+    font-size: 150%;
+    padding-right: 10px;
+}
